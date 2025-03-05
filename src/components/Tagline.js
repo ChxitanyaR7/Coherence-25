@@ -4,13 +4,12 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 import './style/RotatingTagline.css';
-
-import Image1 from '../assets/Create.png'; 
-import Image2 from '../assets/Innovate.png';
-import Image3 from '../assets/Transform.png';
+import Image1 from '../assets/Create1.png'; 
+import Image2 from '../assets/Innovate1 (4).png';
+import Image3 from '../assets/Transform1.png';
 
 const RotatingTagline = () => {
-  const images = [Image1, Image2, Image3]; // Replace with your actual image variables or paths
+  const tags = ["CREATE.", "INNOVATE.", "TRANSFORM."]; // Replace with your actual image variables or paths
 
   const settings = {
     dots: false,
@@ -26,9 +25,9 @@ const RotatingTagline = () => {
   return (
     <div className="rotating-tagline-container">
       <Slider {...settings}>
-        {images.map((image, index) => (
+        {tags.map((tagline, index) => (
           <div key={index} className="tagline-item">
-            <img src={image} alt={`${index + 1}`} className="rotating-tagline-container" />
+            <h1 className="rotating-tagline-container font-bold text-transparent text-3xl md:text-8xl mt-2 bg-clip-text bg-gradient-to-r from-blue-800 via-blue-500 to-blue-200">{tagline}</h1>
           </div>
         ))}
       </Slider>
