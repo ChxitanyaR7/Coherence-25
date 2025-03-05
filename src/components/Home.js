@@ -15,17 +15,25 @@ const Home = () => {
   const menuRef = useRef(null);
 
   const handleMenuToggle = () => {
-    setIsMenuOpen((prev) => !prev);
-    document.body.style.overflow = isMenuOpen ? "auto" : "hidden"; // Disable scroll when menu is open
+    setIsMenuOpen((prev) => {
+      const newState = !prev;
+      document.body.style.overflow = newState ? "hidden" : "auto"; // Lock scroll when open
+      return newState;
+    });
   };
-
+  
   const handleClickOutside = (event) => {
-    if (menuRef.current && !menuRef.current.contains(event.target)) {
+    if (
+      isMenuOpen &&
+      menuRef.current &&
+      !menuRef.current.contains(event.target) &&
+      !event.target.closest(".menu-button") // Prevent closing if clicking the button itself
+    ) {
       setIsMenuOpen(false);
-      document.body.style.overflow = "auto"; // Enable scroll when menu is closed
+      document.body.style.overflow = "auto"; // Enable scrolling
     }
   };
-
+  
   useEffect(() => {
     if (isMenuOpen) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -34,6 +42,7 @@ const Home = () => {
     }
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isMenuOpen]);
+  
 
   const textVariants = {
     hidden: { opacity: 0 },
@@ -118,16 +127,17 @@ const Home = () => {
       <Background />
       {/* Hamburger Menu Button */}
       <button
-        className="absolute top-6 left-6 z-50 text-white focus:outline-none menu-button"
-        onClick={handleMenuToggle}
-      >
-        <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} size="2x" />
-      </button>
+  className="absolute top-6 left-6 z-50 text-white focus:outline-none menu-button"
+  onClick={handleMenuToggle}
+  style={{ margin:"40px 30px"}}
+>
+  <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} size="2x" />
+</button>
 
       {/* Sidebar Menu */}
       <div
         ref={menuRef}
-        className={`fixed top-0 left-0 h-full w-64 bg-black bg-opacity-90 p-6 transform ${isMenuOpen ? "translate-x-0" : "-translate-x-full"
+        className={`fixed top-0 left-0 h-full w-64 bg-black bg-opacity-40 px-5 py-28 transform ${isMenuOpen ? "translate-x-0" : "-translate-x-full"
           } transition-transform duration-300 ease-in-out z-40`}
       >
         <nav className="flex flex-col space-y-6 text-white text-lg">
