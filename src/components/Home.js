@@ -191,7 +191,7 @@ const Home = () => {
         transition={{ delay: 1.5, duration: 1 }}
         style={{ zIndex: 1 }}
       >
-        <img className="logo-img mt-2" src={logo} alt="Logo" />
+        <img className="logo-img mt-2" src={logo} alt="Logo"></img>
       </motion.h1>
       <motion.div
         variants={fadeInVariant}
