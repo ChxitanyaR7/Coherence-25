@@ -4,10 +4,9 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 import './style/RotatingTagline.css';
-
-// import Image1 from '../assets/erasebg-transformed (1).png'; // Replace with your actual image paths
-// import Image2 from '../assets/erasebg-transformed (2).png';
-// import Image3 from '../assets/erasebg-transformed.png';
+import Image1 from '../assets/Create1.png'; 
+import Image2 from '../assets/Innovate1 (4).png';
+import Image3 from '../assets/Transform1.png';
 
 const RotatingTagline = () => {
   const tags = ["CREATE.", "INNOVATE.", "TRANSFORM."]; // Replace with your actual image variables or paths
