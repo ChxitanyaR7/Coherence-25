@@ -21,7 +21,7 @@ const Home = () => {
       return newState;
     });
   };
-  
+
   const handleClickOutside = (event) => {
     if (
       isMenuOpen &&
@@ -33,7 +33,7 @@ const Home = () => {
       document.body.style.overflow = "auto"; // Enable scrolling
     }
   };
-  
+
   useEffect(() => {
     if (isMenuOpen) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -42,7 +42,7 @@ const Home = () => {
     }
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isMenuOpen]);
-  
+
 
   const textVariants = {
     hidden: { opacity: 0 },
@@ -60,7 +60,7 @@ const Home = () => {
   };
 
   const handleRegistrationClick = () => {
-    window.location.href = "https://hack2skill.com/hack/mlsccoherence"; // Replace with your actual registration link
+    window.location.href = "https://www.instagram.com/mlsc_vcet?igshid=OGQ5ZDc2ODk2ZA%3D%3D"; // Replace with your actual registration link
   };
 
   function calculateTimeRemaining() {
@@ -127,12 +127,12 @@ const Home = () => {
       <Background />
       {/* Hamburger Menu Button */}
       <button
-  className="absolute top-6 left-6 z-50 text-white focus:outline-none menu-button"
-  onClick={handleMenuToggle}
-  style={{ margin:"40px 30px"}}
->
-  <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} size="2x" />
-</button>
+        className="absolute top-6 left-6 z-50 text-white focus:outline-none menu-button"
+        onClick={handleMenuToggle}
+        style={{ margin: "40px 30px" }}
+      >
+        <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} size="2x" />
+      </button>
 
       {/* Sidebar Menu */}
       <div
