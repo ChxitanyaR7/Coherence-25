@@ -36,7 +36,7 @@ const GeneralGuidelines = () => {
               beforehand at the Registration desks.
             </li>
             <li className="mb-4 text-base ">
-              Problem Statements will be released on the day of hackathon i.e on 23rd March.
+              Problem Statements will be released on the day of hackathon i.e on 28rd March.
             </li>
             <li className="mb-4 text-base ">
               Each team should comprise a minimum of 1 and a maximum of 4
@@ -47,7 +47,7 @@ const GeneralGuidelines = () => {
               Participant should be enrolled in a full-time undergraduate degree.
             </li>
             <li className="mb-4 text-base ">
-              Teams will be shortlisted based on first come first serve basis.
+              Teams will be shortlisted based on Round 1.
             </li>
             <li className="mb-4 text-base ">
               The hackathon format includes 24 hours of coding. After that,
