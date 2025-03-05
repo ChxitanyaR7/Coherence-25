@@ -5,7 +5,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 import './style/RotatingTagline.css';
 
-import Image1 from '../assets/Create.png'; // Replace with your actual image paths
+import Image1 from '../assets/Create.png'; 
 import Image2 from '../assets/Innovate.png';
 import Image3 from '../assets/Transform.png';
 

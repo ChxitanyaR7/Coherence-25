@@ -2,7 +2,6 @@ import React from "react";
 import { motion } from "framer-motion";
 import winnerImg from "../assets/1.png";
 import firstrunnerupImg from "../assets/2.png";
-import secondrunnerupImg from "../assets/3.png";
 
 const fadeInVariants = {
   hidden: { opacity: 0 },
@@ -32,27 +31,8 @@ const PrizePodium = () => {
         animate="visible"
         transition={fadeInTransition}
       >
-        {/* Podium Item 1 */}
-        <motion.div
-          className="text-center flex flex-col items-center mb-4 sm:mb-0"
-          whileHover="hover"
-          variants={scaleVariants}
-        >
-          <motion.h3 className="text-white text-xl sm:text-2xl font-bold mb-2">
-            1st Runner-up
-          </motion.h3>
-          <motion.img
-            className="max-w-full h-auto w-32 sm:w-48"
-            src={firstrunnerupImg}
-            alt="1st Runner-up"
-            style={{ zIndex: 1 }}
-          />
-          <motion.p className="text-white text-sm sm:text-xl mt-2">
-            ₹ 5,000 + Certificate + <br />Internship Opportunity <br /> + Goodies
-          </motion.p>
-        </motion.div>
 
-        {/* Podium Item 2 (Bigger Image) */}
+        {/* Podium Item 2 (Winner) */}
         <motion.div
           className="text-center flex flex-col items-center mb-4 sm:mb-0"
           whileHover="hover"
@@ -68,31 +48,33 @@ const PrizePodium = () => {
             style={{ zIndex: 1 }}
           />
           <motion.p className="text-white text-sm sm:text-xl mt-2">
-            ₹ 10,000 + Certificate + <br />Internship Opportunity + Goodies
+            ₹ 15,000 + Certificate + <br />Internship Opportunity + Goodies
           </motion.p>
         </motion.div>
 
-        {/* Podium Item 3 */}
+        {/* Podium Item 1 (1st Runner-up) */}
         <motion.div
-          className="text-center flex flex-col items-center"
+          className="text-center flex flex-col items-center mb-4 sm:mb-0"
           whileHover="hover"
           variants={scaleVariants}
         >
           <motion.h3 className="text-white text-xl sm:text-2xl font-bold mb-2">
-            2nd Runner-up
+            1st Runner-up
           </motion.h3>
           <motion.img
             className="max-w-full h-auto w-32 sm:w-48"
-            src={secondrunnerupImg}
-            alt="2nd Runner-up"
+            src={firstrunnerupImg}
+            alt="1st Runner-up"
             style={{ zIndex: 1 }}
           />
-          <motion.p className="text-white sm:text-xl text-sm mt-2">
-            ₹ 2,500 + Certificate + <br />Internship Opportunity <br /> + Goodies
+          <motion.p className="text-white text-sm sm:text-xl mt-2">
+            ₹ 7,500 + Certificate + <br />Internship Opportunity <br /> + Goodies
           </motion.p>
         </motion.div>
+
+
       </motion.div>
-      <div className="text-white text-right mr-20 mt-4 mb-2 text-sm">
+      <div className="text-white text-right mr-20 mt-4 mb-2 text-lg">
         *Prizes are for each track
       </div>
     </div>
