@@ -1,0 +1,331 @@
+
+.heading{
+    color: white;
+    border: 1px solid white;
+  }
+  /* Timeline container styling */
+.timeline-container {
+  display: flex;
+  gap: 33.5px;
+  width: 100%;
+  height: 134px;
+  justify-content: flex-start; /* Align items to start for proper scrolling */
+  font-weight: 900;
+  font-size: 67px;
+  }
+
+  .timeline-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    display: flex;
+    justify-content: flex-start;
+    padding: 10px 0;
+    scroll-behavior: smooth;
+    padding-left: 70px;
+  }
+
+
+.timeline-wrapper::-webkit-scrollbar {
+  display: none;
+}
+  
+
+  .timeline-container::-webkit-scrollbar {
+    display: none;
+}
+
+.timeline-point {
+  flex: 0 0 auto; /* Prevents shrinking */
+  scroll-snap-align: start; /* Snaps each item into place */
+}
+  
+  /* Individual timeline point styling */
+  .timeline-point {
+    transition-duration: 0.5s;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #1e2125, #23282c);
+    /* box-shadow: 13.4px 13.4px 40.2px #1c1f23, -13.4px -13.4px 40.2px #262b2f; */
+    display: grid;
+    place-items: center;
+    width: 134px;
+    position: relative;
+    color: var(--color);
+  }
+  
+  .timeline-point::before {
+    content: "";
+    width: 200px;
+    height: 200px;
+    z-index: -1;
+    border-radius: 50%;
+    position: absolute;
+    background: conic-gradient(
+      var(--color) var(--angle),
+      transparent 0deg 360deg
+    );
+    animation: rotateBorder 1s linear var(--delay) forwards;
+  }
+  
+  .timeline-point:nth-child(odd)::before {
+    transform: rotate(-90deg);
+  }
+  
+  .timeline-point:nth-child(even)::before {
+    transform: rotate(90deg) scaleY(-1);
+  }
+  
+  /* Custom property for angle */
+  @property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+  
+  /* Common styling for timeline points */
+.timeline-point:nth-child(1) {
+    --color: #1f3860;
+    --delay: 0s;
+  }
+  
+  .timeline-point:nth-child(2) {
+    --color: #0474cf;
+    --delay: 1s;
+  }
+  
+  .timeline-point:nth-child(3) {
+    --color: #1f3860;
+    --delay: 2s;
+  }
+  
+  .timeline-point:nth-child(4) {
+    --color: #0474cf;
+    --delay: 3s;
+  }
+  
+  .timeline-point:nth-child(5) {
+    --color: #1f3860;
+    --delay: 4s;
+  }
+  
+  .timeline-point:nth-child(6) {
+    --color: #0474cf;
+    --delay: 5s;
+  }
+  
+  .timeline-point:nth-child(7) {
+    --color: #1f3860;
+    --delay: 6s;
+  }
+  
+  .timeline-point:nth-child(8) {
+    --color: #0474cf;
+    --delay: 7s;
+  }
+  .timeline-point:nth-child(9) {
+    --color: #1f3860;
+    --delay: 7s;
+  }
+  .timeline-point:nth-child(10) {
+    --color: #0474cf;
+    --delay: 7s;
+  }
+  .timeline-point:nth-child(11) {
+    --color: #1f3860;
+    --delay: 7s;
+  }
+  .timeline-point:nth-child(12) {
+    --color: #0474cf;
+    --delay: 7s;
+  }
+  .timeline-point:nth-child(13) {
+    --color: #1f3860;
+    --delay: 7s;
+  }
+  .timeline-point:nth-child(14) {
+    --color: #0474cf;
+    --delay: 7s;
+  }
+  .timeline-point:nth-child(15) {
+    --color: #1f3860;
+    --delay: 7s;
+  }
+  .timeline-point:nth-child(16) {
+    --color: #0474cf;
+    --delay: 7s;
+  }
+  
+  
+  /* Popup styling */
+  .popup {
+    width: 321.6px;
+    height: auto;
+    max-height: 0;
+    background-color: var(--color);
+    display: grid;
+    grid-template-columns: 16% 84%;
+    position: absolute;
+    color: white;
+    border-radius: 30px;
+    box-shadow: 6.7px 6.7px 21.4px #17191d, -6.7px -6.7px 21.4px #212529;
+  
+    transform-origin: bottom bottom;
+    animation: expandPopup 0.5s linear calc(var(--delay) + 0.5s) forwards;
+  }
+  
+  .timeline-point:nth-child(odd) .popup {
+    bottom: 221.1px;
+  }
+  
+  .timeline-point:nth-child(even) .popup {
+    top: 221.1px;
+  }
+  
+  /* Popup number styling */
+  .popup-number {
+    grid-row: span 2;
+    display: grid;
+    font-size: 2rem;
+    font-weight: bold;
+    place-items: center;
+    cursor: auto;
+    animation: fadeIn 0.5s linear calc(var(--delay) + 0.7s) forwards;
+    opacity: 0;
+    height: 100%;
+  }
+  
+  /* Popup title styling */
+  .popup-title {
+    color: var(--color);
+    padding-bottom: 6.7px;
+    font-size: 20.1px;
+    font-weight: 900;
+  }
+  
+  /* Popup details styling */
+  .popup-details {
+    padding: 20.1px;
+    background-color: #1c1f23;
+    border-radius: 30px;
+    opacity: 0;
+    font-weight: 500;
+    user-select: none;
+    cursor: auto;
+    overflow: hidden;
+    font-size: 0.8rem;
+    text-align: justify;
+    background: linear-gradient(145deg, #16181b, #22262b);
+    margin: 3.35px;
+    animation: fadeIn 0.5s linear calc(var(--delay) + 0.7s) forwards;
+  }
+  
+  .popup::before {
+    content: "";
+    width: 6.7px;
+    height: 0;
+    border-radius: 20px;
+    background-color: var(--color);
+    position: absolute;
+    left: 50%;
+    top: -41.9px;
+    display: flex;
+    animation: drawLine 0.5s linear var(--delay) forwards;
+  }
+  
+  .timeline-point:nth-child(odd) .popup:before {
+    top: calc(100% + 47px);
+    transform: rotateX(180deg);
+    transform-origin: top;
+  }
+  
+  /* Hover effect for timeline points */
+  .timeline-point:hover {
+    background: linear-gradient(145deg, var(--color), #1e2125);
+    color: white;
+  }
+  
+  /* Animation for border rotation */
+  @keyframes rotateBorder {
+    from {
+      --angle: 0deg;
+    }
+  
+    to {
+      --angle: 180deg;
+    }
+  }
+  
+  /* Animation for popup expansion */
+  @keyframes expandPopup {
+    0% {
+      max-height: 0;
+    }
+  
+    100% {
+      max-height: 200px;
+    }
+  }
+  
+  /* Animation for line drawing */
+  @keyframes drawLine {
+    0% {
+      height: 0%;
+      opacity: 0;
+    }
+  
+    100% {
+      height: 33.5px;
+      opacity: 1;
+    }
+  }
+  
+  /* Animation for fade-in effect */
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @media (max-width: 1050px) {
+    body {
+      height: auto;
+      display: block;
+    }
+    .timeline-container {
+      flex-direction: column;
+      height: auto;
+      width: 100%;
+      padding: 100px 0px;
+    }
+  
+    .timeline-point {
+      height: 134px;
+      flex-shrink: 0;
+      left: calc(-321px / 2);
+      margin: 0px auto;
+      position: relative;
+    }
+  
+    .timeline-point:nth-child(odd)::before {
+      transform: rotate(0deg);
+    }
+  
+    .timeline-point:nth-child(even)::before {
+      transform: rotate(0deg) scaleX(-1);
+    }
+  
+    .timeline-point .popup:before {
+      display: none;
+    }
+  
+    .timeline-point:nth-child(odd) .popup {
+      bottom: auto;
+      right: -370.1px;
+    }
+  
+    .timeline-point:nth-child(even) .popup {
+      top: auto;
+      right: -370.1px;
+    }
+  }
+  

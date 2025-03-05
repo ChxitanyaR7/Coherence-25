@@ -1,0 +1,42 @@
+.contact-main {
+    align-items: center;
+    width: 100%;
+    padding-bottom: 50px;
+    padding-top: 50px;
+}
+
+.info {
+    color: rgb(0, 0, 0);
+    text-align: left;
+    margin: auto;
+}
+
+.info-head {
+    text-decoration: underline;
+    font-weight: bold;
+    margin: auto;
+    color: rgb(0, 0, 0);
+    font-size: 34px;
+    text-align: left;
+}
+
+.contact-num {
+    text-decoration: underline;
+    font-weight: bold;
+    padding-top: 5px;
+    margin: auto;
+    color: rgb(0, 0, 0);
+    font-size: 34px;
+    text-align: left;
+    margin-right: 50px;
+}
+
+.email-head {
+    text-decoration: underline;
+    font-weight: bold;
+    padding-top: 5px;
+    margin: auto;
+    color: rgb(0, 0, 0);
+    font-size: 34px;
+    text-align: left;
+}

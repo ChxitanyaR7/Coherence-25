@@ -1,0 +1,15 @@
+.section_header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0 50px;
+}
+
+.section_header span {
+    margin: 0 15px;
+}
+
+.section_header hr {
+    flex-grow: 1;
+}
