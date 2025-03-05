@@ -73,6 +73,7 @@ const SplitLogoEffect = () => {
           className="text-white text-5xl font-bold mt-4 text-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, ...glitchEffect }}
+          style={{padding: "15px"}}
         >
           Endless Possibilities Await You...
         </motion.h1>
