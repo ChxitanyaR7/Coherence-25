@@ -1,7 +1,7 @@
-# Official Documentation for Coherence 1.0 Website
+# Official Documentation for Coherence 25 Website
 
 ## Overview
-Welcome to the official documentation for Coherence 1.0, the dynamic and immersive website created for the MLSC's first-ever 24-hour hackathon! Coherence 1.0 serves as the digital hub for this exhilarating event, designed to unite brilliant minds, fuel innovation, and showcase the relentless quest for tech brilliance.
+Welcome to the official documentation for Coherence 25, the dynamic and immersive website created for MLSC's 2025 hackathon! Coherence 25 serves as the digital hub for this exciting event, designed to unite brilliant minds, fuel innovation, and showcase the relentless quest for tech brilliance.
 
 ## Technologies Used
 
@@ -12,10 +12,10 @@ Welcome to the official documentation for Coherence 1.0, the dynamic and immersi
 - Netlify for CI/CD and realtime preview
 
 ## Hackathon Details
-- Event Duration: 17th and 18th February 2024
+- Event Duration: 28th and 29th March 2025
 - Venue: Vidyavardhini's College of Engineering & Technology, Vasai
 
-## 📦 Component Structure of Coherence 1.0 Website:
+## 📦 Component Structure of Coherence 25 Website:
 ### 1. React App with Conditional Rendering
 The App component in this React application is designed to conditionally render various sections based on the current date. It introduces an animated logo (Introduction component) after a specific reveal date, and until then, displays a placeholder or under-construction page (YetToRevealPage). The remaining components, such as Home, About, Domains, Schedule, GeneralGuidelines, PrizePodium, Sponsors, FAQs, ContactUs, and Footer, are revealed after a short delay following the introduction.
 
@@ -37,12 +37,11 @@ The Home React component serves as the landing page for the MLSC Codefest, featu
 - Scroll To Top Button: A button appears when the user scrolls down, allowing them to easily navigate back to the top of the page.
 
 ### 5. About React Component
-The About React component provides information about the Coherence 1.0 hackathon, combining engaging content with visual elements. The component includes an image, details about the hackathon, and dynamic content such as a rotating tagline. Additionally, it features conditional rendering of buttons based on specified conditions, enabling users to register and access related resources.
+The About React component provides information about the Coherence 25 hackathon, combining engaging content with visual elements. The component includes an image, details about the hackathon, and dynamic content such as a rotating tagline. Additionally, it features conditional rendering of buttons based on specified conditions, enabling users to register and access related resources.
 - Image Section: Displays an image associated with the hackathon, providing a visual representation of the event.
-- Content Section: Describes the purpose of Coherence 1.0 and invites participants to join the hackathon, fostering creativity and innovation.
+- Content Section: Describes the purpose of Coherence 25 and invites participants to join the hackathon, fostering creativity and innovation.
 - Rotating Tagline: Incorporates a dynamic rotating tagline (RotatingTagline component) for an interactive and engaging element.
 - Conditional Buttons: Enables and disables registration and resource buttons based on specified conditions, controlling user access to relevant links.
-- Entrance Animation: Utilizes the Framer Motion library to introduce an animation, bringing the component onto the screen with a horizontal movement.
 
 ### 6. Domains React Component
 The Domains React component showcases different domains related to the MLSC Codefest, providing information about each domain along with engaging visuals. The component uses the Framer Motion library to introduce an animation, bringing the section onto the screen with a horizontal movement. It features a list of domains, each represented by a title, description, and an associated image. The design emphasizes an interactive experience, with elements scaling on hover.
@@ -94,9 +93,9 @@ The ContactUs React component is designed to display contact information and emb
 - Framer Motion Animation: Utilizes Framer Motion for a fadeInUp animation effect.
 - FontAwesome Icons: Incorporates FontAwesome icons for map markers, phones, and envelopes.
 
-## Running the MLSC Codefest Coherence 1.0 Website Locally
+## Running the MLSC Codefest Coherence 25 Website Locally
 
-To run the MLSC Codefest Coherence 1.0 Website locally, follow the guidelines below. Ensure that you have Node.js and npm installed on your machine.
+To run the MLSC Codefest Coherence 25 Website locally, follow the guidelines below. Ensure that you have Node.js and npm installed on your machine.
 
 ### Prerequisites:
 
@@ -198,8 +197,8 @@ Thank you for contributing! 🌟
 ## Maintainers
 The MLSC Codefest Coherence 1.0 Website is actively maintained and developed by the following contributors:
 
-1. Om Achrekar -> GitHub: [achrekarom12](https://github.com/achrekarom12)
-2. Rishabh Tripathi -> GitHub: [Rishabh-Tripathi1](https://github.com/Rishabh-Tripathi1)
+1. Yash Chavan -> GitHub: [YashChavanWeb](https://github.com/YashChavanWeb)
+2. Krisha Chikka -> GitHub: [krishachikka](https://github.com/krishachikka)
 
 Feel free to contact the maintainers for support, bug reports, or contributions to the project. We appreciate your interest and collaboration!
 

@@ -61,6 +61,11 @@ const ContactUs = () => {
               </p>
             </div>
             <div>
+              <p className="text-lg md:text-base mb-2 lg:text-left md:text-center lg:px-20">
+                Shagun Upadhyay: +91 96193 42859
+              </p>
+            </div>
+            <div>
               <p className="text-xl md:text-base lg:text-left md:text-center lg:px-20">
                 <FontAwesomeIcon
                   icon={faEnvelope}
