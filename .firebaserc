@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "coherence-25-30283"
-  }
+    "default": "coherence-25-7c025",
+    "coherence": "coherence-25-7c025"
+  },
+  "targets": {},
+  "etags": {}
 }
