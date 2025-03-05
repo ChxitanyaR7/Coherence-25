@@ -18,6 +18,7 @@ const Schedule = () => {
             <hr />
           </h2>
         </div>
+        <div className="text-white"><p className="">Slide to checkout the entire schedule</p></div>
       </div>
 
     </div>
