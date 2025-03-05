@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import logo from "../assets/logo.png";
+import logo from "../assets/coherence logo.png";
 import "./style/home.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleUp, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -13,7 +13,7 @@ const Home = () => {
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
- 
+
   const handleMenuToggle = () => {
     setIsMenuOpen((prev) => !prev);
     document.body.style.overflow = isMenuOpen ? "auto" : "hidden"; // Disable scroll when menu is open
@@ -127,9 +127,8 @@ const Home = () => {
       {/* Sidebar Menu */}
       <div
         ref={menuRef}
-        className={`fixed top-0 left-0 h-full w-64 bg-black bg-opacity-90 p-6 transform ${
-          isMenuOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-transform duration-300 ease-in-out z-40`}
+        className={`fixed top-0 left-0 h-full w-64 bg-black bg-opacity-90 p-6 transform ${isMenuOpen ? "translate-x-0" : "-translate-x-full"
+          } transition-transform duration-300 ease-in-out z-40`}
       >
         <nav className="flex flex-col space-y-6 text-white text-lg">
           <a href="#" className="hover:text-gray-400">Home</a>
