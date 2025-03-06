@@ -5,7 +5,7 @@ import '../components/style/Timeline.css';
 const Timeline = () => {
   return (
     <div className = "timeline-wrapper">
-      <h1 className="text-white text-left text-3xl">DAY 1 - March 28, 2025</h1>
+      <h1 className=" text-white text-center md:text-left text-3xl">DAY 1 - March 28, 2025</h1>
       <div className="time h-[90vh] flex justify-center items-center scale-90 sm:p-20">
         <div className="timeline-container">
   
@@ -99,7 +99,7 @@ const Timeline = () => {
           
         </div>
       </div>
-      <h1 className="text-white text-left text-3xl">DAY 2 - March 29, 2025</h1>
+      <h1 className=" text-white text-center md:text-left text-3xl">DAY 2 - March 29, 2025</h1>
 
       <div className="time h-[90vh] flex justify-center items-center scale-90 sm:p-10">
         <div className="timeline-container">
