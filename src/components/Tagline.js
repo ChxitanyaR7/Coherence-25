@@ -27,7 +27,7 @@ const RotatingTagline = () => {
       <Slider {...settings}>
         {images.map((image, index) => (
           <div key={index} className="tagline-item">
-            <img src={image} alt={`${index+1}`} className="rotating-tagline-container"></img>
+            <h1 className="rotating-tagline-container font-bold text-transparent text-3xl md:text-8xl mt-2 bg-clip-text bg-gradient-to-r from-blue-800 via-blue-500 to-blue-200 leading-none">{tagline}</h1>
           </div>
         ))}
       </Slider>
