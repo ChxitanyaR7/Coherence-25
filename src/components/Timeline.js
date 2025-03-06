@@ -10,7 +10,7 @@ const Timeline = () => {
         <div className="timeline-container">
   
           <div className="timeline-point">
-          <i className="fa-solid fa-file"></i>
+          <i className="fa-solid fa-registered"></i>
             <div className="popup">
               <div className="popup-number">1</div>
               <div className="popup-details">
@@ -32,7 +32,7 @@ const Timeline = () => {
           </div>
 
           <div className="timeline-point">
-          <i class="fa-solid fa-laptop"></i>
+          <i class="fa-solid fa-terminal"></i>
             <div className="popup">
               <div className="popup-number">3</div>
               <div className="popup-details">
@@ -105,7 +105,7 @@ const Timeline = () => {
         <div className="timeline-container">
   
         <div className="timeline-point">
-          <i className="fa-solid fa-file"></i>
+          <i className="fa-solid fa-utensils"></i>
             <div className="popup">
               <div className="popup-number">1</div>
               <div className="popup-details">
@@ -116,7 +116,7 @@ const Timeline = () => {
           </div>
 
           <div className="timeline-point">
-            <i className="fa-solid fa-copyright"></i>
+            <i className="fa-solid fa-utensils"></i>
             <div className="popup">
               <div className="popup-number">2</div>
               <div className="popup-details">
@@ -149,7 +149,7 @@ const Timeline = () => {
           </div>
 
           <div className="timeline-point">
-          <i class="fa-solid fa-utensils"></i>
+          <i class="fa-solid fa-square-poll-vertical"></i>
             <div className="popup">
               <div className="popup-number">5</div>
               <div className="popup-details">
@@ -160,7 +160,7 @@ const Timeline = () => {
           </div>
 
           <div className="timeline-point">
-          <i class="fa-solid fa-person-chalkboard"></i>
+          <i class="fa-solid fa-hourglass-end"></i>
             <div className="popup">
               <div className="popup-number">6</div>
               <div className="popup-details">

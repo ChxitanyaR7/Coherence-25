@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "mlsc-coherence25",
+    "site": "mlsc-coherence-25",
     "public": "build",
     "ignore": [
       "firebase.json",

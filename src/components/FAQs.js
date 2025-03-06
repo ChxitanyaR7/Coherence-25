@@ -58,7 +58,7 @@ const FAQsAndDomains = () => {
       {/* Glimpse of Coherence Section */}
       <h2 className="text-3xl text-white font-bold text-center section_header">
         <hr />
-        <span>Glimps of Coherence</span>
+        <span>Glimpse of Coherence</span>
         <hr />
       </h2>
 
