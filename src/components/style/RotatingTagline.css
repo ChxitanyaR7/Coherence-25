@@ -18,3 +18,10 @@
     right: 10px;
   }
   
+  @media (max-width: 756px){
+    .rotating-tagline-container {
+      font-size: 45px;
+      letter-spacing: 4px;
+      }
+      
+  }
