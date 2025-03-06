@@ -46,10 +46,8 @@ function App() {
 
   return (
     <div className="App bg-black">
-      {/* Display YetToRevealPage until January 1st */}
       {showYetToRevealPage && <YetToRevealPage className="yet-to-reveal" />}
 
-      {/* Display Introduction after January 1st */}
       {showIntroduction && (
         <Introduction />
       )}
@@ -62,7 +60,7 @@ function App() {
           <Domains />
           {/* <Timeline/> */}
           <Schedule />
-          <Timeline/>
+          <Timeline />
           <GeneralGuidelines />
           <PrizePodium />
           {/* <Sponsors /> */}
