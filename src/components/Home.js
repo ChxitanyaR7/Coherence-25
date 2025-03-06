@@ -60,7 +60,7 @@ const Home = () => {
   };
 
   const handleRegistrationClick = () => {
-    window.location.href = "https://www.instagram.com/mlsc_vcet?igshid=OGQ5ZDc2ODk2ZA%3D%3D"; // Replace with your actual registration link
+    window.location.href = "https://unstop.com/p/coherence-25-vidyavardhinis-college-of-engineering-and-technology-vasai-1419326"; // Replace with your actual registration link
   };
 
   function calculateTimeRemaining() {
