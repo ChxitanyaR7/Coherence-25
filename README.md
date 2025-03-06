@@ -234,7 +234,7 @@ Thank you for contributing! 🌟
 
 ## Maintainers
 
-The MLSC Codefest Coherence 1.0 Website is actively maintained and developed by the following contributors:
+The MLSC Codefest Coherence-25 Website is actively maintained and developed by the following contributors:
 
 1. Yash Chavan -> GitHub: [YashChavanWeb](https://github.com/YashChavanWeb)
 2. Krisha Chikka -> GitHub: [krishachikka](https://github.com/krishachikka)
