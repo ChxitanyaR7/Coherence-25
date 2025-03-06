@@ -6,7 +6,7 @@ const Timeline = () => {
   return (
     <div className="timeline-wrapper">
 
-      <div className="time h-[90vh] w-[90vw] flex justify-center items-center align-center mx-auto scale-90 sm:p-20">
+      {/* <div className="time h-[90vh] w-[90vw] flex justify-center items-center align-center mx-auto scale-90 sm:p-20">
         <div className="timeline-container space-x-0">
           <div className="timeline-point">
             <p className="text-white text-[15px]">Registration</p>
@@ -54,7 +54,7 @@ const Timeline = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
 
 
@@ -63,11 +63,7 @@ const Timeline = () => {
         <div className="timeline-container">
 
           <div className="timeline-point">
-<<<<<<< HEAD
-            <i className="fa-solid fa-file"></i>
-=======
           <i className="fa-solid fa-registered"></i>
->>>>>>> 0e71237e71f0dc6a729ff8207d150ac15a7f9ed2
             <div className="popup">
               <div className="popup-number">1</div>
               <div className="popup-details">
@@ -89,11 +85,7 @@ const Timeline = () => {
           </div>
 
           <div className="timeline-point">
-<<<<<<< HEAD
-            <i class="fa-solid fa-laptop"></i>
-=======
           <i class="fa-solid fa-terminal"></i>
->>>>>>> 0e71237e71f0dc6a729ff8207d150ac15a7f9ed2
             <div className="popup">
               <div className="popup-number">3</div>
               <div className="popup-details">
@@ -164,15 +156,9 @@ const Timeline = () => {
 
       <div className="time h-[90vh] flex justify-center items-center scale-90 sm:p-10">
         <div className="timeline-container">
-<<<<<<< HEAD
-
-          <div className="timeline-point">
-            <i className="fa-solid fa-file"></i>
-=======
   
         <div className="timeline-point">
           <i className="fa-solid fa-utensils"></i>
->>>>>>> 0e71237e71f0dc6a729ff8207d150ac15a7f9ed2
             <div className="popup">
               <div className="popup-number">1</div>
               <div className="popup-details">
@@ -216,11 +202,7 @@ const Timeline = () => {
           </div>
 
           <div className="timeline-point">
-<<<<<<< HEAD
-            <i class="fa-solid fa-utensils"></i>
-=======
           <i class="fa-solid fa-square-poll-vertical"></i>
->>>>>>> 0e71237e71f0dc6a729ff8207d150ac15a7f9ed2
             <div className="popup">
               <div className="popup-number">5</div>
               <div className="popup-details">
@@ -231,11 +213,7 @@ const Timeline = () => {
           </div>
 
           <div className="timeline-point">
-<<<<<<< HEAD
-            <i class="fa-solid fa-person-chalkboard"></i>
-=======
           <i class="fa-solid fa-hourglass-end"></i>
->>>>>>> 0e71237e71f0dc6a729ff8207d150ac15a7f9ed2
             <div className="popup">
               <div className="popup-number">6</div>
               <div className="popup-details">
