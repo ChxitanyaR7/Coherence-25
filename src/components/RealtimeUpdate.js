@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
+import { getDatabase, ref, set, push } from "firebase/database"; // Firebase Realtime Database methods
+
+// Initialize Firebase App
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "../firebase"; // import firebase config from a separate file
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
 const RealtimeUpdate = () => {
-    // Initial 24-hour countdown (in seconds)
     const initialTime = 24 * 60 * 60;
     const [timeLeft, setTimeLeft] = useState(initialTime);
 
     const [tasks, setTasks] = useState([
-        // Day 1
         { id: 1, title: "Reporting and Registration", time: "12:00 PM" },
         { id: 2, title: "Inauguration", time: "1:00 PM" },
         { id: 3, title: "Coding Begins", time: "2:00 PM" },
@@ -15,8 +21,6 @@ const RealtimeUpdate = () => {
         { id: 6, title: "Mentoring Round 2 Starts", time: "8:00 PM" },
         { id: 7, title: "Dinner Break", time: "9:00 PM" },
         { id: 8, title: "Midnight Snacks", time: "12:00 AM" },
-
-        // Day 2
         { id: 9, title: "Breakfast", time: "9:00 AM" },
         { id: 10, title: "Lunch", time: "12:00 PM" },
         { id: 11, title: "Coding Ends", time: "2:00 PM" },
@@ -25,7 +29,6 @@ const RealtimeUpdate = () => {
         { id: 14, title: "Dispersal", time: "6:00 PM" }
     ]);
 
-    // Function to format time in HH:MM:SS
     const formatTime = (seconds) => {
         const hours = Math.floor(seconds / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);
@@ -33,7 +36,6 @@ const RealtimeUpdate = () => {
         return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secondsLeft).padStart(2, '0')}`;
     };
 
-    // Countdown logic
     useEffect(() => {
         if (timeLeft === 0) return;
 
@@ -45,12 +47,11 @@ const RealtimeUpdate = () => {
                 }
                 return prevTime - 1;
             });
-        }, 1000); // Update every second
+        }, 1000);
 
-        return () => clearInterval(interval); // Cleanup interval on unmount
+        return () => clearInterval(interval);
     }, [timeLeft]);
 
-    // Handle editing task time
     const handleEditTime = (id) => {
         const newTime = prompt("Enter new time (HH:MM AM/PM):");
         if (newTime) {
@@ -58,6 +59,32 @@ const RealtimeUpdate = () => {
                 task.id === id ? { ...task, time: newTime } : task
             );
             setTasks(updatedTasks);
+        }
+    };
+
+    // Function to handle adding a new task to Firebase
+    const handleAddTask = () => {
+        const taskTitle = prompt("Enter task title:");
+        const taskTime = prompt("Enter task time (HH:MM AM/PM):");
+
+        if (taskTitle && taskTime) {
+            const newTask = {
+                title: taskTitle,
+                time: taskTime
+            };
+
+            // Push to Firebase Realtime Database
+            const tasksRef = ref(db, 'tasks');
+            const newTaskRef = push(tasksRef);
+            set(newTaskRef, newTask);
+
+            // Optionally, update the local state to reflect the new task immediately
+            setTasks((prevTasks) => [
+                ...prevTasks,
+                { id: newTaskRef.key, ...newTask } // Firebase auto-generated key
+            ]);
+        } else {
+            alert("Both title and time are required!");
         }
     };
 
@@ -75,7 +102,6 @@ const RealtimeUpdate = () => {
                         <p>{task.time}</p>
                     </div>
                 ))}
-                {/* Countdown timer */}
                 <div className="my-auto text-center p-8 rounded-3xl text-2xl mb-8 border-2 border-blue-500 shadow-lg shadow-blue-500">
                     {formatTime(timeLeft)}
                 </div>
@@ -108,6 +134,13 @@ const RealtimeUpdate = () => {
 
             <button className="border-2 p-3 m-2 rounded-3xl border-blue-500 hover:scale-105 transition-all ease-in-out duration-0.3">
                 Show Timeline
+            </button>
+
+            <button
+                onClick={handleAddTask}
+                className="mt-4 border-2 p-3 m-2 rounded-3xl border-blue-500 hover:scale-105 transition-all ease-in-out duration-0.3"
+            >
+                Add Task
             </button>
         </div>
     );
