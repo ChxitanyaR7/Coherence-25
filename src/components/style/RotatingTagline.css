@@ -1,6 +1,5 @@
 .rotating-tagline-container {
-  font-size: 55px;
-  letter-spacing: 4px;
+  padding: 0 10px;
   }
   
   .tagline-item {
