@@ -42,6 +42,10 @@ const Home = () => {
     }
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isMenuOpen]);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8efee561e2835b30cb661e08481074028d630dd5
 
   const textVariants = {
     hidden: { opacity: 0 },
@@ -59,7 +63,7 @@ const Home = () => {
   };
 
   const handleRegistrationClick = () => {
-    window.location.href = "https://hack2skill.com/hack/mlsccoherence"; // Replace with your actual registration link
+    window.location.href = "https://unstop.com/p/coherence-25-vidyavardhinis-college-of-engineering-and-technology-vasai-1419326"; // Replace with your actual registration link
   };
 
   function calculateTimeRemaining() {

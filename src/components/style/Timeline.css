@@ -240,7 +240,7 @@ scroll-snap-align: start; /* Snaps each item into place */
 }
 
 .timeline-point:hover {
-  background: linear-gradient(145deg, var(--color), #1e2125);
+  /* background: linear-gradient(145deg, var(--color), #1e2125); */
   color: white;
 }
 
@@ -296,7 +296,7 @@ body {
   overflow: hidden;
 }
 
-h3{
+h1{
   text-align: center;
 }
 .time{

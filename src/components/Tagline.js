@@ -9,7 +9,7 @@ import Image2 from '../assets/Innovate1 (4).png';
 import Image3 from '../assets/Transform1.png';
 
 const RotatingTagline = () => {
-  const tags = ["CREATE.", "INNOVATE.", "TRANSFORM."]; // Replace with your actual image variables or paths
+  const tags = ["CREATE.", "INNOVATE.", "TRANSFORM."]; 
 
   const settings = {
     dots: false,
@@ -27,7 +27,7 @@ const RotatingTagline = () => {
       <Slider {...settings}>
         {tags.map((tagline, index) => (
           <div key={index} className="tagline-item">
-            <h1 className="rotating-tagline-container font-bold text-transparent text-3xl md:text-8xl mt-2 bg-clip-text bg-gradient-to-r from-blue-800 via-blue-500 to-blue-200">{tagline}</h1>
+          <h1 className="rotating-tagline-container font-bold text-transparent text-3xl md:text-8xl mt-2 bg-clip-text bg-gradient-to-r from-blue-800 via-blue-500 to-blue-200">{tagline}</h1>
           </div>
         ))}
       </Slider>

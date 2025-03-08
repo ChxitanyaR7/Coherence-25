@@ -1,6 +1,6 @@
 .rotating-tagline-container {
-  font-size: 55px;
-  letter-spacing: 4px;
+  padding: 0 10px;
+  /* font-family: "Arial", sans-serif; */
   }
   
   .tagline-item {
@@ -19,3 +19,10 @@
     right: 10px;
   }
   
+  @media (max-width: 756px){
+    .rotating-tagline-container {
+      font-size: 45px;
+      letter-spacing: 4px;
+      }
+      
+  }
