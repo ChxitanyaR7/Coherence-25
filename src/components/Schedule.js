@@ -8,7 +8,8 @@ const Schedule = () => {
   const scrollRef = useRef(null);
 
   return (
-    <div>
+   
+    <div id = "schedule" className = "schedule-section">
       <div className="">
         {/* Header */}
         <div className="px-4 md:px-8 text-center">
@@ -20,7 +21,6 @@ const Schedule = () => {
         </div>
         <div className="text-white"><p className="">Slide to checkout the entire schedule</p></div>
       </div>
-
     </div>
   );
 };

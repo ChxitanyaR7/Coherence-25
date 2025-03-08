@@ -32,6 +32,7 @@ const About = () => {
   }, []);
 
   return (
+    <div id="about" className="about-section">
     <motion.div
       initial={{ x: -1500 }} // Initial position off-screen to the left
       animate={controls}
@@ -62,7 +63,7 @@ const About = () => {
         <RotatingTagline />
       </div>
     </motion.div>
-  );
+  </div>);
 };
 
 export default About;
