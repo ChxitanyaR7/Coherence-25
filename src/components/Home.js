@@ -42,10 +42,6 @@ const Home = () => {
     }
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isMenuOpen]);
-<<<<<<< HEAD
-=======
-
->>>>>>> 8efee561e2835b30cb661e08481074028d630dd5
 
   const textVariants = {
     hidden: { opacity: 0 },
