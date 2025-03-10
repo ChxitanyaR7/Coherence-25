@@ -20,6 +20,8 @@ const ContactUs = () => {
     ease: "easeInOut",
   };
   return (
+    <div id="contact" className="contact-section">
+  
     <div className="text-white p-4 md:p-8 text-center">
       <h2 className="text-2xl md:text-3xl font-bold mb-4 section_header">
         <hr />
@@ -93,6 +95,7 @@ const ContactUs = () => {
         </div>
       </motion.div>
     </div>
+  </div>
   );
 };
 
