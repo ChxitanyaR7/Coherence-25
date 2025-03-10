@@ -4,65 +4,13 @@ import '../components/style/Timeline.css';
 
 const Timeline = () => {
   return (
-    <div className="timeline-wrapper">
-
-      <div className="time h-[90vh] w-[90vw] flex justify-center items-center align-center mx-auto scale-90 sm:p-20">
-        <div className="timeline-container space-x-0">
-          <div className="timeline-point">
-            <p className="text-white text-[15px]">Registration</p>
-            <div className="popup">
-              <div className="popup-number">1</div>
-              <div className="popup-details">
-                <div className="popup-title break-words">
-                  6th March
-                </div>
-                <div className="break-words w-full">
-                  Register now on UNSTOP. Free bugs and sleepless nights included!
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="timeline-point">
-            <p className="text-white text-[15px]">Registration <br />Ends</p>
-            <div className="popup">
-              <div className="popup-number">2</div>
-              <div className="popup-details">
-                <div className="popup-title break-words">
-                  16th March
-                </div>
-                <div>Time: 11:59 PM</div>
-                <div className="break-words w-full">
-                  That’s it! No more entries, just pure hacking ahead!
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="timeline-point">
-            <p className="text-white text-[15px]">Shortlisted <br />teams</p>
-            <div className="popup">
-              <div className="popup-number">3</div>
-              <div className="popup-details">
-                <div className="popup-title break-words">
-                  20th - 21st March
-                </div>
-                <div className="break-words w-full">
-                  And the chosen ones are…Check the list and flex!
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-
-      <h1 className="text-white text-left text-3xl">DAY 1 - March 28, 2025</h1>
+    <div className = "timeline-wrapper">
+      <h1 className=" text-white text-center md:text-left text-3xl">DAY 1 - March 28, 2025</h1>
       <div className="time h-[90vh] flex justify-center items-center scale-90 sm:p-20">
         <div className="timeline-container">
 
           <div className="timeline-point">
+          <i className="fa-solid fa-registered"></i>
             <i className="fa-solid fa-registered"></i>
 
             <div className="popup">
@@ -86,7 +34,7 @@ const Timeline = () => {
           </div>
 
           <div className="timeline-point">
-            <i class="fa-solid fa-terminal"></i>
+          <i class="fa-solid fa-terminal"></i>
             <div className="popup">
               <div className="popup-number">3</div>
               <div className="popup-details">
@@ -153,13 +101,13 @@ const Timeline = () => {
 
         </div>
       </div>
-      <h1 className="text-white text-left text-3xl">DAY 2 - March 29, 2025</h1>
+      <h1 className=" text-white text-center md:text-left text-3xl">DAY 2 - March 29, 2025</h1>
 
       <div className="time h-[90vh] flex justify-center items-center scale-90 sm:p-10">
         <div className="timeline-container">
-
-          <div className="timeline-point">
-            <i className="fa-solid fa-utensils"></i>
+  
+        <div className="timeline-point">
+          <i className="fa-solid fa-utensils"></i>
             <div className="popup">
               <div className="popup-number">1</div>
               <div className="popup-details">
@@ -203,7 +151,7 @@ const Timeline = () => {
           </div>
 
           <div className="timeline-point">
-            <i class="fa-solid fa-square-poll-vertical"></i>
+          <i class="fa-solid fa-square-poll-vertical"></i>
             <div className="popup">
               <div className="popup-number">5</div>
               <div className="popup-details">
@@ -214,7 +162,7 @@ const Timeline = () => {
           </div>
 
           <div className="timeline-point">
-            <i class="fa-solid fa-hourglass-end"></i>
+          <i class="fa-solid fa-hourglass-end"></i>
             <div className="popup">
               <div className="popup-number">6</div>
               <div className="popup-details">
