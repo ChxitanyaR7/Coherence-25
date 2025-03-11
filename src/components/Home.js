@@ -157,6 +157,7 @@ const Home = () => {
           <a onClick={() => scrollToSection("home")} className="hover:text-gray-400">Home</a>
           <a onClick={() => scrollToSection("about")} className="hover:text-gray-400">About</a>
           <a onClick={() => scrollToSection("schedule")} className="hover:text-gray-400">Schedule</a>
+          <a onClick={() => scrollToSection("faq")} className="hover:text-gray-400">FAQs</a>
           <a onClick={() => scrollToSection("contact")} className="hover:text-gray-400">Contact</a>
         </nav>
       </div>
@@ -240,9 +241,14 @@ const Home = () => {
         </p>
         <button
           onClick={handleRegistrationClick}
-          className="bg-blue-900 text-white font-semibold py-2 px-4 rounded-xl mt-6"
+          // Disable the button if registration is closed
+          enabled="ture"
+          // className="bg-purple-800 hover:bg-purple-500 text-white font-semibold py-2 px-4 rounded-xl mt-6"
+          // Disable the button if registration is closed
+          className="bg-blue-900 shadow-blue-300 shadow-lg border-white text-white font-semibold py-2 px-4 rounded-xl mt-6 hover:scale-105 transition-all duration-0.3 ease-in-out hover:bg-transparent hover:border-4"
         >
-          Registrations Open!
+          Register Now !   
+          {/* <i className="fa-solid fa-arrow-right"></i> */}
         </button>
 
         {/* Scroll to Top Button */}

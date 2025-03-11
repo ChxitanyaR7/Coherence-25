@@ -31,7 +31,7 @@ const FAQsAndDomains = () => {
     { question: "Are travel expenses included too?", answer: "No, the participants are responsible for covering their travel expenses." },
     { question: "Is it an Online or an Offline Hackathon?", answer: "Coherence 25 is being hosted Offline only." },
     { question: "What are the eligibility criteria?", answer: "The hackathon is open to all participants." },
-    { question: "Can I participate as an individual or do I need a team?", answer: "You cannot participate indiviually. Team of 2-4 is required" },
+    { question: "Can I participate as an individual or do I need a team?", answer: "Team participation is required. Individual participation is not allowed." },
     { question: "Can a member be a part of two teams?", answer: "No, every member should be part of a single team." },
   ];
 
@@ -58,7 +58,7 @@ const FAQsAndDomains = () => {
       {/* Glimpse of Coherence Section */}
       <h2 className="text-3xl text-white font-bold text-center section_header">
         <hr />
-        <span>Glimpse of Coherence</span>
+        <span>Glimpse of Coherence 1.0</span>
         <hr />
       </h2>
 
@@ -77,7 +77,7 @@ const FAQsAndDomains = () => {
 
 
       {/* FAQ Section */}
-      <h2 className="text-2xl md:text-3xl text-white font-bold mb-4 section_header">
+      <h2 id="faq" className="text-2xl md:text-3xl text-white font-bold mb-4 section_header">
         <hr />
         <span>Frequently Asked Questions</span>
         <hr />

@@ -64,7 +64,7 @@ function App() {
                     <Timeline />
                     <GeneralGuidelines />
                     <PrizePodium />
-                    <Sponsors />
+                    {/* <Sponsors /> */}
                     <FAQs />
                     <ContactUs />
                     <Footer />
