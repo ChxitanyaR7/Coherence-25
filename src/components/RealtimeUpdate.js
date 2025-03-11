@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getDatabase, ref, set, push } from "firebase/database"; // Firebase Realtime Database methods
+import { getDatabase, ref, set, push, onValue, update, remove } from "firebase/database"; // Firebase Realtime Database methods
 
 // Initialize Firebase App
 import { initializeApp } from "firebase/app";
@@ -11,23 +11,7 @@ const db = getDatabase(app);
 const RealtimeUpdate = () => {
     const initialTime = 24 * 60 * 60;
     const [timeLeft, setTimeLeft] = useState(initialTime);
-
-    const [tasks, setTasks] = useState([
-        { id: 1, title: "Reporting and Registration", time: "12:00 PM" },
-        { id: 2, title: "Inauguration", time: "1:00 PM" },
-        { id: 3, title: "Coding Begins", time: "2:00 PM" },
-        { id: 4, title: "Mentoring Round 1 Starts", time: "4:30 PM" },
-        { id: 5, title: "Evening Snacks", time: "5:00 PM" },
-        { id: 6, title: "Mentoring Round 2 Starts", time: "8:00 PM" },
-        { id: 7, title: "Dinner Break", time: "9:00 PM" },
-        { id: 8, title: "Midnight Snacks", time: "12:00 AM" },
-        { id: 9, title: "Breakfast", time: "9:00 AM" },
-        { id: 10, title: "Lunch", time: "12:00 PM" },
-        { id: 11, title: "Coding Ends", time: "2:00 PM" },
-        { id: 12, title: "Final Presentation", time: "3:00 PM" },
-        { id: 13, title: "Result Announcement and Distribution", time: "5:00 PM" },
-        { id: 14, title: "Dispersal", time: "6:00 PM" }
-    ]);
+    const [tasks, setTasks] = useState([]);
 
     const formatTime = (seconds) => {
         const hours = Math.floor(seconds / 3600);
@@ -35,6 +19,26 @@ const RealtimeUpdate = () => {
         const secondsLeft = seconds % 60;
         return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secondsLeft).padStart(2, '0')}`;
     };
+
+    useEffect(() => {
+        // Fetch tasks from Firebase when the component mounts
+        const tasksRef = ref(db, 'tasks');
+
+        const unsubscribe = onValue(tasksRef, (snapshot) => {
+            const data = snapshot.val();
+            const fetchedTasks = data ? Object.keys(data).map((key) => ({
+                id: key,
+                title: data[key].title,
+                time: data[key].time,
+                order: data[key].order, // Include order when fetching tasks
+            })) : [];
+            // Sort tasks by order field
+            fetchedTasks.sort((a, b) => a.order - b.order);
+            setTasks(fetchedTasks);
+        });
+
+        return () => unsubscribe(); // Clean up the listener on unmount
+    }, []);
 
     useEffect(() => {
         if (timeLeft === 0) return;
@@ -59,6 +63,10 @@ const RealtimeUpdate = () => {
                 task.id === id ? { ...task, time: newTime } : task
             );
             setTasks(updatedTasks);
+
+            // Update the time in the Firebase database
+            const taskRef = ref(db, `tasks/${id}`);
+            update(taskRef, { time: newTime });
         }
     };
 
@@ -70,21 +78,35 @@ const RealtimeUpdate = () => {
         if (taskTitle && taskTime) {
             const newTask = {
                 title: taskTitle,
-                time: taskTime
+                time: taskTime,
+                order: tasks.length + 1, // Assign order based on the current number of tasks
             };
 
             // Push to Firebase Realtime Database
             const tasksRef = ref(db, 'tasks');
             const newTaskRef = push(tasksRef);
             set(newTaskRef, newTask);
-
-            // Optionally, update the local state to reflect the new task immediately
-            setTasks((prevTasks) => [
-                ...prevTasks,
-                { id: newTaskRef.key, ...newTask } // Firebase auto-generated key
-            ]);
         } else {
             alert("Both title and time are required!");
+        }
+    };
+
+    // Function to handle deleting a task from Firebase
+    const handleDeleteTask = (id) => {
+        const password = prompt("Enter password to delete the task:");
+        if (password === "yash") {
+            // Remove the task from Firebase Realtime Database
+            const taskRef = ref(db, `tasks/${id}`);
+            remove(taskRef)
+                .then(() => {
+                    // Remove the task from local state as well
+                    setTasks(tasks.filter((task) => task.id !== id));
+                })
+                .catch((error) => {
+                    console.error("Error deleting task: ", error);
+                });
+        } else {
+            alert("Incorrect password!");
         }
     };
 
@@ -106,7 +128,12 @@ const RealtimeUpdate = () => {
                     {formatTime(timeLeft)}
                 </div>
             </div>
-
+            <button
+                onClick={handleAddTask}
+                className="mt-4 border-2 p-3 m-2 rounded-3xl border-blue-500 hover:scale-105 transition-all ease-in-out duration-0.3"
+            >
+                Add Task
+            </button>
             <div className="w-[80%] mb-8">
                 <h2 className="text-2xl mb-4">Full Schedule</h2>
                 <div className="space-y-4">
@@ -121,12 +148,20 @@ const RealtimeUpdate = () => {
                                     {task.time}
                                 </p>
                             </div>
-                            <button
-                                className="text-blue-500 hover:bg-blue-400 hover:text-black p-3 rounded-3xl transition-all ease-in-out duration-0.7"
-                                onClick={() => handleEditTime(task.id)}
-                            >
-                                Edit Time
-                            </button>
+                            <div className="flex space-x-4">
+                                <button
+                                    className="text-blue-500 hover:bg-blue-400 hover:text-black p-3 rounded-3xl transition-all ease-in-out duration-0.7"
+                                    onClick={() => handleEditTime(task.id)}
+                                >
+                                    Edit Time
+                                </button>
+                                <button
+                                    className="text-red-500 hover:bg-red-400 hover:text-black p-3 rounded-3xl transition-all ease-in-out duration-0.7"
+                                    onClick={() => handleDeleteTask(task.id)}
+                                >
+                                    Delete Task
+                                </button>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -136,12 +171,7 @@ const RealtimeUpdate = () => {
                 Show Timeline
             </button>
 
-            <button
-                onClick={handleAddTask}
-                className="mt-4 border-2 p-3 m-2 rounded-3xl border-blue-500 hover:scale-105 transition-all ease-in-out duration-0.3"
-            >
-                Add Task
-            </button>
+
         </div>
     );
 };
