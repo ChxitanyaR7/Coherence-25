@@ -49,20 +49,40 @@ const RealtimeUpdate = () => {
             setTasks(fetchedTasks);
             setLoading(false);
 
-            // Match tasks to the hardcoded 4:00 PM time
-            const targetTime = convertTo24HourFormat('4:30 PM');
+            // Convert the hardcoded time (3:30 PM) to 24-hour format for comparison
+            const targetTime = convertTo24HourFormat('1:40 PM');
             let matchedTask = null;
+            let currentTaskIndex = -1;
 
             // Iterate through the tasks and find the current, previous, and next tasks
             for (let i = 0; i < fetchedTasks.length; i++) {
                 const taskTime = convertTo24HourFormat(fetchedTasks[i].time);
+
+                // If the task's time matches the target time, set it as the current task
                 if (taskTime === targetTime) {
                     matchedTask = fetchedTasks[i];
-                    setCurrentTask(matchedTask);
-                    setPreviousTask(fetchedTasks[i - 1] || null); // Previous task
-                    setNextTask(fetchedTasks[i + 1] || null); // Next task
+                    currentTaskIndex = i;
                     break;
                 }
+
+                // If the target time falls between two tasks' times, set the range
+                if (i > 0) {
+                    const prevTaskTime = convertTo24HourFormat(fetchedTasks[i - 1].time);
+                    const nextTaskTime = convertTo24HourFormat(fetchedTasks[i].time);
+
+                    // Check if the target time is between two task times
+                    if (targetTime >= prevTaskTime && targetTime < nextTaskTime) {
+                        currentTaskIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            // If a matching task or range is found, set the current, previous, and next tasks
+            if (currentTaskIndex !== -1) {
+                setCurrentTask(fetchedTasks[currentTaskIndex]);
+                setPreviousTask(fetchedTasks[currentTaskIndex - 1] || null); // Previous task
+                setNextTask(fetchedTasks[currentTaskIndex + 1] || null); // Next task
             }
         });
 
