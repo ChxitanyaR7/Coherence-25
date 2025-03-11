@@ -25,7 +25,7 @@ const FAQsAndDomains = () => {
 
   const faqsData = [
     { question: "How do I register for the hackathon?", answer: "You can register by visiting our registration page and following the instructions." },
-    { question: "What is the allowed Team size?", answer: "1-4 Members in a single team" },
+    { question: "What is the allowed Team size?", answer: "2-4 Members in a single team" },
     { question: "What is the registration cost?", answer: "Only ₹500 per team." },
     { question: "When will the problem statements be released?", answer: "All the problem statements will be released a day before the event." },
     { question: "Are travel expenses included too?", answer: "No, the participants are responsible for covering their travel expenses." },

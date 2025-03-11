@@ -155,7 +155,6 @@ scroll-snap-align: start; /* Snaps each item into place */
   --delay: 7s;
 }
 
-
 /* Popup styling */
 .popup {
   width: 321.6px;
@@ -171,6 +170,18 @@ scroll-snap-align: start; /* Snaps each item into place */
 
   transform-origin: bottom bottom;
   animation: expandPopup 0.5s linear calc(var(--delay) + 0.5s) forwards;
+}
+
+.popup-reg{
+  width: 321.6px;
+  height: auto;
+  background-color: #0474cf;
+  display: grid;
+  grid-template-columns: 16% 84%;
+  color: white;
+  border-radius: 30px;
+  box-shadow: 6.7px 6.7px 21.4px #17191d, -6.7px -6.7px 21.4px #212529;
+
 }
 
 .timeline-point:nth-child(odd) .popup {
@@ -194,8 +205,26 @@ scroll-snap-align: start; /* Snaps each item into place */
   height: 100%;
 }
 
+.popup-number-reg{
+  grid-row: span 2;
+  display: grid;
+  font-size: 2rem;
+  font-weight: bold;
+  place-items: center;
+  cursor: auto;
+  opacity: 1;
+  height: 100%;
+}
+
 /* Popup title styling */
 .popup-title {
+  color: lightskyblue;
+  padding-bottom: 6.7px;
+  font-size: 20.1px;
+  font-weight: 900;
+}
+
+.popup-title-reg{
   color: lightskyblue;
   padding-bottom: 6.7px;
   font-size: 20.1px;
@@ -220,6 +249,21 @@ scroll-snap-align: start; /* Snaps each item into place */
   animation: fadeIn 0.5s linear calc(var(--delay) + 0.7s) forwards;
 }
 
+.popup-details-reg{
+  padding: 20.1px;
+  background-color: #1c1f23;
+  border-radius: 30px;
+  font-weight: 500;
+  user-select: none;
+  cursor: auto;
+  overflow: hidden;
+  text-wrap: wrap;
+  font-size: 1rem;
+  text-align: justify;
+  background: linear-gradient(145deg, #16181b, #22262b);
+  margin: 3.35px;
+}
+
 .popup::before {
   content: "";
   width: 6.7px;
@@ -240,7 +284,7 @@ scroll-snap-align: start; /* Snaps each item into place */
 }
 
 .timeline-point:hover {
-  background: linear-gradient(145deg, var(--color), #1e2125);
+  /* background: linear-gradient(145deg, var(--color), #1e2125); */
   color: white;
 }
 
@@ -296,7 +340,7 @@ body {
   overflow: hidden;
 }
 
-h3{
+h1{
   text-align: center;
 }
 .time{
@@ -376,4 +420,14 @@ h3{
 .popup-details p{
   display: none;
 }
+}
+
+@media (max-width: 640px) {
+  .mobile-left {
+    align-self: flex-start;
+  }
+
+  .mobile-right {
+    align-self: flex-end;
+  }
 }
