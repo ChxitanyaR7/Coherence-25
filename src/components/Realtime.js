@@ -1,18 +1,22 @@
-// src/components/Realtime.js
 import React, { useState, useEffect } from "react";
+import { getDatabase, ref, onValue } from "firebase/database"; 
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "../firebase"; 
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
 const Realtime = () => {
-    // Initial 24-hour countdown (in seconds)
+   
     const initialTime = 24 * 60 * 60;
     const [timeLeft, setTimeLeft] = useState(initialTime);
-
-    const [tasks, setTasks] = useState([
+    const [tasks, setTasks] = useState([ 
         { title: "Previous Task", time: "10:00 AM" },
         { title: "Current Task", time: "12:00 PM" },
-        { title: "Next Task", time: "2:00 PM" },
+        { title: "Next Task", time: "2:00 PM" }
     ]);
 
-    // Format time in HH:MM:SS
+
     const formatTime = (seconds) => {
         const hours = Math.floor(seconds / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);
@@ -20,7 +24,7 @@ const Realtime = () => {
         return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secondsLeft).padStart(2, '0')}`;
     };
 
-    // Countdown logic
+    
     useEffect(() => {
         if (timeLeft === 0) return;
 
@@ -32,35 +36,51 @@ const Realtime = () => {
                 }
                 return prevTime - 1;
             });
-        }, 1000); // Update every second
+        }, 1000); 
 
-        return () => clearInterval(interval); // Cleanup interval on unmount
+        return () => clearInterval(interval);
     }, [timeLeft]);
+
+   
+    useEffect(() => {
+        const tasksRef = ref(db, 'tasks');
+        onValue(tasksRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                const loadedTasks = Object.keys(data).map(key => ({
+                    id: key,
+                    title: data[key].title,
+                    time: data[key].time
+                }));
+                setTasks(loadedTasks);
+            }
+        });
+    }, []);
 
     return (
         <div className="flex flex-col items-center justify-center h-screen text-white">
             <h1 className="text-6xl">LIVE</h1>
-            <div className="text-9xl mb-8 border-b-2 w-3/4 rounded-3xl p-12  border-blue-500 shadow-lg shadow-blue-500">
-                {formatTime(timeLeft)}
+            <div className="text-9xl mb-8 border-b-2 w-3/4 rounded-3xl p-12 border-blue-500 shadow-lg shadow-blue-500">
+                {formatTime(timeLeft)} {/* Display countdown */}
             </div>
 
             <div className="flex justify-center items-center w-[80%] space-x-12 m-4 mb-6">
                 {/* Previous task */}
                 <div className="flex-none text-center p-8 rounded-3xl text-xl border-2 opacity-50 w-1/4 shadow-lg shadow-gray-400">
-                    <h2>{tasks[0].title}</h2>
-                    <p>{tasks[0].time}</p>
+                    <h2>{tasks[0]?.title}</h2>
+                    <p>{tasks[0]?.time}</p>
                 </div>
 
                 {/* Current task in the center */}
                 <div className="flex-grow text-center p-8 rounded-3xl text-3xl font-bold border-2 border-blue-500 shadow-lg shadow-blue-500 hover:scale-105 transition-all ease-in-out duration-0.3">
-                    <h2>{tasks[1].title}</h2>
-                    <p>{tasks[1].time}</p>
+                    <h2>{tasks[1]?.title}</h2>
+                    <p>{tasks[1]?.time}</p>
                 </div>
 
                 {/* Next task */}
                 <div className="flex-none text-center p-8 rounded-3xl text-xl border-2 w-1/4 border-blue-700 shadow-lg shadow-blue-700 hover:scale-105 transition-all ease-in-out duration-0.3">
-                    <h2>{tasks[2].title}</h2>
-                    <p>{tasks[2].time}</p>
+                    <h2>{tasks[2]?.title}</h2>
+                    <p>{tasks[2]?.time}</p>
                 </div>
             </div>
 
@@ -70,4 +90,5 @@ const Realtime = () => {
         </div>
     );
 };
+
 export default Realtime;

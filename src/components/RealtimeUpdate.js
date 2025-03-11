@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { getDatabase, ref, set, push } from "firebase/database"; // Firebase Realtime Database methods
-
-// Initialize Firebase App
+import { getDatabase, ref, set, push } from "firebase/database";
 import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "../firebase"; // import firebase config from a separate file
+import { firebaseConfig } from "../firebase"; 
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
@@ -78,10 +76,10 @@ const RealtimeUpdate = () => {
             const newTaskRef = push(tasksRef);
             set(newTaskRef, newTask);
 
-            // Optionally, update the local state to reflect the new task immediately
+            
             setTasks((prevTasks) => [
                 ...prevTasks,
-                { id: newTaskRef.key, ...newTask } // Firebase auto-generated key
+                { id: newTaskRef.key, ...newTask } 
             ]);
         } else {
             alert("Both title and time are required!");
