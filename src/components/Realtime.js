@@ -34,7 +34,7 @@ const Realtime = () => {
             });
         }, 1000); // Update every second
 
-        return () => clearInterval(interval); // Cleanup interval on unmount
+        return () => clearInterval(interval); 
     }, [timeLeft]);
 
     return (
