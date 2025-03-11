@@ -157,6 +157,7 @@ const Home = () => {
           <a onClick={() => scrollToSection("home")} className="hover:text-gray-400">Home</a>
           <a onClick={() => scrollToSection("about")} className="hover:text-gray-400">About</a>
           <a onClick={() => scrollToSection("schedule")} className="hover:text-gray-400">Schedule</a>
+          <a onClick={() => scrollToSection("faq")} className="hover:text-gray-400">FAQs</a>
           <a onClick={() => scrollToSection("contact")} className="hover:text-gray-400">Contact</a>
         </nav>
       </div>

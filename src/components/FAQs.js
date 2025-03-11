@@ -77,7 +77,7 @@ const FAQsAndDomains = () => {
 
 
       {/* FAQ Section */}
-      <h2 className="text-2xl md:text-3xl text-white font-bold mb-4 section_header">
+      <h2 id="faq" className="text-2xl md:text-3xl text-white font-bold mb-4 section_header">
         <hr />
         <span>Frequently Asked Questions</span>
         <hr />
