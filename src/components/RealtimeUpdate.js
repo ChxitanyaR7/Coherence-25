@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getDatabase, ref, set, push } from "firebase/database"; // Firebase Realtime Database methods
-
-// Initialize Firebase App
+import { getDatabase, ref, set, push, onValue, update, remove } from "firebase/database"; // Firebase Realtime Database methods
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../firebase"; // import firebase config from a separate file
 
@@ -11,23 +9,11 @@ const db = getDatabase(app);
 const RealtimeUpdate = () => {
     const initialTime = 24 * 60 * 60;
     const [timeLeft, setTimeLeft] = useState(initialTime);
-
-    const [tasks, setTasks] = useState([
-        { id: 1, title: "Reporting and Registration", time: "12:00 PM" },
-        { id: 2, title: "Inauguration", time: "1:00 PM" },
-        { id: 3, title: "Coding Begins", time: "2:00 PM" },
-        { id: 4, title: "Mentoring Round 1 Starts", time: "4:30 PM" },
-        { id: 5, title: "Evening Snacks", time: "5:00 PM" },
-        { id: 6, title: "Mentoring Round 2 Starts", time: "8:00 PM" },
-        { id: 7, title: "Dinner Break", time: "9:00 PM" },
-        { id: 8, title: "Midnight Snacks", time: "12:00 AM" },
-        { id: 9, title: "Breakfast", time: "9:00 AM" },
-        { id: 10, title: "Lunch", time: "12:00 PM" },
-        { id: 11, title: "Coding Ends", time: "2:00 PM" },
-        { id: 12, title: "Final Presentation", time: "3:00 PM" },
-        { id: 13, title: "Result Announcement and Distribution", time: "5:00 PM" },
-        { id: 14, title: "Dispersal", time: "6:00 PM" }
-    ]);
+    const [tasks, setTasks] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [currentTask, setCurrentTask] = useState(null); // New state for current task
+    const [previousTask, setPreviousTask] = useState(null); // New state for previous task
+    const [nextTask, setNextTask] = useState(null); // New state for next task
 
     const formatTime = (seconds) => {
         const hours = Math.floor(seconds / 3600);
@@ -35,6 +21,73 @@ const RealtimeUpdate = () => {
         const secondsLeft = seconds % 60;
         return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secondsLeft).padStart(2, '0')}`;
     };
+
+    // Function to convert 12-hour time format to 24-hour format for comparison
+    const convertTo24HourFormat = (time) => {
+        const [timeString, period] = time.split(' ');
+        let [hours, minutes] = timeString.split(':').map(Number);
+        if (period === 'PM' && hours !== 12) hours += 12;
+        if (period === 'AM' && hours === 12) hours = 0;
+        return hours * 60 + minutes; // Return total minutes
+    };
+
+    useEffect(() => {
+        // Fetch tasks from Firebase when the component mounts
+        const tasksRef = ref(db, 'tasks');
+
+        const unsubscribe = onValue(tasksRef, (snapshot) => {
+            const data = snapshot.val();
+            const fetchedTasks = data ? Object.keys(data).map((key) => ({
+                id: key,
+                title: data[key].title,
+                time: data[key].time,
+                order: data[key].order,
+            })) : [];
+
+            // Sort tasks by order field
+            fetchedTasks.sort((a, b) => a.order - b.order);
+            setTasks(fetchedTasks);
+            setLoading(false);
+
+            // Convert the hardcoded time (3:30 PM) to 24-hour format for comparison
+            const targetTime = convertTo24HourFormat('1:40 PM');
+            let matchedTask = null;
+            let currentTaskIndex = -1;
+
+            // Iterate through the tasks and find the current, previous, and next tasks
+            for (let i = 0; i < fetchedTasks.length; i++) {
+                const taskTime = convertTo24HourFormat(fetchedTasks[i].time);
+
+                // If the task's time matches the target time, set it as the current task
+                if (taskTime === targetTime) {
+                    matchedTask = fetchedTasks[i];
+                    currentTaskIndex = i;
+                    break;
+                }
+
+                // If the target time falls between two tasks' times, set the range
+                if (i > 0) {
+                    const prevTaskTime = convertTo24HourFormat(fetchedTasks[i - 1].time);
+                    const nextTaskTime = convertTo24HourFormat(fetchedTasks[i].time);
+
+                    // Check if the target time is between two task times
+                    if (targetTime >= prevTaskTime && targetTime < nextTaskTime) {
+                        currentTaskIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            // If a matching task or range is found, set the current, previous, and next tasks
+            if (currentTaskIndex !== -1) {
+                setCurrentTask(fetchedTasks[currentTaskIndex]);
+                setPreviousTask(fetchedTasks[currentTaskIndex - 1] || null); // Previous task
+                setNextTask(fetchedTasks[currentTaskIndex + 1] || null); // Next task
+            }
+        });
+
+        return () => unsubscribe();
+    }, []);
 
     useEffect(() => {
         if (timeLeft === 0) return;
@@ -59,10 +112,13 @@ const RealtimeUpdate = () => {
                 task.id === id ? { ...task, time: newTime } : task
             );
             setTasks(updatedTasks);
+
+            // Update the time in the Firebase database
+            const taskRef = ref(db, `tasks/${id}`);
+            update(taskRef, { time: newTime });
         }
     };
 
-    // Function to handle adding a new task to Firebase
     const handleAddTask = () => {
         const taskTitle = prompt("Enter task title:");
         const taskTime = prompt("Enter task time (HH:MM AM/PM):");
@@ -70,21 +126,31 @@ const RealtimeUpdate = () => {
         if (taskTitle && taskTime) {
             const newTask = {
                 title: taskTitle,
-                time: taskTime
+                time: taskTime,
+                order: tasks.length + 1, // Assign order based on the current number of tasks
             };
 
-            // Push to Firebase Realtime Database
             const tasksRef = ref(db, 'tasks');
             const newTaskRef = push(tasksRef);
             set(newTaskRef, newTask);
-
-            // Optionally, update the local state to reflect the new task immediately
-            setTasks((prevTasks) => [
-                ...prevTasks,
-                { id: newTaskRef.key, ...newTask } // Firebase auto-generated key
-            ]);
         } else {
             alert("Both title and time are required!");
+        }
+    };
+
+    const handleDeleteTask = (id) => {
+        const password = prompt("Enter password to delete the task:");
+        if (password === "yash") {
+            const taskRef = ref(db, `tasks/${id}`);
+            remove(taskRef)
+                .then(() => {
+                    setTasks(tasks.filter((task) => task.id !== id));
+                })
+                .catch((error) => {
+                    console.error("Error deleting task: ", error);
+                });
+        } else {
+            alert("Incorrect password!");
         }
     };
 
@@ -92,20 +158,57 @@ const RealtimeUpdate = () => {
         <div className="flex flex-col items-center justify-center h-full pt-4 text-white">
             <h1 className="text-6xl mb-6">LIVE</h1>
 
-            <div className="flex justify-center items-center w-[80%] space-x-12 m-4 mb-6 p-auto">
-                {tasks.slice(0, 3).map((task) => (
+            {/* Show a loader while fetching tasks */}
+            {loading ? (
+                <div className="flex justify-center items-center w-full h-24">
+                    <div className="spinner-border animate-spin border-4 border-blue-500 border-t-transparent rounded-full w-16 h-16"></div>
+                </div>
+            ) : (
+                <div className="flex justify-center items-center w-[80%] space-x-12 m-4 mb-6 p-auto">
+                    {/* Left Box: Previous Task */}
                     <div
-                        key={task.id}
                         className="flex-none text-center p-8 rounded-3xl text-xl border-2 w-1/4 shadow-lg shadow-gray-400"
                     >
-                        <h2>{task.title}</h2>
-                        <p>{task.time}</p>
+                        {previousTask ? (
+                            <>
+                                <h2>{previousTask.title}</h2>
+                                <p>{previousTask.time}</p>
+                            </>
+                        ) : (
+                            <p>No previous task</p>
+                        )}
                     </div>
-                ))}
-                <div className="my-auto text-center p-8 rounded-3xl text-2xl mb-8 border-2 border-blue-500 shadow-lg shadow-blue-500">
-                    {formatTime(timeLeft)}
+
+                    {/* Center Box: Current Task */}
+                    {currentTask && (
+                        <div className="my-auto text-center p-8 rounded-3xl text-2xl mb-8 border-2 border-blue-500 shadow-lg shadow-blue-500">
+                            <h2>{currentTask.title}</h2>
+                            <p>{currentTask.time}</p>
+                        </div>
+                    )}
+
+                    {/* Right Box: Next Task */}
+                    <div
+                        className="flex-none text-center p-8 rounded-3xl text-xl border-2 w-1/4 shadow-lg shadow-gray-400"
+                    >
+                        {nextTask ? (
+                            <>
+                                <h2>{nextTask.title}</h2>
+                                <p>{nextTask.time}</p>
+                            </>
+                        ) : (
+                            <p>No next task</p>
+                        )}
+                    </div>
                 </div>
-            </div>
+            )}
+
+            <button
+                onClick={handleAddTask}
+                className="mt-4 border-2 p-3 m-2 rounded-3xl border-blue-500 hover:scale-105 transition-all ease-in-out duration-0.3"
+            >
+                Add Task
+            </button>
 
             <div className="w-[80%] mb-8">
                 <h2 className="text-2xl mb-4">Full Schedule</h2>
@@ -113,7 +216,7 @@ const RealtimeUpdate = () => {
                     {tasks.map((task) => (
                         <div
                             key={task.id}
-                            className="flex justify-between items-center p-4 bg-gray-800 rounded-lg shadow-md"
+                            className={`flex justify-between items-center p-4 bg-gray-800 rounded-lg shadow-md ${task === currentTask ? 'bg-blue-600' : ''}`}
                         >
                             <div className="flex items-center space-x-4">
                                 <h3 className="text-xl text-white">{task.title}</h3>
@@ -121,12 +224,20 @@ const RealtimeUpdate = () => {
                                     {task.time}
                                 </p>
                             </div>
-                            <button
-                                className="text-blue-500 hover:bg-blue-400 hover:text-black p-3 rounded-3xl transition-all ease-in-out duration-0.7"
-                                onClick={() => handleEditTime(task.id)}
-                            >
-                                Edit Time
-                            </button>
+                            <div className="flex space-x-4">
+                                <button
+                                    className="text-blue-500 hover:bg-blue-400 hover:text-black p-3 rounded-3xl transition-all ease-in-out duration-0.7"
+                                    onClick={() => handleEditTime(task.id)}
+                                >
+                                    Edit Time
+                                </button>
+                                <button
+                                    className="text-red-500 hover:bg-red-400 hover:text-black p-3 rounded-3xl transition-all ease-in-out duration-0.7"
+                                    onClick={() => handleDeleteTask(task.id)}
+                                >
+                                    Delete Task
+                                </button>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -134,13 +245,6 @@ const RealtimeUpdate = () => {
 
             <button className="border-2 p-3 m-2 rounded-3xl border-blue-500 hover:scale-105 transition-all ease-in-out duration-0.3">
                 Show Timeline
-            </button>
-
-            <button
-                onClick={handleAddTask}
-                className="mt-4 border-2 p-3 m-2 rounded-3xl border-blue-500 hover:scale-105 transition-all ease-in-out duration-0.3"
-            >
-                Add Task
             </button>
         </div>
     );

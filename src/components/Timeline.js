@@ -12,41 +12,38 @@ const Timeline = () => {
         {/* registration section */}
 
         <div className="flex flex-col sm:flex-row justify-center items-center scale-90 sm:p-10 gap-6">
-  <div className="popup-reg mobile-left">
-    <div className="popup-number-reg">1</div>
-    <div className="popup-details-reg tracking-tight">
-      <div className="popup-title-reg">6th March</div>
-      Registration goes live on Unstop
-    </div>
-  </div>
-
-  <div className="popup-reg mobile-right">
-    <div className="popup-number-reg">2</div>
-    <div className="popup-details-reg">
-      <div className="popup-title-reg">16th March (11:59 PM)</div>
-      Registration Closes.
-    </div>
-  </div>
-
-  <div className="popup-reg mobile-left">
-    <div className="popup-number-reg">3</div>
-    <div className="popup-details-reg">
-      <div className="popup-title-reg">20th - 21st March</div>
-      Shortlisted teams
-    </div>
-  </div>
-
-  <div className="popup-reg mobile-right">
-    <div className="popup-number-reg">4</div>
-    <div className="popup-details-reg">
-      <div className="popup-title-reg">28th - 29th March</div>
-      Offline Hackathon event dates
-    </div>
-  </div>
-</div>
-
-
-
+          <div className="popup-reg mobile-left">
+            <div className="popup-number-reg">1</div>
+            <div className="popup-details-reg tracking-tight">
+              <div className="popup-title-reg">6th March</div>
+              Registration goes live on Unstop
+            </div>
+          </div>
+          <div className="bg-blue-400 w-7 h-2 rounded-lg"></div>
+          <div className="popup-reg mobile-right">
+            <div className="popup-number-reg">2</div>
+            <div className="popup-details-reg">
+              <div className="popup-title-reg">16th March (11:59 PM)</div>
+              Registration Closes.
+            </div>
+          </div>
+          <div className="bg-blue-400 w-7 h-2 rounded-lg"></div>
+          <div className="popup-reg mobile-left">
+            <div className="popup-number-reg">3</div>
+            <div className="popup-details-reg">
+              <div className="popup-title-reg">20th - 21st March</div>
+              Shortlisted teams
+            </div>
+          </div>
+          <div className="bg-blue-400 w-7 h-2 rounded-lg"></div>
+          <div className="popup-reg mobile-right">
+            <div className="popup-number-reg">4</div>
+            <div className="popup-details-reg">
+              <div className="popup-title-reg">28th - 29th March</div>
+              Offline Hackathon event dates
+            </div>
+          </div>
+        </div>
 
         {/* DAY 1 */}
 
@@ -148,7 +145,6 @@ const Timeline = () => {
             </div>
           </div>
         </div>
-
 
         {/* DAY 2 */}
 

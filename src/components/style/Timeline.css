@@ -3,7 +3,6 @@
   color: white;
   border: 1px solid white;
 }
-/* Timeline container styling */
 .timeline-container {
 display: flex;
 gap: 33.5px;
@@ -26,11 +25,9 @@ font-size: 67px;
   padding-left: 70px;
 }
 
-
 .timeline-wrapper::-webkit-scrollbar {
 display: none;
 }
-
 
 .timeline-container::-webkit-scrollbar {
   display: none;
@@ -41,7 +38,6 @@ flex: 0 0 auto; /* Prevents shrinking */
 scroll-snap-align: start; /* Snaps each item into place */
 }
 
-/* Individual timeline point styling */
 .timeline-point {
   transition-duration: 0.5s;
   border-radius: 50%;
@@ -75,7 +71,6 @@ scroll-snap-align: start; /* Snaps each item into place */
   transform: rotate(90deg) scaleY(-1);
 }
 
-/* Custom property for angle */
 @property --angle {
   syntax: "<angle>";
   initial-value: 0deg;
@@ -284,8 +279,19 @@ scroll-snap-align: start; /* Snaps each item into place */
 }
 
 .timeline-point:hover {
-  /* background: linear-gradient(145deg, var(--color), #1e2125); */
   color: white;
+}
+
+.timeline-point.timeline-down{
+
+}
+.timeline-point.timeline-down::before {
+  border-radius: 0%;
+  transform: rotate(0deg);
+  width: 70px;
+  left: 74%;
+  height: 50svh;
+  bottom: 50%;
 }
 
 @keyframes rotateBorder {
