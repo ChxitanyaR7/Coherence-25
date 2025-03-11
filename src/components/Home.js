@@ -17,7 +17,7 @@ const Home = () => {
   const handleMenuToggle = () => {
     setIsMenuOpen((prev) => {
       const newState = !prev;
-      document.body.style.overflow = newState ? "hidden" : "auto"; // Lock scroll when open
+      document.body.style.overflow = newState ? "hidden" : "auto"; 
       return newState;
     });
   };
