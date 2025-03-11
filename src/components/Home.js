@@ -261,9 +261,10 @@ const Home = () => {
           enabled="ture"
           // className="bg-purple-800 hover:bg-purple-500 text-white font-semibold py-2 px-4 rounded-xl mt-6"
           // Disable the button if registration is closed
-          className="bg-blue-900  text-white font-semibold py-2 px-4 rounded-xl mt-6"
+          className="bg-blue-900 border-2 border-white text-white font-semibold py-2 px-4 rounded-xl mt-6 hover:scale-105 transition-all duration-0.3 ease-in-out hover:bg-transparent hover:border-4"
         >
-          Registrations Open !
+          Registrations Open !   
+          {/* <i className="fa-solid fa-arrow-right"></i> */}
         </button>
         {showScrollButton && (
           <button

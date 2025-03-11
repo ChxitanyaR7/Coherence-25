@@ -46,8 +46,3 @@
    ```bash
    firebase deploy
    ```
-
----
-
-Your Firebase app should now be live after the deployment.
-```
