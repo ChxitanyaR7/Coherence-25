@@ -125,7 +125,7 @@ const RealtimeUpdate = () => {
                     </div>
                 ))}
                 <div className="my-auto text-center p-8 rounded-3xl text-2xl mb-8 border-2 border-blue-500 shadow-lg shadow-blue-500">
-                    {formatTime(timeLeft)}
+                    2:00 PM
                 </div>
             </div>
             <button
@@ -170,8 +170,6 @@ const RealtimeUpdate = () => {
             <button className="border-2 p-3 m-2 rounded-3xl border-blue-500 hover:scale-105 transition-all ease-in-out duration-0.3">
                 Show Timeline
             </button>
-
-
         </div>
     );
 };
