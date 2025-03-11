@@ -38,7 +38,7 @@ const Realtime = () => {
     }, [timeLeft]);
 
     return (
-        <div className="flex flex-col items-center justify-center h-full text-white">
+        <div className="flex flex-col items-center justify-center h-screen text-white">
             <h1 className="text-6xl">LIVE</h1>
             <div className="text-9xl mb-8 border-b-2 w-3/4 rounded-3xl p-12  border-blue-500 shadow-lg shadow-blue-500">
                 {formatTime(timeLeft)}
