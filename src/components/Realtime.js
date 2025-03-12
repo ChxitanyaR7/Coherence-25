@@ -141,7 +141,7 @@ const Realtime = () => {
                         )}
                     </div>
 
-                    <div className="flex-none w-3/4 md:w-1/4 text-center p-4 rounded-3xl text-xl border-2 w-3/4 md:w-1/4 border-blue-700 shadow-lg shadow-blue-700 hover:scale-105 transition-all ease-in-out duration-300">
+                    <div className="flex-none text-center p-4 rounded-3xl text-xl border-2 w-3/4 md:w-1/4 border-blue-700 shadow-lg shadow-blue-700 hover:scale-105 transition-all ease-in-out duration-300">
                         {nextTask ? (
                             <>
                                 <h2>{nextTask.title}</h2>
