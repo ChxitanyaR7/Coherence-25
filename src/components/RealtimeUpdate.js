@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getDatabase, ref, set, push, onValue, update, remove } from "firebase/database"; // Firebase Realtime Database methods
 import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "../firebase"; // import firebase config from a separate file
+import { firebaseConfig } from "../firebase";
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
@@ -34,7 +34,7 @@ const RealtimeUpdate = () => {
     useEffect(() => {
         // Fetch tasks from Firebase when the component mounts
         const tasksRef = ref(db, 'tasks');
-
+    
         const unsubscribe = onValue(tasksRef, (snapshot) => {
             const data = snapshot.val();
             const fetchedTasks = data ? Object.keys(data).map((key) => ({
@@ -43,51 +43,44 @@ const RealtimeUpdate = () => {
                 time: data[key].time,
                 order: data[key].order,
             })) : [];
-
+    
             // Sort tasks by order field
             fetchedTasks.sort((a, b) => a.order - b.order);
             setTasks(fetchedTasks);
             setLoading(false);
-
-            // Convert the hardcoded time (3:30 PM) to 24-hour format for comparison
-            const targetTime = convertTo24HourFormat('1:40 PM');
+    
+            // Convert the hardcoded time (1:40 PM) to 24-hour format for comparison
+            const targetTime = convertTo24HourFormat('4:35 PM'); // Your target time (1:40 PM)
+    
             let matchedTask = null;
             let currentTaskIndex = -1;
-
-            // Iterate through the tasks and find the current, previous, and next tasks
+            let previousTaskIndex = -1;
+            let nextTaskIndex = -1;
+    
+            // Iterate through the tasks to find the current, previous, and next tasks
             for (let i = 0; i < fetchedTasks.length; i++) {
                 const taskTime = convertTo24HourFormat(fetchedTasks[i].time);
-
-                // If the task's time matches the target time, set it as the current task
-                if (taskTime === targetTime) {
-                    matchedTask = fetchedTasks[i];
+    
+                // If the task's time is less than or equal to the current time, it could be the current task
+                if (taskTime <= targetTime) {
                     currentTaskIndex = i;
-                    break;
                 }
-
-                // If the target time falls between two tasks' times, set the range
-                if (i > 0) {
-                    const prevTaskTime = convertTo24HourFormat(fetchedTasks[i - 1].time);
-                    const nextTaskTime = convertTo24HourFormat(fetchedTasks[i].time);
-
-                    // Check if the target time is between two task times
-                    if (targetTime >= prevTaskTime && targetTime < nextTaskTime) {
-                        currentTaskIndex = i;
-                        break;
-                    }
+    
+                // If the task's time is greater than the current time, it's the next task
+                if (taskTime > targetTime && nextTaskIndex === -1) {
+                    nextTaskIndex = i;
                 }
             }
-
-            // If a matching task or range is found, set the current, previous, and next tasks
-            if (currentTaskIndex !== -1) {
-                setCurrentTask(fetchedTasks[currentTaskIndex]);
-                setPreviousTask(fetchedTasks[currentTaskIndex - 1] || null); // Previous task
-                setNextTask(fetchedTasks[currentTaskIndex + 1] || null); // Next task
-            }
+    
+            // Set the previous, current, and next tasks based on their indices
+            setCurrentTask(fetchedTasks[currentTaskIndex]); 
+            setPreviousTask(fetchedTasks[currentTaskIndex - 1] || null); 
+            setNextTask(fetchedTasks[nextTaskIndex] || null); 
         });
-
+    
         return () => unsubscribe();
     }, []);
+    
 
     useEffect(() => {
         if (timeLeft === 0) return;
