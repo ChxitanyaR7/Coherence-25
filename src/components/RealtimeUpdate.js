@@ -164,10 +164,10 @@ const RealtimeUpdate = () => {
                     <div className="spinner-border animate-spin border-4 border-blue-500 border-t-transparent rounded-full w-16 h-16"></div>
                 </div>
             ) : (
-                <div className="flex justify-center items-center w-[80%] space-x-12 m-4 mb-6 p-auto">
+                <div className="flex flex-col md:flex-row justify-center items-center w-full md:w-3/4 space-y-4 md:space-y-0 md:space-x-4 m-4 mb-6">
                     {/* Left Box: Previous Task */}
                     <div
-                        className="flex-none text-center p-8 rounded-3xl text-xl border-2 w-1/4 shadow-lg shadow-gray-400"
+                        className="flex-none text-centerp-2 md:p-8 rounded-3xl text-xl border-2 w-3/4 md:w-1/4 shadow-lg shadow-gray-400"
                     >
                         {previousTask ? (
                             <>
@@ -181,7 +181,7 @@ const RealtimeUpdate = () => {
 
                     {/* Center Box: Current Task */}
                     {currentTask && (
-                        <div className="my-auto text-center p-8 rounded-3xl text-2xl mb-8 border-2 border-blue-500 shadow-lg shadow-blue-500">
+                        <div className="my-auto text-center p-2 md:p-8 rounded-3xl w-3/4 md:w-none text-2xl mb-8 border-2 border-blue-500 shadow-lg shadow-blue-500">
                             <h2>{currentTask.title}</h2>
                             <p>{currentTask.time}</p>
                         </div>
@@ -189,7 +189,7 @@ const RealtimeUpdate = () => {
 
                     {/* Right Box: Next Task */}
                     <div
-                        className="flex-none text-center p-8 rounded-3xl text-xl border-2 w-1/4 shadow-lg shadow-gray-400"
+                        className="flex-none text-center p-2 md:p-8 rounded-3xl text-xl border-2 w-3/4 md:w-1/4 shadow-lg shadow-gray-400"
                     >
                         {nextTask ? (
                             <>
