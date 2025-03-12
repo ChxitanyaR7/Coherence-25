@@ -1,6 +1,7 @@
 // firebase.js
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import { getDatabase, ref, set, push, onValue } from "firebase/database";
 import { getAnalytics } from "firebase/analytics";
 
 // Firebase configuration object
@@ -18,9 +19,12 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+const db = getDatabase(app); // ✅ Use Realtime Database
 
 // Export the firebaseConfig for use in other files
 export { firebaseConfig };
 
 // Optional: If you need to use app or analytics, you can export them as well
 export { app, analytics };
+
+export { db, ref, set, push, onValue };
