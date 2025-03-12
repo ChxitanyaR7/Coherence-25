@@ -39,7 +39,7 @@ const GeneralGuidelines = () => {
               Problem Statements will be released on the day of hackathon i.e on 28rd March.
             </li>
             <li className="mb-4 text-base ">
-              Each team should comprise a minimum of 1 and a maximum of 4
+              Each team should comprise a minimum of 2 and a maximum of 4
               members, including the team leader. Team members can be from
               different colleges.
             </li>
