@@ -7,24 +7,14 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 const Realtime = () => {
-    // Use server time or local storage to maintain consistent time across refreshes
-    const getPersistedTime = () => {
-        const savedTime = localStorage.getItem('timeLeft');
-        return savedTime ? parseInt(savedTime) : 24 * 60 * 60; // Default to 24 hours
-    };
-    
-    const [timeLeft, setTimeLeft] = useState(getPersistedTime());
+    const initialTime = 24 * 60 * 60; // Initial 24-hour countdown in seconds
+    const [timeLeft, setTimeLeft] = useState(initialTime);
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentTask, setCurrentTask] = useState(null);
     const [previousTask, setPreviousTask] = useState(null);
     const [nextTask, setNextTask] = useState(null);
-    const [upcomingNotifications, setUpcomingNotifications] = useState({});
-    
-    // Time warning constants (in minutes)
-    const WARNING_TIMES = [5, 3, 1]; // Notify at 5 mins, 3 mins, and 1 min before task
-    
-    // Format time in HH:MM:SS
+
     const formatTime = (seconds) => {
         const hours = Math.floor(seconds / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);
@@ -250,7 +240,7 @@ const Realtime = () => {
         <div className="flex flex-col items-center justify-center h-screen text-white">
             <h1 className="text-6xl">LIVE</h1>
             <div className="text-9xl mb-8 border-b-2 w-3/4 rounded-3xl p-12 border-blue-500 shadow-lg shadow-blue-500">
-                {formatTime(timeLeft)}
+                {formatTime(timeLeft)} {/* Display countdown */}
             </div>
             
             {/* Display loading spinner while fetching tasks */}
@@ -273,18 +263,19 @@ const Realtime = () => {
                     </div>
                     
                     {/* Current task in the center */}
-                    {currentTask && (
-                        <div className="flex-grow text-center p-8 rounded-3xl text-3xl font-bold border-2 border-blue-500 shadow-lg shadow-blue-500 hover:scale-105 transition-all ease-in-out duration-0.3">
-                            <h2>{currentTask.title}</h2>
-                            <p>{currentTask.time}</p>
-                            <div className="mt-2 text-sm bg-green-600 px-3 py-1 rounded-full">
-                                Now active
-                            </div>
-                        </div>
-                    )}
-                    
+                    <div className="flex-grow text-center p-8 rounded-3xl text-3xl font-bold border-2 border-blue-500 shadow-lg shadow-blue-500 hover:scale-105 transition-all ease-in-out duration-300">
+                        {currentTask ? (
+                            <>
+                                <h2>{currentTask.title}</h2>
+                                <p>{currentTask.time}</p>
+                            </>
+                        ) : (
+                            <p>No current task</p>
+                        )}
+                    </div>
+
                     {/* Next task */}
-                    <div className="flex-none text-center p-8 rounded-3xl text-xl border-2 w-1/4 border-blue-700 shadow-lg shadow-blue-700 hover:scale-105 transition-all ease-in-out duration-0.3">
+                    <div className="flex-none text-center p-8 rounded-3xl text-xl border-2 w-1/4 border-blue-700 shadow-lg shadow-blue-700 hover:scale-105 transition-all ease-in-out duration-300">
                         {nextTask ? (
                             <>
                                 <h2>{nextTask.title}</h2>
