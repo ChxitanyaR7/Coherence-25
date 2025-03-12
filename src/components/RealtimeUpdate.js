@@ -3,6 +3,7 @@ import { getDatabase, ref, set, push, onValue, update, remove } from "firebase/d
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../firebase";
 
+
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
@@ -126,6 +127,12 @@ const RealtimeUpdate = () => {
             const tasksRef = ref(db, 'tasks');
             const newTaskRef = push(tasksRef);
             set(newTaskRef, newTask);
+
+            
+            setTasks((prevTasks) => [
+                ...prevTasks,
+                { id: newTaskRef.key, ...newTask } 
+            ]);
         } else {
             alert("Both title and time are required!");
         }
