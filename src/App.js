@@ -73,7 +73,7 @@ function App() {
               />
               {/* New route for /realtime */}
               <Route path="/realtime" element={<Realtime />} />
-
+              
               {/* New route for /realtime/:password */}
               <Route path="/realtime/:password" element={<PasswordValidation />} />
             </Routes>
