@@ -16,6 +16,8 @@ import Introduction from "./components/Introduction";
 import Timeline from "./components/Timeline";
 import Realtime from "./components/Realtime";
 import RealtimeUpdate from "./components/RealtimeUpdate"; // Import your new RealtimeUpdate component
+import Form from "./components/NetworkingForm";
+import TeamList from "./components/NetworkingList";
 
 function App() {
   const [showIntroduction, setShowIntroduction] = useState(false);
@@ -73,7 +75,13 @@ function App() {
               />
               {/* New route for /realtime */}
               <Route path="/realtime" element={<Realtime />} />
-              
+
+              {/* New route for /NetworkingForm */}
+              <Route path="/networking-form" element={<Form />} />
+
+              {/* New route for /NetworkingList */}
+              <Route path="/networking-list" element={<TeamList />} />
+
               {/* New route for /realtime/:password */}
               <Route path="/realtime/:password" element={<PasswordValidation />} />
             </Routes>

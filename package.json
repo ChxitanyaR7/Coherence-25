@@ -26,6 +26,7 @@
     "react-scripts": "^5.0.1",
     "react-scroll": "^1.9.3",
     "react-slick": "^0.29.0",
+    "react-toastify": "^11.0.5",
     "react-tsparticles": "^2.12.2",
     "react-typewriter-effect": "^1.1.0",
     "react-vanilla-tilt": "^1.0.0",
