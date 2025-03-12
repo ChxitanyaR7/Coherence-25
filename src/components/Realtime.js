@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getDatabase, ref, onValue, set } from "firebase/database";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../firebase";
+import Background from "./Background";
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
@@ -241,8 +242,9 @@ const Realtime = () => {
 
     return (
         <div className="flex flex-col items-center justify-center h-screen text-white">
-            <h1 className="text-6xl">LIVE</h1>
-            <div className="text-9xl mb-8 border-b-2 w-3/4 rounded-3xl p-12 border-blue-500 shadow-lg shadow-blue-500">
+            <Background />
+            <h1 className="text-5xl md:text-6xl font-bold z-50">LIVE</h1>
+            <div className="backdrop-blur-sm text-6xl md:text-9xl mb-8 border-b-2 w-3/4 rounded-3xl p-12 border-blue-500 shadow-lg shadow-blue-600">
                 {formatTime(timeLeft)} {/* Display countdown */}
             </div>
 
@@ -252,9 +254,9 @@ const Realtime = () => {
                     <div className="spinner-border animate-spin border-4 border-blue-500 border-t-transparent rounded-full w-16 h-16"></div>
                 </div>
             ) : (
-                <div className="flex justify-center items-center w-[80%] space-x-12 m-4 mb-6">
+                <div className="flex flex-col md:flex-row justify-center items-center w-full space-y-4 md:space-y-0 md:space-x-4 m-4 mb-6">
+                     <div className="flex-none backdrop-blur-sm w-3/4 md:w-1/4 text-center p-4 rounded-3xl text-xl border-2 opacity-50 shadow-lg shadow-gray-400">
                     {/* Previous task */}
-                    <div className="flex-none text-center p-8 rounded-3xl text-xl border-2 opacity-50 w-1/4 shadow-lg shadow-gray-400">
                         {previousTask ? (
                             <>
                                 <h2>{previousTask.title}</h2>
@@ -266,8 +268,7 @@ const Realtime = () => {
                     </div>
 
                     {/* Current task in the center */}
-                    <div className="flex-grow text-center p-8 rounded-3xl text-3xl font-bold border-2 border-blue-500 shadow-lg shadow-blue-500 hover:scale-105 transition-all ease-in-out duration-300">
-                        {currentTask ? (
+                    <div className="flex-none backdrop-blur-sm w-3/4 md:w-1/4 text-center p-4 rounded-3xl text-xl md:text-3xl font-bold border-2 border-blue-500 shadow-lg shadow-blue-500 hover:scale-105 transition-all ease-in-out duration-300">                        {currentTask ? (
                             <>
                                 <h2>{currentTask.title}</h2>
                                 <p>{currentTask.time}</p>
@@ -278,8 +279,7 @@ const Realtime = () => {
                     </div>
 
                     {/* Next task */}
-                    <div className="flex-none text-center p-8 rounded-3xl text-xl border-2 w-1/4 border-blue-700 shadow-lg shadow-blue-700 hover:scale-105 transition-all ease-in-out duration-300">
-                        {nextTask ? (
+                    <div className="flex-none backdrop-blur-sm text-center p-4 rounded-3xl text-xl border-2 w-3/4 md:w-1/4 border-blue-700 shadow-lg shadow-blue-700 hover:scale-105 transition-all ease-in-out duration-300">                        {nextTask ? (
                             <>
                                 <h2>{nextTask.title}</h2>
                                 <p>{nextTask.time}</p>
@@ -302,9 +302,8 @@ const Realtime = () => {
                     Test Notification System
                 </button>
 
-                <button
-                    className="border-2 p-3 rounded-3xl border-blue-500 hover:scale-105 transition-all ease-in-out duration-0.3"
-                >
+                <button className="border-2 p-3 m-2 rounded-3xl border-blue-500 hover:scale-105 transition-all ease-in-out duration-300">
+
                     Show Timeline
                 </button>
 
