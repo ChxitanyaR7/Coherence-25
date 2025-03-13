@@ -35,7 +35,7 @@ const RealtimeUpdate = () => {
     useEffect(() => {
         // Fetch tasks from Firebase when the component mounts
         const tasksRef = ref(db, 'tasks');
-    
+
         const unsubscribe = onValue(tasksRef, (snapshot) => {
             const data = snapshot.val();
             const fetchedTasks = data ? Object.keys(data).map((key) => ({
@@ -44,44 +44,44 @@ const RealtimeUpdate = () => {
                 time: data[key].time,
                 order: data[key].order,
             })) : [];
-    
+
             // Sort tasks by order field
             fetchedTasks.sort((a, b) => a.order - b.order);
             setTasks(fetchedTasks);
             setLoading(false);
-    
+
             // Convert the hardcoded time (1:40 PM) to 24-hour format for comparison
-            const targetTime = convertTo24HourFormat('4:35 PM'); // Your target time (1:40 PM)
-    
+            const targetTime = convertTo24HourFormat('1:35 PM'); // Your target time (1:40 PM)
+
             let matchedTask = null;
             let currentTaskIndex = -1;
             let previousTaskIndex = -1;
             let nextTaskIndex = -1;
-    
+
             // Iterate through the tasks to find the current, previous, and next tasks
             for (let i = 0; i < fetchedTasks.length; i++) {
                 const taskTime = convertTo24HourFormat(fetchedTasks[i].time);
-    
+
                 // If the task's time is less than or equal to the current time, it could be the current task
                 if (taskTime <= targetTime) {
                     currentTaskIndex = i;
                 }
-    
+
                 // If the task's time is greater than the current time, it's the next task
                 if (taskTime > targetTime && nextTaskIndex === -1) {
                     nextTaskIndex = i;
                 }
             }
-    
+
             // Set the previous, current, and next tasks based on their indices
-            setCurrentTask(fetchedTasks[currentTaskIndex]); 
-            setPreviousTask(fetchedTasks[currentTaskIndex - 1] || null); 
-            setNextTask(fetchedTasks[nextTaskIndex] || null); 
+            setCurrentTask(fetchedTasks[currentTaskIndex]);
+            setPreviousTask(fetchedTasks[currentTaskIndex - 1] || null);
+            setNextTask(fetchedTasks[nextTaskIndex] || null);
         });
-    
+
         return () => unsubscribe();
     }, []);
-    
+
 
     useEffect(() => {
         if (timeLeft === 0) return;
@@ -128,10 +128,10 @@ const RealtimeUpdate = () => {
             const newTaskRef = push(tasksRef);
             set(newTaskRef, newTask);
 
-            
+
             setTasks((prevTasks) => [
                 ...prevTasks,
-                { id: newTaskRef.key, ...newTask } 
+                { id: newTaskRef.key, ...newTask }
             ]);
         } else {
             alert("Both title and time are required!");
@@ -164,11 +164,9 @@ const RealtimeUpdate = () => {
                     <div className="spinner-border animate-spin border-4 border-blue-500 border-t-transparent rounded-full w-16 h-16"></div>
                 </div>
             ) : (
-                <div className="flex justify-center items-center w-[80%] space-x-12 m-4 mb-6 p-auto">
-                    {/* Left Box: Previous Task */}
+                <div className="flex flex-col md:flex-row justify-center items-center w-full md:w-3/4 space-y-4 md:space-y-0 md:space-x-4 m-4 mb-6">                    {/* Left Box: Previous Task */}
                     <div
-                        className="flex-none text-center p-8 rounded-3xl text-xl border-2 w-1/4 shadow-lg shadow-gray-400"
-                    >
+                        className="flex-none text-center p-2 md:p-8 rounded-3xl text-xl border-2 w-3/4 md:w-1/4 shadow-lg shadow-gray-400"                    >
                         {previousTask ? (
                             <>
                                 <h2>{previousTask.title}</h2>
@@ -181,16 +179,14 @@ const RealtimeUpdate = () => {
 
                     {/* Center Box: Current Task */}
                     {currentTask && (
-                        <div className="my-auto text-center p-8 rounded-3xl text-2xl mb-8 border-2 border-blue-500 shadow-lg shadow-blue-500">
-                            <h2>{currentTask.title}</h2>
+                        <div className="my-auto text-center p-2 md:p-8 rounded-3xl w-3/4 md:w-none text-2xl mb-8 border-2 border-blue-500 shadow-lg shadow-blue-500">                            <h2>{currentTask.title}</h2>
                             <p>{currentTask.time}</p>
                         </div>
                     )}
 
                     {/* Right Box: Next Task */}
                     <div
-                        className="flex-none text-center p-8 rounded-3xl text-xl border-2 w-1/4 shadow-lg shadow-gray-400"
-                    >
+                        className="flex-none text-center p-2 md:p-8 rounded-3xl text-xl border-2 w-3/4 md:w-1/4 shadow-lg shadow-gray-400">
                         {nextTask ? (
                             <>
                                 <h2>{nextTask.title}</h2>
