@@ -7,14 +7,25 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 const Realtime = () => {
-    const initialTime = 24 * 60 * 60; // Initial 24-hour countdown in seconds
-    const [timeLeft, setTimeLeft] = useState(initialTime);
+    // Use server time or local storage to maintain consistent time across refreshes
+    const getPersistedTime = () => {
+        const savedTime = localStorage.getItem('timeLeft');
+        return savedTime ? parseInt(savedTime) : 24 * 60 * 60; // Default to 24 hours
+    };
+    
+    const [timeLeft, setTimeLeft] = useState(getPersistedTime());
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentTask, setCurrentTask] = useState(null);
     const [previousTask, setPreviousTask] = useState(null);
     const [nextTask, setNextTask] = useState(null);
-
+    const [upcomingNotifications, setUpcomingNotifications] = useState({});
+    const [notificationPermission, setNotificationPermission] = useState(false);
+    
+    // Time warning constants (in minutes)
+    const WARNING_TIMES = [5, 3, 1]; // Notify at 5 mins, 3 mins, and 1 min before task
+    
+    // Format time in HH:MM:SS
     const formatTime = (seconds) => {
         const hours = Math.floor(seconds / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);
@@ -46,24 +57,78 @@ const Realtime = () => {
         return now.getHours() * 60 + now.getMinutes();
     };
     
-    // Send browser notification
-    const sendBrowserNotification = (title, body) => {
-        if (Notification.permission === 'granted') {
-            new Notification(title, {
-                body: body,
-                icon: "/favicon.ico", // Replace with your icon
-            });
+    // Request notification permission
+    const requestNotificationPermission = async () => {
+        try {
+            // Check if the browser supports notifications
+            if (!("Notification" in window)) {
+                console.error("This browser does not support desktop notification");
+                return false;
+            }
             
-            // Also display an in-app notification
-            // You could implement a toast notification here
-            console.log(`NOTIFICATION: ${title} - ${body}`);
+            // Check if permission is already granted
+            if (Notification.permission === "granted") {
+                setNotificationPermission(true);
+                return true;
+            }
+            
+            // Request permission from the user
+            const permission = await Notification.requestPermission();
+            
+            if (permission === "granted") {
+                setNotificationPermission(true);
+                return true;
+            } else {
+                console.warn("Notification permission denied");
+                return false;
+            }
+        } catch (error) {
+            console.error("Error requesting notification permission:", error);
+            return false;
         }
     };
     
-    
-    // Send both browser and mobile notifications
-    const sendNotification = async (title, body) => {
-        sendBrowserNotification(title, body);
+    // Send system notification that works even when in other applications
+    const sendSystemNotification = (title, body) => {
+        try {
+            // Check if we have permission to send notifications
+            if (Notification.permission !== "granted") {
+                console.warn("Notification permission not granted");
+                return;
+            }
+            
+            // Create and display the notification
+            const options = {
+                body: body,
+                icon: "/favicon.ico", // Replace with your icon
+                requireInteraction: true, // Keep notification visible until user interacts with it
+                silent: false, // Enable sound notification
+                vibrate: [200, 100, 200] // Vibration pattern for mobile devices
+            };
+            
+            // Use the Notification constructor directly
+            const notification = new Notification(title, options);
+            
+            // Add event listeners for the notification
+            notification.onclick = () => {
+                // Focus on the window when notification is clicked
+                window.focus();
+                notification.close();
+            };
+            
+            notification.onshow = () => {
+                console.log(`NOTIFICATION SHOWN: ${title} - ${body}`);
+            };
+            
+            notification.onerror = (err) => {
+                console.error("Notification error:", err);
+            };
+            
+        } catch (error) {
+            console.error("Error sending notification:", error);
+            // Fallback to alert only if system notification fails
+            alert(`${title}\n${body}`);
+        }
     };
     
     // Schedule notifications for upcoming tasks
@@ -89,7 +154,7 @@ const Realtime = () => {
                         
                         const notificationId = `${task.id}-${warningMin}`;
                         newNotifications[notificationId] = setTimeout(() => {
-                            sendNotification(
+                            sendSystemNotification(
                                 `Task Coming Up: ${task.title}`,
                                 `"${task.title}" will start in ${warningMin} minute${warningMin !== 1 ? 's' : ''} at ${task.time}`
                             );
@@ -104,55 +169,15 @@ const Realtime = () => {
     
     // Test notification system
     const testNotification = () => {
-        sendNotification(
+        sendSystemNotification(
             "Test Notification",
             `This is a test notification sent at ${new Date().toLocaleTimeString()}`
         );
     };
     
-    // Add a test task with notifications 
-    const addTestTask = () => {
-        // Get current time
-        const now = new Date();
-        
-        // Create a time 6 minutes from now to test all notifications (5min, 3min, 1min)
-        now.setMinutes(now.getMinutes() + 6);
-        
-        // Format the time for display (like "4:30 PM")
-        const hours = now.getHours();
-        const minutes = now.getMinutes();
-        const period = hours >= 12 ? 'PM' : 'AM';
-        const displayHours = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
-        const timeString = `${displayHours}:${String(minutes).padStart(2, '0')} ${period}`;
-        
-        // Create a test task
-        const testTask = {
-            id: 'test-task-' + Date.now(),
-            title: 'Test Notification Task',
-            time: timeString,
-            order: 999 // High order to put it at the end
-        };
-        
-        // Add to Firebase
-        const taskRef = ref(db, `tasks/${testTask.id}`);
-        set(taskRef, testTask)
-            .then(() => {
-                sendNotification(
-                    "Test Task Scheduled",
-                    `A test task has been scheduled for ${timeString} (6 minutes from now). You should receive notifications at 5, 3, and 1 minute intervals before the task.`
-                );
-            })
-            .catch(error => {
-                console.error("Error adding test task:", error);
-                alert("Error adding test task: " + error.message);
-            });
-    };
-    
     useEffect(() => {
         // Request notification permission when the component mounts
-        if (Notification.permission !== 'granted') {
-            Notification.requestPermission();
-        }
+        requestNotificationPermission();
         
         // Fetch tasks from Firebase when the component mounts
         const tasksRef = ref(db, 'tasks');
@@ -240,8 +265,20 @@ const Realtime = () => {
         <div className="flex flex-col items-center justify-center h-screen text-white">
             <h1 className="text-6xl">LIVE</h1>
             <div className="text-9xl mb-8 border-b-2 w-3/4 rounded-3xl p-12 border-blue-500 shadow-lg shadow-blue-500">
-                {formatTime(timeLeft)} {/* Display countdown */}
+                {formatTime(timeLeft)}
             </div>
+            
+            {!notificationPermission && (
+                <div className="bg-yellow-500 text-black p-4 rounded-lg mb-4">
+                    <p className="font-bold">Notifications are not enabled!</p>
+                    <button 
+                        className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+                        onClick={requestNotificationPermission}
+                    >
+                        Enable Notifications
+                    </button>
+                </div>
+            )}
             
             {/* Display loading spinner while fetching tasks */}
             {loading ? (
@@ -263,19 +300,18 @@ const Realtime = () => {
                     </div>
                     
                     {/* Current task in the center */}
-                    <div className="flex-grow text-center p-8 rounded-3xl text-3xl font-bold border-2 border-blue-500 shadow-lg shadow-blue-500 hover:scale-105 transition-all ease-in-out duration-300">
-                        {currentTask ? (
-                            <>
-                                <h2>{currentTask.title}</h2>
-                                <p>{currentTask.time}</p>
-                            </>
-                        ) : (
-                            <p>No current task</p>
-                        )}
-                    </div>
-
+                    {currentTask && (
+                        <div className="flex-grow text-center p-8 rounded-3xl text-3xl font-bold border-2 border-blue-500 shadow-lg shadow-blue-500 hover:scale-105 transition-all ease-in-out duration-0.3">
+                            <h2>{currentTask.title}</h2>
+                            <p>{currentTask.time}</p>
+                            <div className="mt-2 text-sm bg-green-600 px-3 py-1 rounded-full">
+                                Now active
+                            </div>
+                        </div>
+                    )}
+                    
                     {/* Next task */}
-                    <div className="flex-none text-center p-8 rounded-3xl text-xl border-2 w-1/4 border-blue-700 shadow-lg shadow-blue-700 hover:scale-105 transition-all ease-in-out duration-300">
+                    <div className="flex-none text-center p-8 rounded-3xl text-xl border-2 w-1/4 border-blue-700 shadow-lg shadow-blue-700 hover:scale-105 transition-all ease-in-out duration-0.3">
                         {nextTask ? (
                             <>
                                 <h2>{nextTask.title}</h2>
@@ -291,25 +327,18 @@ const Realtime = () => {
                 </div>
             )}
             
-            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 mt-4">
+            <div className="flex flex-col sm:flex-row flex-wrap justify-center space-y-2 sm:space-y-0 sm:space-x-4 mt-4">
                 <button 
                     className="border-2 p-3 rounded-3xl border-green-500 hover:scale-105 transition-all ease-in-out duration-0.3"
                     onClick={testNotification}
                 >
-                    Test Notification System
+                    Test Notification
                 </button>
                 
                 <button 
                     className="border-2 p-3 rounded-3xl border-blue-500 hover:scale-105 transition-all ease-in-out duration-0.3"
                 >
                     Show Timeline
-                </button>
-                
-                <button 
-                    className="border-2 p-3 rounded-3xl border-yellow-500 hover:scale-105 transition-all ease-in-out duration-0.3"
-                    onClick={addTestTask}
-                >
-                    Schedule Test Task (6min from now)
                 </button>
             </div>
         </div>
