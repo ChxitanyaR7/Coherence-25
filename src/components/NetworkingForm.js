@@ -3,7 +3,23 @@ import { useEffect, useState } from "react";
 import coherencelogo from "../assets/coherence logo.png";
 import Background from "./Background";
 
-const db = getDatabase(); // Get the database instance
+const db = getDatabase(); 
+
+const addTeamName = (teamName) => {
+  const teamNamesRef = ref(db, 'team_names');
+  const newTeamRef = push(teamNamesRef); 
+
+  // Save the team name with the generated unique key
+  set(newTeamRef, teamName)
+    .then(() => {
+      console.log(`${teamName} added successfully.`);
+    })
+    .catch((error) => {
+      console.error("Error adding team name: ", error);
+    });
+};
+ 
+// addTeamName("Team Gamma");
 
 function Form() {
   const [formData, setFormData] = useState({
