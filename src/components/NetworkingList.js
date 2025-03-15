@@ -1,69 +1,107 @@
 import React, { useEffect, useState } from "react";
-import { db, ref, onValue } from "../firebase";
+import { getDatabase, ref, onValue } from "firebase/database";
+import krisha from "../assets/coherence logo.png";
+import Background from "./Background";
 
 function TeamList() {
-  const [teamMembers, setTeamMembers] = useState([]);
+  const [teamData, setTeamData] = useState({}); // Store data in an object by team name
+  const [searchTerm, setSearchTerm] = useState(""); // State for search term
 
   useEffect(() => {
-    const teamRef = ref(db, "team_members"); // Reference to the Realtime Database
+    const db = getDatabase(); // Get the database instance
+    const teamRef = ref(db, "team_members"); // Reference to the 'team_members' node
 
-    // Listen for changes
+    // Listen for changes in the 'team_members' section
     const unsubscribe = onValue(teamRef, (snapshot) => {
       if (snapshot.exists()) {
         const data = snapshot.val();
-        const membersArray = Object.keys(data).map((key) => ({
-          id: key,
-          ...data[key],
-        }));
-        setTeamMembers(membersArray);
+        const formattedData = {}; // Object to store teams and their members
+
+        // Loop through each team and assign members under it
+        Object.keys(data).forEach((teamName) => {
+          formattedData[teamName] = Object.keys(data[teamName]).map((key) => ({
+            id: key,
+            ...data[teamName][key],
+          }));
+        });
+
+        setTeamData(formattedData); // Set state with the formatted data
       } else {
-        setTeamMembers([]);
+        setTeamData({}); // Set empty object if no data found
       }
     });
 
-    return () => unsubscribe(); // Cleanup subscription
+    return () => unsubscribe(); // Cleanup on component unmount
   }, []);
+
+  // Filter teams based on search term
+  const filteredTeams = Object.keys(teamData).filter((teamName) =>
+    teamName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="p-6 bg-gray-900 text-white min-h-screen flex flex-col items-center">
-      <h2 className="text-3xl font-bold mb-6">Team Members</h2>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5 w-full ">
-        {teamMembers.map((member) => (
-          <div
-            key={member.id}
-            className="bg-white rounded-xl shadow-lg overflow-hidden transform transition-transform duration-300 hover:-translate-y-2"
-          >
-            <div className="w-full h-[200px] overflow-hidden">
-              <img
-                className="w-full h-full object-cover"
-                src={member.imageUrl || "https://placehold.co/241x178"}
-                alt={member.name}
-              />
-            </div>
-            <div className="p-4 flex flex-col justify-start items-start text-gray-900">
-              <h3 className="text-xl font-semibold mb-1">{member.name}</h3>
-              <div className="text-[#959393] text-sm">Team Name: {member.teamName}</div>
-              <div className="py-4 flex justify-start items-center gap-3">
-                <a
-                  href={member.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
-                >
-                  GitHub
-                </a>
-                <a
-                  href={member.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition"
-                >
-                  LinkedIn
-                </a>
+      <Background />
+      <img src={krisha} alt="Coherence Logo" className="mb-2 w-2/3 md:w-1/3 z-50" />
+      <h2 className="text-3xl font-bold mb-6">Happy Networking !</h2>
+
+      {/* Search Bar */}
+      <input
+        type="text"
+        placeholder="Search by team name :3"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)} // Update search term on input change
+        className="p-2 mb-6 rounded-3xl text-blue-300 border-2 border-blue-300/50 bg-transparent w-2/3 px-6"
+      />
+
+      <div className="w-full">
+        {filteredTeams.length === 0 ? (
+          <p className="text-lg text-center text-gray-400">No teams found.</p>
+        ) : (
+          filteredTeams.map((teamName) => (
+            <div key={teamName} className="mb-8">
+              <h3 className="text-2xl font-light mb-4">{teamName}</h3>
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 w-full">
+                {teamData[teamName].map((member) => (
+                  <div
+                    key={member.id}
+                    className="backdrop-blur-sm border-2 border-blue-300 rounded-xl shadow-lg overflow-hidden transform transition-transform duration-300 hover:-translate-y-2 shadow-blue-400"
+                  >
+                    <div className="w-full h-md overflow-hidden">
+                      <img
+                        className="w-full h-full object-cover p-3 rounded-3xl"
+                        src={member.imageUrl || "https://placehold.co/241x178"}
+                        alt={member.name}
+                      />
+                    </div>
+                    <div className="p-4 flex flex-col justify-start items-start ">
+                      <h3 className="text-xl mb-1">{member.name}</h3>
+                      <div className="text-[#959393] text-sm">Team Name: {teamName}</div>
+                      <div className="py-4 flex justify-start items-center gap-4">
+                        <a
+                          href={member.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-300 rounded-lg text-3xl hover:text-blue-400 hover:scale-125 transition-all ease-in-out duration-300"
+                        >
+                          <i className="fa-brands fa-github"></i>
+                        </a>
+                        <a
+                          href={member.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-300 rounded-lg text-3xl hover:text-blue-400 hover:scale-125 transition-all ease-in-out duration-300"
+                        >
+                          <i className="fa-brands fa-linkedin"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );

@@ -77,11 +77,11 @@ function App() {
               <Route path="/realtime" element={<Realtime />} />
 
               {/* New route for /NetworkingForm */}
-              <Route path="/networkingForm" element={<Form/>} />
+              <Route path="/networking-form" element={<Form />} />
 
               {/* New route for /NetworkingList */}
-              <Route path="/networkingList" element={<TeamList/>} />
-              
+              <Route path="/networking-list" element={<TeamList />} />
+
               {/* New route for /realtime/:password */}
               <Route path="/realtime/:password" element={<PasswordValidation />} />
             </Routes>
