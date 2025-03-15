@@ -2,6 +2,12 @@ import React, { useEffect, useState } from "react";
 import { getDatabase, ref, onValue } from "firebase/database";
 import krisha from "../assets/coherence logo.png";
 import Background from "./Background";
+import { storage } from "../appwrite";
+import { ID } from "../appwrite"; // Required for handling Appwrite storage
+
+const PROJECT_ID = process.env.REACT_APP_APPWRITE_PROJECT_ID;
+const BUCKET_ID = process.env.REACT_APP_APPWRITE_BUCKET_ID;
+
 
 function TeamList() {
   const [teamData, setTeamData] = useState({}); // Store data in an object by team name
@@ -33,6 +39,13 @@ function TeamList() {
 
     return () => unsubscribe(); // Cleanup on component unmount
   }, []);
+
+  // Function to generate Appwrite image URL
+  const getAppwriteImageUrl = (fileId) => {
+    return `https://cloud.appwrite.io/v1/storage/buckets/${BUCKET_ID}/files/${fileId}/preview?project=${PROJECT_ID}`;
+  };
+
+
 
   // Filter teams based on search term
   const filteredTeams = Object.keys(teamData).filter((teamName) =>
@@ -67,12 +80,13 @@ function TeamList() {
                     key={member.id}
                     className="backdrop-blur-sm border-2 border-blue-300 rounded-xl shadow-lg overflow-hidden transform transition-transform duration-300 hover:-translate-y-2 shadow-blue-400"
                   >
-                    <div className="w-full h-md overflow-hidden">
-                      <img
+                    <div className="w-full h-[300px] overflow-hidden">
+                    <img
                         className="w-full h-full object-cover p-3 rounded-3xl"
-                        src={member.imageUrl || "https://placehold.co/241x178"}
+                        src={member.imageUrl ? getAppwriteImageUrl(member.imageUrl) : "https://placehold.co/241x178"}
                         alt={member.name}
                       />
+
                     </div>
                     <div className="p-4 flex flex-col justify-start items-start ">
                       <h3 className="text-xl mb-1">{member.name}</h3>

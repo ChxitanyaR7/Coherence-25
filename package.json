@@ -13,6 +13,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@tsparticles/preset-hyperspace": "^3.0.1",
+    "appwrite": "^17.0.1",
     "docsify-cli": "^4.4.2",
     "firebase": "^11.4.0",
     "framer-motion": "^10.18.0",

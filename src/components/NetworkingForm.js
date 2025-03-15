@@ -2,6 +2,8 @@ import { getDatabase, ref, set, push, get } from "firebase/database";
 import { useEffect, useState } from "react";
 import coherencelogo from "../assets/coherence logo.png";
 import Background from "./Background";
+import { storage, uploadFile } from "../appwrite"; // Appwrite setup file
+
 
 const db = getDatabase(); // Get the database instance
 
@@ -11,9 +13,11 @@ function Form() {
     teamName: "",
     github: "",
     linkedin: "",
+    imageUrl: ""
   });
 
   const [teamNames, setTeamNames] = useState([]); // State to store team names
+  const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
     // Fetch team names from the database when the component mounts
@@ -39,25 +43,47 @@ function Form() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  //image
+  const handleImageChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const newMemberRef = push(ref(db, "team_members")); // Create a new child in the database
-      await set(newMemberRef, formData); // Set data under the generated ID
+
+      let uploadedImageUrl = "";
+      if (imageFile) {
+        uploadedImageUrl = await uploadFile(imageFile); // Upload image and get URL
+      }
+
+      // Reference to the selected team name in the database
+      const teamRef = ref(db, `team_members/${formData.teamName}`); 
+
+      // Push the form data under the selected team
+      const newMemberRef = push(teamRef); // Create a new child under the selected team name
+      await set(newMemberRef, {
+        name: formData.name,
+        github: formData.github,
+        linkedin: formData.linkedin,
+        imageUrl: uploadedImageUrl
+      }); // Set member data under the generated ID
+
       alert("Details submitted successfully!");
-      setFormData({ name: "", teamName: "", github: "", linkedin: "" }); // Clear form
+      setFormData({ name: "", teamName: "", github: "", linkedin: "" , imageUrl: ""}); // Clear form
     } catch (error) {
       console.error("Error adding document: ", error);
-      toast.error("Error submitting details."); // Show error toast
     }
   };
 
   return (
-    <div className="flex items-center gap-4 justify-center min-h-screen bg-gray-900 text-white">
-      <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
+    <div className="flex flex-col items-center gap-4 justify-center min-h-screen bg-gray-900 text-white">
+      <Background />
+      <img src={coherencelogo} alt="Coherence Logo" className="mb-2 w-2/3 md:w-1/3 z-50" />
+      <div className="bg-slate-100/5 backdrop-blur-sm p-8 rounded-3xl border-4 border-blue-700 shadow-lg shadow-blue-500 w-full max-w-sm">
         <h2 className="text-2xl font-bold mb-6 text-center">Team Member Details</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-        
           <input
             type="text"
             name="name"
@@ -100,6 +126,7 @@ function Form() {
             required
             className="w-full p-3 rounded-3xl bg-transparent border-2 border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-700"
           />
+           <input type="file" accept="image/*" onChange={handleImageChange} required className="w-full p-3 rounded-3xl bg-transparent border-2 border-blue-200" />
           <button
             type="submit"
             className="w-full rounded-3xl bg-blue-800 hover:bg-transparent hover:border-4 border-blue-500 hover:p-2 transition-all text-white p-3 font-semibold"
@@ -107,19 +134,6 @@ function Form() {
             Submit
           </button>
         </form>
-        <ToastContainer
-          position="top-center"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick={false}
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-          transition={Bounce}
-        />
       </div>
     </div>
   );
