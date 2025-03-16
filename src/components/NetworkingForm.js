@@ -2,6 +2,8 @@ import { getDatabase, ref, set, push, get } from "firebase/database";
 import { useEffect, useState } from "react";
 import coherencelogo from "../assets/coherence logo.png";
 import Background from "./Background";
+import { storage, uploadFile } from "../appwrite"; // Appwrite setup file
+
 
 const db = getDatabase(); // Get the database instance
 
@@ -10,10 +12,12 @@ function Form() {
     name: "",
     teamName: "",
     github: "",
-    linkedin: ""
+    linkedin: "",
+    imageUrl: ""
   });
 
   const [teamNames, setTeamNames] = useState([]); // State to store team names
+  const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
     // Fetch team names from the database when the component mounts
@@ -39,9 +43,21 @@ function Form() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  //image
+  const handleImageChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+
+      let uploadedImageUrl = "";
+      if (imageFile) {
+        uploadedImageUrl = await uploadFile(imageFile); // Upload image and get URL
+      }
+
       // Reference to the selected team name in the database
       const teamRef = ref(db, `team_members/${formData.teamName}`); 
 
@@ -50,11 +66,12 @@ function Form() {
       await set(newMemberRef, {
         name: formData.name,
         github: formData.github,
-        linkedin: formData.linkedin
+        linkedin: formData.linkedin,
+        imageUrl: uploadedImageUrl
       }); // Set member data under the generated ID
 
       alert("Details submitted successfully!");
-      setFormData({ name: "", teamName: "", github: "", linkedin: "" }); // Clear form
+      setFormData({ name: "", teamName: "", github: "", linkedin: "" , imageUrl: ""}); // Clear form
     } catch (error) {
       console.error("Error adding document: ", error);
     }
@@ -109,6 +126,7 @@ function Form() {
             required
             className="w-full p-3 rounded-3xl bg-transparent border-2 border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-700"
           />
+           <input type="file" accept="image/*" onChange={handleImageChange} required className="w-full p-3 rounded-3xl bg-transparent border-2 border-blue-200" />
           <button
             type="submit"
             className="w-full rounded-3xl bg-blue-800 hover:bg-transparent hover:border-4 border-blue-500 hover:p-2 transition-all text-white p-3 font-semibold"
