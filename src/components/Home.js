@@ -6,6 +6,7 @@ import { faAngleUp, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { faInstagram, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import Background from "./Background";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const targetDate = new Date("March 28, 2025 00:00:00 GMT+0530").getTime();
@@ -17,7 +18,7 @@ const Home = () => {
   const handleMenuToggle = () => {
     setIsMenuOpen((prev) => {
       const newState = !prev;
-      document.body.style.overflow = newState ? "hidden" : "auto"; 
+      document.body.style.overflow = newState ? "hidden" : "auto";
       return newState;
     });
   };
@@ -134,7 +135,7 @@ const Home = () => {
 
   return (<div id="home" className="home-section">
     {/* Content for Home section */}
- 
+
     <div className="home p-4 md:p-8 text-center min-h-screen flex flex-col justify-center items-center">
       <Background />
       {/* Hamburger Menu Button */}
@@ -149,17 +150,20 @@ const Home = () => {
       {/* Sidebar Menu */}
       <div
         ref={menuRef}
-        className={`fixed top-0 left-0 h-full w-64 bg-black bg-opacity-40 px-5 py-28 transform ${
-          isMenuOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-transform duration-300 ease-in-out z-40`}
+        className={`fixed top-0 left-0 h-full w-64 bg-black bg-opacity-40 px-5 py-28 transform ${isMenuOpen ? "translate-x-0" : "-translate-x-full"
+          } transition-transform duration-300 ease-in-out z-40`}
       >
-        <nav className="flex flex-col space-y-6 text-white text-lg">
+        <nav className="cursor-pointer flex flex-col space-y-6 text-white text-lg">
           <a onClick={() => scrollToSection("home")} className="hover:text-gray-400">Home</a>
           <a onClick={() => scrollToSection("about")} className="hover:text-gray-400">About</a>
           <a onClick={() => scrollToSection("schedule")} className="hover:text-gray-400">Schedule</a>
+          {/* Fix this by using window.location.href or useNavigate for navigation */}
+          <a href="/shortlisted-teams" className="hover:text-gray-400 cursor-pointer">Shortlisted Teams</a>
+          <a href="/networking-list" className="hover:text-gray-400 cursor-pointer">Networking</a>
           <a onClick={() => scrollToSection("faq")} className="hover:text-gray-400">FAQs</a>
           <a onClick={() => scrollToSection("contact")} className="hover:text-gray-400">Contact</a>
         </nav>
+
       </div>
 
       {/* Animated Welcome Text */}
@@ -247,7 +251,7 @@ const Home = () => {
           // Disable the button if registration is closed
           className="bg-blue-900 shadow-blue-300 shadow-lg border-white text-white font-semibold py-2 px-4 rounded-xl mt-6 hover:scale-105 transition-all duration-0.3 ease-in-out hover:bg-transparent hover:border-4"
         >
-          Register Now !   
+          Register Now !
           {/* <i className="fa-solid fa-arrow-right"></i> */}
         </button>
 
@@ -265,7 +269,7 @@ const Home = () => {
         )}
       </motion.div>
     </div>
-    </div>
+  </div>
   );
 };
 
