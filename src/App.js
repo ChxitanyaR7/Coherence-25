@@ -18,6 +18,7 @@ import Realtime from "./components/Realtime";
 import RealtimeUpdate from "./components/RealtimeUpdate"; // Import your new RealtimeUpdate component
 import Form from "./components/NetworkingForm";
 import TeamList from "./components/NetworkingList";
+import Shortlisted from './components/Shortlisted'
 
 function App() {
   const [showIntroduction, setShowIntroduction] = useState(false);
@@ -62,6 +63,7 @@ function App() {
                     <Home />
                     <About />
                     <Domains />
+                    <Shortlisted></Shortlisted>
                     <Schedule />
                     <Timeline />
                     <GeneralGuidelines />
