@@ -1,0 +1,86 @@
+[
+ {
+  "id": 1,
+  "name": "ByteBuilders",
+  "leader": "Alice Johnson",
+  "category": "AI\/ML",
+  "college": "Tech University"
+ },
+ {
+  "id": 2,
+  "name": "DataDynamos",
+  "leader": "Bob Smith",
+  "category": "Data Science",
+  "college": "Science College"
+ },
+ {
+  "id": 3,
+  "name": "CloudCrafters",
+  "leader": "Carol White",
+  "category": "Cloud Computing",
+  "college": "Engineering Institute"
+ },
+ {
+  "id": 4,
+  "name": "WebWizards",
+  "leader": "David Lee",
+  "category": "Web Development",
+  "college": "Digital Arts Academy"
+ },
+ {
+  "id": 5,
+  "name": "MobileMinds",
+  "leader": "Eva Brown",
+  "category": "Mobile Apps",
+  "college": "Innovate College"
+ },
+ {
+  "id": 6,
+  "name": "SecureShield",
+  "leader": "Frank Green",
+  "category": "Cybersecurity",
+  "college": "CyberTech University"
+ },
+ {
+  "id": 7,
+  "name": "BlockchainBuddies",
+  "leader": "Grace Kim",
+  "category": "Blockchain",
+  "college": "Finance & Tech College"
+ },
+ {
+  "id": 8,
+  "name": "ARArchitects",
+  "leader": "Henry Wilson",
+  "category": "AR\/VR",
+  "college": "Design Institute"
+ },
+ {
+  "id": 9,
+  "name": "IoTInnovators",
+  "leader": "Ivy Martinez",
+  "category": "IoT",
+  "college": "Global Tech University"
+ },
+ {
+  "id": 10,
+  "name": "QuantumQuest",
+  "leader": "Jack Davis",
+  "category": "Quantum Computing",
+  "college": "Science & Tech Academy"
+ },
+ {
+  "id": 11,
+  "name": "EcoTech",
+  "leader": "Karen Taylor",
+  "category": "Sustainability",
+  "college": "Green College"
+ },
+ {
+  "id": 12,
+  "name": "HealthHackers",
+  "leader": "Leo Anderson",
+  "category": "Healthcare",
+  "college": "Medical University"
+ }
+]
