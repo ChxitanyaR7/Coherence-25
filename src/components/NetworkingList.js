@@ -70,7 +70,7 @@ function TeamList() {
                     <div className="w-full h-md overflow-hidden">
                       <img
                         className="w-full h-full object-cover p-3 rounded-3xl"
-                        src={member.imageUrl || "https://placehold.co/241x178"}
+                        src={member.imageUrl || "https://i.pinimg.com/736x/db/08/0f/db080fceb9fa616315bd6f9c3b8a9632.jpg"}
                         alt={member.name}
                       />
                     </div>
