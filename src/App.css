@@ -40,3 +40,39 @@
     transform: rotate(360deg);
   }
 }
+
+/* Sidebar Menu Styles */
+.fixed-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 64px;
+  /* or the width of your sidebar */
+  background-color: rgba(0, 0, 0, 0.8);
+  /* Background color with opacity */
+  padding-top: 28px;
+  /* Add padding for spacing */
+  z-index: 40;
+  /* Ensure the sidebar is on top */
+  transition: transform 0.3s ease-in-out;
+}
+
+.fixed-menu nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  color: white;
+  font-size: 1.125rem;
+}
+
+.fixed-menu a {
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+}
+
+.fixed-menu a:hover {
+  color: #cccccc;
+  /* Hover effect */
+}

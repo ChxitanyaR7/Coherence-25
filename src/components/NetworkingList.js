@@ -2,10 +2,18 @@ import React, { useEffect, useState } from "react";
 import { getDatabase, ref, onValue } from "firebase/database";
 import krisha from "../assets/coherence logo.png";
 import Background from "./Background";
+import { storage } from "../appwrite";
+import { ID } from "../appwrite"; // Required for handling Appwrite storage
+import { useNavigate } from "react-router-dom";
+
+const PROJECT_ID = process.env.REACT_APP_APPWRITE_PROJECT_ID;
+const BUCKET_ID = process.env.REACT_APP_APPWRITE_BUCKET_ID;
+
 
 function TeamList() {
   const [teamData, setTeamData] = useState({}); // Store data in an object by team name
   const [searchTerm, setSearchTerm] = useState(""); // State for search term
+  const navigate = useNavigate();
 
   useEffect(() => {
     const db = getDatabase(); // Get the database instance
@@ -34,17 +42,33 @@ function TeamList() {
     return () => unsubscribe(); // Cleanup on component unmount
   }, []);
 
+  // Function to generate Appwrite image URL
+  const getAppwriteImageUrl = (fileId) => {
+    return `https://cloud.appwrite.io/v1/storage/buckets/${BUCKET_ID}/files/${fileId}/preview?project=${PROJECT_ID}`;
+  };
+
+
+
   // Filter teams based on search term
   const filteredTeams = Object.keys(teamData).filter((teamName) =>
     teamName.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleGoHome = () => {
+    navigate("/"); // Navigate to the home page
+  };
 
   return (
     <div className="p-6 bg-gray-900 text-white min-h-screen flex flex-col items-center">
       <Background />
       <img src={krisha} alt="Coherence Logo" className="mb-2 w-2/3 md:w-1/3 z-50" />
       <h2 className="text-3xl font-bold mb-6">Happy Networking !</h2>
-
+      <button
+        onClick={handleGoHome}
+        className="absolute top-4 left-4 text-blue-500 hover:text-blue-700 bg-transparent border border-blue-500 rounded-full p-2 font-semibold shadow-lg hover:bg-blue-100 transition-all"
+      >
+        &#8592; Home
+      </button>
       {/* Search Bar */}
       <input
         type="text"
@@ -67,12 +91,13 @@ function TeamList() {
                     key={member.id}
                     className="backdrop-blur-sm border-2 border-blue-300 rounded-xl shadow-lg overflow-hidden transform transition-transform duration-300 hover:-translate-y-2 shadow-blue-400"
                   >
-                    <div className="w-full h-md overflow-hidden">
+                    <div className="w-full h-[300px] overflow-hidden">
                       <img
                         className="w-full h-full object-cover p-3 rounded-3xl"
-                        src={member.imageUrl || "https://i.pinimg.com/736x/db/08/0f/db080fceb9fa616315bd6f9c3b8a9632.jpg"}
+                        src={member.imageUrl ? getAppwriteImageUrl(member.imageUrl) : "https://placehold.co/241x178"}
                         alt={member.name}
                       />
+
                     </div>
                     <div className="p-4 flex flex-col justify-start items-start ">
                       <h3 className="text-xl mb-1">{member.name}</h3>
