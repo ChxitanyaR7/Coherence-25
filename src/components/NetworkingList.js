@@ -3,7 +3,7 @@ import { getDatabase, ref, onValue } from "firebase/database";
 import krisha from "../assets/coherence logo.png";
 import Background from "./Background";
 import { storage } from "../appwrite";
-import { ID } from "../appwrite"; // Required for handling Appwrite storage
+import { ID } from "../appwrite"; 
 import { useNavigate } from "react-router-dom";
 
 const PROJECT_ID = process.env.REACT_APP_APPWRITE_PROJECT_ID;
@@ -65,7 +65,7 @@ function TeamList() {
       <h2 className="text-3xl font-bold mb-6">Happy Networking !</h2>
       <button
         onClick={handleGoHome}
-        className="absolute top-4 left-4 text-blue-500 hover:text-blue-700 bg-transparent border border-blue-500 rounded-full p-2 font-semibold shadow-lg hover:bg-blue-100 transition-all"
+        className="absolute top-4 left-4 text-blue-500 hover:text-blue-700 bg-transparent border border-blue-500 rounded-full p-2 font-semibold shadow-lg hover:bg-blue-100 hover:scale-110 transition-all ease-in-out duration-300"
       >
         &#8592; Home
       </button>

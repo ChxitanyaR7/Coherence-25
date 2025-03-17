@@ -2,12 +2,19 @@ import React, { useState, useEffect } from "react";
 import { getDatabase, ref, onValue, set } from "firebase/database";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../firebase";
+import { useNavigate } from "react-router-dom";
+import coherencelogo from "../assets/coherence logo.png";
 import Background from "./Background";
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 const Realtime = () => {
+    const navigate = useNavigate();
+
+    const handleGoHome = () => {
+        navigate("/"); 
+    };
     // Use server time or local storage to maintain consistent time across refreshes
     const getPersistedTime = () => {
         const savedTime = localStorage.getItem('timeLeft');
@@ -265,9 +272,20 @@ const Realtime = () => {
     }, [timeLeft]);
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen text-white">
-            <h1 className="text-6xl">LIVE</h1>
-            <div className="text-9xl mb-8 border-b-2 w-3/4 rounded-3xl p-12 border-blue-500 shadow-lg shadow-blue-500">
+        <div className="flex flex-col items-center justify-center h-screen text-white md:pt-2">
+            <Background />
+
+            <button
+                onClick={handleGoHome}
+                className="absolute top-4 left-4 text-blue-500 hover:text-blue-700 bg-transparent border border-blue-500 rounded-full p-2 font-semibold shadow-lg hover:bg-blue-100 hover:scale-110 transition-all ease-in-out duration-300"
+            >
+                &#8592; Home
+            </button>
+            <div className="flex flex-col mt-56 md:mt-0">
+                <img src={coherencelogo} alt="Coherence Logo" className="mb-2 w-2/3 md:w-1/3 z-50 mx-auto" />
+                <h1 className="text-3xl md:text-5xl font-bold md:mt-8 text-gray-300 z-50">LIVE</h1>
+            </div>
+            <div className="backdrop-blur-sm text-5xl md:text-9xl mb-8 border-b-2 w-3/4 rounded-3xl p-8 sm:p-12 border-blue-500 shadow-lg shadow-blue-600">
                 {formatTime(timeLeft)}
             </div>
             
@@ -289,8 +307,8 @@ const Realtime = () => {
                     <div className="spinner-border animate-spin border-4 border-blue-500 border-t-transparent rounded-full w-16 h-16"></div>
                 </div>
             ) : (
-                <div className="flex flex-col md:flex-row justify-center items-center w-full space-y-4 md:space-y-0 md:space-x-4 m-4 mb-6">
-                     <div className="flex-none backdrop-blur-sm w-3/4 md:w-1/4 text-center p-4 rounded-3xl text-xl border-2 opacity-50 shadow-lg shadow-gray-400">
+                <div className="flex flex-col md:flex-row justify-center items-center w-full md:w-4/5 space-y-4 md:space-y-0 md:space-x-4 m-4 mb-6">
+                <div className="backdrop-blur-sm flex-none w-3/4 md:w-1/4 text-center p-4 rounded-3xl text-xl border-2 opacity-50 shadow-lg shadow-gray-400">
                     {/* Previous task */}
                         {previousTask ? (
                             <>
@@ -304,22 +322,20 @@ const Realtime = () => {
 
                     {/* Current task in the center */}
                     {currentTask && (
-                        <div className="flex-grow text-center p-8 rounded-3xl text-3xl font-bold border-2 border-blue-500 shadow-lg shadow-blue-500 hover:scale-105 transition-all ease-in-out duration-0.3">
-                            <h2>{currentTask.title}</h2>
+                        <div className="backdrop-blur-sm flex-none w-3/4 md:w-1/4 text-center p-4 rounded-3xl text-xl md:text-3xl font-bold border-2 border-blue-500 shadow-lg shadow-blue-500 hover:scale-105 transition-all ease-in-out duration-300">                            <h2>{currentTask.title}</h2>
                             <p>{currentTask.time}</p>
-                            <div className="mt-2 text-sm bg-green-600 px-3 py-1 rounded-full">
+                            <div className="mt-4 text-sm bg-green-600 px-3 py-1 rounded-full w-1/2 mx-auto animate-pulse">
                                 Now active
                             </div>
                         </div>
                     )}
                     
                     {/* Next task */}
-                    <div className="flex-none text-center p-8 rounded-3xl text-xl border-2 w-1/4 border-blue-700 shadow-lg shadow-blue-700 hover:scale-105 transition-all ease-in-out duration-0.3">
-                        {nextTask ? (
+                    <div className="backdrop-blur-sm flex-none w-3/4 md:w-1/4 text-center p-4 rounded-3xl text-xl border-2 border-blue-700 shadow-lg shadow-blue-700 hover:scale-105 transition-all ease-in-out duration-300">                        {nextTask ? (
                             <>
                                 <h2>{nextTask.title}</h2>
                                 <p>{nextTask.time}</p>
-                                <div className="mt-2 text-sm bg-blue-600 px-2 py-1 rounded-full animate-pulse">
+                                <div className="mt-2 text-sm bg-blue-800 px-2 py-1 rounded-full animate-pulse">
                                     Coming up next
                                 </div>
                             </>
@@ -330,7 +346,7 @@ const Realtime = () => {
                 </div>
             )}
             
-            <div className="flex flex-col sm:flex-row flex-wrap justify-center space-y-2 sm:space-y-0 sm:space-x-4 mt-4">
+            <div className="flex flex-row flex-wrap justify-center space-y-2 sm:space-y-0 sm:space-x-4 mt-4">
                 <button 
                     className="border-2 p-3 rounded-3xl border-green-500 hover:scale-105 transition-all ease-in-out duration-0.3"
                     onClick={testNotification}
@@ -339,7 +355,6 @@ const Realtime = () => {
                 </button>
 
                 <button className="border-2 p-3 m-2 rounded-3xl border-blue-500 hover:scale-105 transition-all ease-in-out duration-300">
-
                     Show Timeline
                 </button>
             </div>
