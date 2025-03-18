@@ -7,7 +7,6 @@ import Domains from "./components/Domains";
 import Schedule from "./components/Schedule";
 import GeneralGuidelines from "./components/GeneralGuidelines";
 import FAQs from "./components/FAQs";
-import Sponsors from "./components/Sponsors";
 import ContactUs from "./components/Contact";
 import Footer from "./components/Footer";
 import PrizePodium from "./components/PrizePodium";
@@ -15,11 +14,12 @@ import YetToRevealPage from "./components/YetToRevealPage";
 import Introduction from "./components/Introduction";
 import Timeline from "./components/Timeline";
 import Realtime from "./components/Realtime";
-import RealtimeUpdate from "./components/RealtimeUpdate"; // Import your new RealtimeUpdate component
+import RealtimeUpdate from "./components/RealtimeUpdate";
 import Form from "./components/NetworkingForm";
 import TeamList from "./components/NetworkingList";
-import Shortlisted from './components/Shortlisted'
-import Leaderboard from "./components/Leaderboard";
+import Shortlisted from './components/Shortlisted';
+import LeaderboardUpdate from "./components/LeaderboardUpdate";
+import Leaderboard from "./components/Leaderboard"; // Assuming this is the Leaderboard component.
 
 function App() {
   const [showIntroduction, setShowIntroduction] = useState(false);
@@ -64,31 +64,26 @@ function App() {
                     <Home />
                     <About />
                     <Domains />
-                    {/* <Shortlisted></Shortlisted> */}
                     <Schedule />
                     <Timeline />
                     <GeneralGuidelines />
                     <PrizePodium />
-                    {/* <Sponsors /> */}
                     <FAQs />
                     <ContactUs />
                     <Footer />
                   </div>
                 }
               />
-              {/* New route for /realtime */}
               <Route path="/realtime" element={<Realtime />} />
+              <Route path="/networking-form" element={<Form />} />
+              <Route path="/networking-list" element={<TeamList />} />
+              <Route path="/realtime/:password" element={<PasswordValidation />} />
+              <Route path="/leaderboard/:password" element={<LeaderboardPasswordValidation />} />
+              <Route path="/shortlisted-teams" element={<Shortlisted />} />
+
+              {/* Add route for /leaderboard */}
               <Route path="/leaderboard" element={<Leaderboard />} />
 
-              {/* New route for /NetworkingForm */}
-              <Route path="/networking-form" element={<Form />} />
-
-              {/* New route for /NetworkingList */}
-              <Route path="/networking-list" element={<TeamList />} />
-
-              {/* New route for /realtime/:password */}
-              <Route path="/realtime/:password" element={<PasswordValidation />} />
-              <Route path="/shortlisted-teams" element={<Shortlisted />} />
             </Routes>
           </div>
         )}
@@ -127,6 +122,35 @@ function PasswordValidation() {
 
   // If the password is valid, render the RealtimeUpdate component
   return <RealtimeUpdate />;
+}
+
+function LeaderboardPasswordValidation() {
+  const { password } = useParams();
+  const [isValid, setIsValid] = useState(null);
+
+  useEffect(() => {
+    if (password === SSH_PASSWORD) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+  }, [password]);
+
+  if (isValid === null) {
+    return <div>Loading...</div>;
+  }
+
+  if (isValid === false) {
+    return (
+      <div>
+        <h2>Incorrect Password</h2>
+        <Navigate to="/leaderboard" replace />
+      </div>
+    );
+  }
+
+  // If the password is valid, render the LeaderboardUpdate component
+  return <LeaderboardUpdate />;
 }
 
 export default App;
