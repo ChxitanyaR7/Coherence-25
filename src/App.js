@@ -19,6 +19,7 @@ import RealtimeUpdate from "./components/RealtimeUpdate"; // Import your new Rea
 import Form from "./components/NetworkingForm";
 import TeamList from "./components/NetworkingList";
 import Shortlisted from './components/Shortlisted'
+import Leaderboard from "./components/Leaderboard";
 
 function App() {
   const [showIntroduction, setShowIntroduction] = useState(false);
@@ -77,6 +78,7 @@ function App() {
               />
               {/* New route for /realtime */}
               <Route path="/realtime" element={<Realtime />} />
+              <Route path="/leaderboard" element={<Leaderboard />} />
 
               {/* New route for /NetworkingForm */}
               <Route path="/networking-form" element={<Form />} />
