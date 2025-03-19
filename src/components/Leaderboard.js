@@ -1,128 +1,180 @@
 import React, { useEffect, useState } from "react";
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue, update } from "firebase/database";
 import krisha from "../assets/coherence logo.png";
 import Background from "./Background";
 import { useNavigate } from "react-router-dom";
 
 function Leaderboard() {
-    const [teamNames, setTeamNames] = useState([]); 
-    const [teamPoints, setTeamPoints] = useState({}); 
-    const [searchTerm, setSearchTerm] = useState(""); 
-    const [loading, setLoading] = useState(true);  // Track loading state
+    const [teamData, setTeamData] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [isAdminView, setIsAdminView] = useState(false); 
     const navigate = useNavigate();
 
     useEffect(() => {
-        const db = getDatabase(); 
-        const teamNamesRef = ref(db, "team_names"); // Adjusted to match your Firebase structure
-        const pointsRef = ref(db, "team_leaderboard"); 
-        
-        const unsubscribeTeams = onValue(teamNamesRef, (snapshot) => {
+        const db = getDatabase();
+        const teamRef = ref(db, "team_members");
+        const leaderboardRef = ref(db, "team_leaderboard");
+
+        const unsubscribeTeams = onValue(teamRef, (snapshot) => {
             if (snapshot.exists()) {
-                const data = snapshot.val();
-                const formattedTeamNames = Object.values(data); // Extract team names
-                setTeamNames(formattedTeamNames); 
-            } else {
-                setTeamNames([]); 
+                const teamsData = snapshot.val();
+                const teamNames = Object.keys(teamsData);
+                
+                
+                const initialTeamData = teamNames.map(name => ({
+                    name,
+                    points: 0,
+                    killPoints: 20,
+                    playerPoints: 17
+                }));
+                
+                setTeamData(initialTeamData);
             }
         });
 
-        const unsubscribePoints = onValue(pointsRef, (snapshot) => {
+        const unsubscribePoints = onValue(leaderboardRef, (snapshot) => {
             if (snapshot.exists()) {
-                const data = snapshot.val();
-                const formattedTeamPoints = {};
-
-                Object.keys(data).forEach((teamName) => {
-                    formattedTeamPoints[teamName] = data[teamName]?.points || 0;
+                const pointsData = snapshot.val();
+                
+                setTeamData(prevData => {
+                    return prevData.map(team => ({
+                        ...team,
+                        points: pointsData[team.name]?.points || 0
+                    }));
                 });
-
-                teamNames.forEach((teamName) => {
-                    if (!formattedTeamPoints[teamName]) {
-                        formattedTeamPoints[teamName] = 0;
-                    }
-                });
-
-                setTeamPoints(formattedTeamPoints); 
-            } else {
-                const initialPoints = {};
-                teamNames.forEach((teamName) => {
-                    initialPoints[teamName] = 0; 
-                });
-                setTeamPoints(initialPoints);
             }
-
-            // Set loading to false after the data is fetched
-            setLoading(false); 
         });
 
         return () => {
             unsubscribeTeams();
             unsubscribePoints();
-        }; 
-    }, [teamNames]); 
+        };
+    }, []);
 
-    const filteredTeams = teamNames.filter((teamName) =>
-        teamName.toLowerCase().includes(searchTerm.toLowerCase())
+    
+    const sortedTeams = [...teamData].sort((a, b) => b.points - a.points);
+    
+    
+    const maxPoints = Math.max(...sortedTeams.map(team => team.points), 10);
+    
+    const filteredTeams = sortedTeams.filter(team => 
+        team.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const sortedTeams = filteredTeams.sort((a, b) => (teamPoints[b] || 0) - (teamPoints[a] || 0));
+    const updatePointsInFirebase = (teamName, points) => {
+        const db = getDatabase();
+        const pointsRef = ref(db, `team_leaderboard/${teamName}`);
+        
+        const currentTeam = teamData.find(t => t.name === teamName);
+        const currentPoints = currentTeam ? currentTeam.points : 0;
+
+        update(pointsRef, { points: currentPoints + points });
+    };
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
     };
 
     const handleGoHome = () => {
-        navigate("/"); 
+        navigate("/");
     };
 
-    const maxPoints = Math.max(...Object.values(teamPoints), 1); // Get the maximum points, ensuring a minimum of 1
-
+    const toggleView = () => {
+        setIsAdminView(!isAdminView);
+    };
 
     return (
         <div className="p-6 bg-gray-900 text-white min-h-screen flex flex-col items-center">
             <Background />
-            <button
-                    onClick={handleGoHome}
-                    className=" absolute top-4 left-2 md:top-6 md:left-10 scale-75 md:scale-100 text-blue-500 hover:text-blue-700 bg-transparent border-2 border-blue-500 rounded-full p-2 font-bold shadow-lg hover:bg-blue-100 hover:scale-110 transition-all ease-in-out duration-300">
-                    &#8592; Home
-            </button>
-            <img src={krisha} alt="Coherence Logo" className="mb-2 w-2/3 md:w-1/3 z-50 mt-10 md:mt-none" />
+            <img src={krisha} alt="Coherence Logo" className="mb-2 w-2/3 md:w-1/3 z-50" />
+            
             <div className="flex justify-between items-center w-full md:w-3/4 mb-6">
-                
-                <h2 className="text-xl md:text-3xl font-bold text-center flex-grow">
-                    <span className="inline-block mx-2">🏆</span>
-                    LEADERBOARD
+                <button
+                    onClick={handleGoHome}
+                    className="text-blue-500 hover:text-blue-700 bg-transparent border border-blue-500 rounded-full p-2 font-semibold shadow-lg hover:bg-blue-100 hover:scale-110 transition-all ease-in-out duration-300"
+                >
+                    &#8592; Home
+                </button>
+                <h2 className="text-3xl font-bold text-center flex-grow">
+                    <span className="inline-block mx-2">🏆</span> 
+                    LEADERBOARD 
                     <span className="inline-block mx-2">🏆</span>
                 </h2>
+                <button
+                    onClick={toggleView}
+                    className="text-blue-500 hover:text-blue-700 bg-transparent border border-blue-500 rounded-full p-2 font-semibold shadow-lg hover:bg-blue-100 hover:scale-110 transition-all ease-in-out duration-300"
+                >
+                    {isAdminView ? "User View" : "Admin View"}
+                </button>
             </div>
 
+            {}
             <input
                 type="text"
                 placeholder="Search by team name"
                 value={searchTerm}
                 onChange={handleSearchChange}
-                className="p-2 mb-6 rounded-3xl text-blue-300 border-2 border-blue-300/50 bg-transparent w-full md:w-2/3 px-6"
+                className="p-2 mb-6 rounded-3xl text-blue-300 border-2 border-blue-300/50 bg-transparent w-2/3 px-6"
             />
 
-            {loading ? (
-                <div className="text-center py-8">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-                    <p className="text-lg text-blue-200 mt-4">Loading...</p>
+            {isAdminView ? (
+                
+                <div className="w-full md:w-3/4">
+                    {filteredTeams.length === 0 ? (
+                        <p className="text-lg text-center text-gray-400">No teams found.</p>
+                    ) : (
+                        <div>
+                            <h3 className="text-2xl font-light mb-4">Teams</h3>
+                            <ul className="space-y-4">
+                                {filteredTeams.map((team) => (
+                                    <li key={team.name} className="backdrop-blur-sm border-2 border-blue-300 rounded-xl shadow-lg overflow-hidden transform transition-transform duration-300 hover:-translate-y-2 shadow-blue-400 p-4">
+                                        <h3 className="text-xl mb-1">{team.name}</h3>
+                                        <p className="text-lg mb-4">Points: {team.points}</p>
+
+                                        {}
+                                        <div className="flex space-x-4">
+                                            <button
+                                                onClick={() => updatePointsInFirebase(team.name, 5)}
+                                                className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition duration-200"
+                                            >
+                                                Add 5 Points
+                                            </button>
+                                            <button
+                                                onClick={() => updatePointsInFirebase(team.name, 10)}
+                                                className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition duration-200"
+                                            >
+                                                Add 10 Points
+                                            </button>
+                                            <button
+                                                onClick={() => updatePointsInFirebase(team.name, 20)}
+                                                className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition duration-200"
+                                            >
+                                                Add 20 Points
+                                            </button>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                 </div>
             ) : (
-                <div className="w-full md:w-3/4 backdrop-blur-sm bg-blue-900/15 rounded-xl p-6 border border-blue-400/30 shadow-xl">
+        
+                <div className="w-full md:w-3/4 bg-blue-900/80 rounded-xl p-6 backdrop-blur-md border border-blue-400/30 shadow-xl">
+                    {}
                     <div className="grid grid-cols-3 gap-2 mb-4 text-sm md:text-base font-bold text-blue-200 border-b-2 border-blue-400 pb-2">
                         <div>RANKING</div>
                         <div>TEAM</div>
                         <div className="text-center">POINTS</div>
                     </div>
 
-                    {sortedTeams.length === 0 ? (
+                    {filteredTeams.length === 0 ? (
                         <p className="text-lg text-center text-blue-200 py-8">No teams found.</p>
                     ) : (
-                        sortedTeams.map((teamName, index) => (
-                            <div
-                                key={teamName}
-                                className="grid grid-cols-3 gap-2 items-center py-3 border-b border-blue-500/30 relative group hover:bg-blue-900 rounded-3xl transition-all duration-300"
+                        filteredTeams.map((team, index) => (
+                            <div 
+                                key={team.name}
+                                className="grid grid-cols-3 gap-2 items-center py-3 border-b border-blue-500/30 relative group hover:bg-blue-800/40 transition-all duration-300"
                             >
                                 {/* Rank */}
                                 <div className="flex items-center justify-center">
@@ -130,29 +182,28 @@ function Leaderboard() {
                                         {index + 1}
                                     </div>
                                 </div>
-
-                                {/* Team Name */}
-                                <div className="font-semibold text-white">{teamName}</div>
-
-                                {/* Points */}
+                                
+                                {}
+                                <div className="font-semibold text-white">{team.name}</div>
+                                
+                                {}
                                 <div className="text-center relative">
                                     <div className="flex items-center h-8">
-                                        <div
+                                        <div 
                                             className="absolute left-0 h-6 bg-gradient-to-r from-blue-600 to-blue-400 rounded-sm z-0 transition-all duration-500"
-                                            style={{ width: `${Math.max((teamPoints[teamName] / maxPoints) * 100, 5)}%` }} // Use maxPoints here
-                                            ></div>
-                                        <span className="relative z-10 w-full text-white font-bold">
-                                            {teamPoints[teamName] || 0}
-                                        </span>
+                                            style={{ width: `${Math.max((team.points / maxPoints) * 100, 5)}%` }}
+                                        ></div>
+                                        <span className="relative z-10 w-full text-white font-bold">{team.points}</span>
                                     </div>
                                 </div>
-
-                                {/* Hover details */}
-                                <div className="absolute left-1/3 md:left-2/3 opacity-0 group-hover:opacity-100 bg-blue-950 p-3 rounded-lg shadow-xl z-50 transition-all duration-300 pointer-events-none w-48">
-                                    <h4 className="font-bold text-lg mb-2 text-blue-200">{teamName}</h4>
+                                
+                                {}
+                                <div className="absolute -right-1 top-1/2 transform -translate-y-1/2 -translate-x-full opacity-0 group-hover:opacity-100 bg-blue-950 p-3 rounded-lg shadow-xl z-50 transition-all duration-300 pointer-events-none w-48">
+                                    <h4 className="font-bold text-lg mb-2 text-blue-200">{team.name}</h4>
                                     <div className="grid grid-cols-2 gap-1 text-sm">
                                         <div className="text-blue-300">Total Points:</div>
-                                        <div className="text-white font-bold">{teamPoints[teamName] || 0}</div>
+                                        <div className="text-white font-bold">{team.points}</div>
+                                        {}
                                     </div>
                                 </div>
                             </div>
