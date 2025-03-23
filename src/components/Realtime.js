@@ -292,7 +292,6 @@ const Realtime = () => {
             }
         });
         
-       
         return () => {
             unsubscribe();
             Object.values(upcomingNotifications).forEach(timeout => clearTimeout(timeout));
