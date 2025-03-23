@@ -150,18 +150,17 @@ const Home = () => {
       {/* Sidebar Menu */}
       <div
         ref={menuRef}
-        className={`fixed top-0 left-0 h-full w-64 bg-black bg-opacity-40 px-5 py-28 transform ${isMenuOpen ? "translate-x-0" : "-translate-x-full"
+        className={`fixed top-0 left-0 h-full w-64 bg-blue-950 bg-opacity-90 md:bg-opacity-75 px-5 py-28 transform ${isMenuOpen ? "translate-x-0" : "-translate-x-full"
           } transition-transform duration-300 ease-in-out z-40`}
       >
         <nav className="cursor-pointer flex flex-col space-y-6 text-white text-lg">
-          <a onClick={() => scrollToSection("home")} className="hover:text-gray-400">Home</a>
-          <a onClick={() => scrollToSection("about")} className="hover:text-gray-400">About</a>
-          <a onClick={() => scrollToSection("schedule")} className="hover:text-gray-400">Schedule</a>
-          {/* Fix this by using window.location.href or useNavigate for navigation */}
-          <a href="/shortlisted-teams" className="hover:text-gray-400 cursor-pointer">Shortlisted Teams</a>
-          <a href="/networking-list" className="hover:text-gray-400 cursor-pointer">Networking</a>
-          <a onClick={() => scrollToSection("faq")} className="hover:text-gray-400">FAQs</a>
-          <a onClick={() => scrollToSection("contact")} className="hover:text-gray-400">Contact</a>
+          <a onClick={() => scrollToSection("home")} className="hover:text-blue-100 hover:bg-blue-900 p-2 rounded-3xl transition-all">Home</a>
+          <a onClick={() => scrollToSection("about")} className="hover:text-blue-100 hover:bg-blue-900 p-2 rounded-3xl transition-all">About</a>
+          <a onClick={() => scrollToSection("schedule")} className="hover:text-blue-100 hover:bg-blue-900 p-2 rounded-3xl transition-all">Schedule</a>
+          <a href="/shortlisted-teams" className="hover:text-blue-100 hover:bg-blue-900 p-2 rounded-3xl transition-all">Shortlisted Teams</a>
+          {/* <a href="/networking-list" className="hover:text-gray-400 cursor-pointer">Networking</a> */}
+          <a onClick={() => scrollToSection("faq")} className="hover:text-blue-100 hover:bg-blue-900 p-2 rounded-3xl transition-all">FAQs</a>
+          <a onClick={() => scrollToSection("contact")} className="hover:text-blue-100 hover:bg-blue-900 p-2 rounded-3xl transition-all">Contact</a>
         </nav>
 
       </div>
@@ -259,7 +258,7 @@ const Home = () => {
         {showScrollButton && (
           <button
             onClick={scrollToTop}
-            className="fixed bottom-6 right-6 bg-white bg-opacity-70 text-white font-bold py-2 px-4 rounded-full"
+            className="fixed bottom-6 right-6 bg-white bg-opacity-70 text-white font-bold py-2 px-4 rounded-full z-50"
           >
             <FontAwesomeIcon
               icon={faAngleUp}
