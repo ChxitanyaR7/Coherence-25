@@ -21,10 +21,5 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getDatabase(app); // ✅ Use Realtime Database
 
-// Export the firebaseConfig for use in other files
-export { firebaseConfig };
-
-// Optional: If you need to use app or analytics, you can export them as well
-export { app, analytics };
-
-export { db, ref, set, push, onValue };
+// Export everything needed
+export { firebaseConfig, app, analytics, db, ref, set, push, onValue };

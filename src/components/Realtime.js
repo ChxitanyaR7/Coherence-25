@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { getDatabase, ref, onValue, set } from "firebase/database";
-import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "../firebase";
+import { ref, onValue, set } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 import mlscvcet from "../assets/mlsc-vcet.png";
 import Background from "./Background";
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+import { db } from "../firebase";  // Import the initialized db instance
 
 const WARNING_TIMES = [5, 3, 1, 0]; // Added 0 for "event is starting now" notification
 
