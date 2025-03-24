@@ -60,7 +60,7 @@ const Home = () => {
   };
 
   const handleRegistrationClick = () => {
-    window.location.href = "https://unstop.com/p/coherence-25-vidyavardhinis-college-of-engineering-and-technology-vasai-1419326"; // Replace with your actual registration link
+    window.location.href = "/shortlisted-teams"; // Replace with your actual registration link
   };
 
   function calculateTimeRemaining() {
@@ -248,9 +248,9 @@ const Home = () => {
           enabled="ture"
           // className="bg-purple-800 hover:bg-purple-500 text-white font-semibold py-2 px-4 rounded-xl mt-6"
           // Disable the button if registration is closed
-          className="bg-blue-900 shadow-blue-300 shadow-lg border-white text-white font-semibold py-2 px-4 rounded-xl mt-6 hover:scale-105 transition-all duration-0.3 ease-in-out hover:bg-transparent hover:border-4"
+          className="bg-blue-900 shadow-blue-300 shadow-lg border-white font-normal py-2 px-4 rounded-xl mt-6 hover:scale-105 transition-all duration-0.3 ease-in-out hover:bg-transparent hover:border-4"
         >
-          Register Now !
+          <p className="text-[30px]">Checkout the shortlisted teams!</p>
           {/* <i className="fa-solid fa-arrow-right"></i> */}
         </button>
 
@@ -258,7 +258,7 @@ const Home = () => {
         {showScrollButton && (
           <button
             onClick={scrollToTop}
-            className="fixed bottom-6 right-6 bg-white bg-opacity-70 text-white font-bold py-2 px-4 rounded-full z-50"
+            className="fixed bottom-6 left-6 bg-white bg-opacity-70 text-white font-bold py-2 px-4 rounded-full z-50"
           >
             <FontAwesomeIcon
               icon={faAngleUp}
