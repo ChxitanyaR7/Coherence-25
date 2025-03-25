@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getDatabase, ref, onValue, set } from "firebase/database";
+import { getDatabase, ref, onValue } from "firebase/database";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../firebase";
 import { useNavigate } from "react-router-dom";
@@ -13,14 +13,15 @@ const Realtime = () => {
     const navigate = useNavigate();
 
     const handleGoHome = () => {
-        navigate("/"); 
+        navigate("/");
     };
+
     // Use server time or local storage to maintain consistent time across refreshes
     const getPersistedTime = () => {
         const savedTime = localStorage.getItem('timeLeft');
         return savedTime ? parseInt(savedTime) : 24 * 60 * 60; // Default to 24 hours
     };
-    
+
     const [timeLeft, setTimeLeft] = useState(getPersistedTime());
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -29,10 +30,10 @@ const Realtime = () => {
     const [nextTask, setNextTask] = useState(null);
     const [upcomingNotifications, setUpcomingNotifications] = useState({});
     const [notificationPermission, setNotificationPermission] = useState(false);
-    
+
     // Time warning constants (in minutes)
     const WARNING_TIMES = [5, 3, 1]; // Notify at 5 mins, 3 mins, and 1 min before task
-    
+
     // Format time in HH:MM:SS
     const formatTime = (seconds) => {
         const hours = Math.floor(seconds / 3600);
@@ -64,7 +65,7 @@ const Realtime = () => {
         const now = new Date();
         return now.getHours() * 60 + now.getMinutes();
     };
-    
+
     // Request notification permission
     const requestNotificationPermission = async () => {
         try {
@@ -73,16 +74,16 @@ const Realtime = () => {
                 console.error("This browser does not support desktop notification");
                 return false;
             }
-            
+
             // Check if permission is already granted
             if (Notification.permission === "granted") {
                 setNotificationPermission(true);
                 return true;
             }
-            
+
             // Request permission from the user
             const permission = await Notification.requestPermission();
-            
+
             if (permission === "granted") {
                 setNotificationPermission(true);
                 return true;
@@ -95,7 +96,7 @@ const Realtime = () => {
             return false;
         }
     };
-    
+
     // Send system notification that works even when in other applications
     const sendSystemNotification = (title, body) => {
         try {
@@ -104,7 +105,7 @@ const Realtime = () => {
                 console.warn("Notification permission not granted");
                 return;
             }
-            
+
             // Create and display the notification
             const options = {
                 body: body,
@@ -113,25 +114,25 @@ const Realtime = () => {
                 silent: false, // Enable sound notification
                 vibrate: [200, 100, 200] // Vibration pattern for mobile devices
             };
-            
+
             // Use the Notification constructor directly
             const notification = new Notification(title, options);
-            
+
             // Add event listeners for the notification
             notification.onclick = () => {
                 // Focus on the window when notification is clicked
                 window.focus();
                 notification.close();
             };
-            
+
             notification.onshow = () => {
                 console.log(`NOTIFICATION SHOWN: ${title} - ${body}`);
             };
-            
+
             notification.onerror = (err) => {
                 console.error("Notification error:", err);
             };
-            
+
         } catch (error) {
             console.error("Error sending notification:", error);
             // Fallback to alert only if system notification fails
@@ -152,8 +153,6 @@ const Realtime = () => {
 
             // Only schedule if the task is in the future
             if (taskTimeInMinutes > currentTimeInMinutes) {
-                const WARNING_TIMES = [5, 3, 1]; // Example warning times (in minutes)
-
                 WARNING_TIMES.forEach(warningMin => {
                     const notifyAtTime = taskTimeInMinutes - warningMin;
 
@@ -166,7 +165,7 @@ const Realtime = () => {
                         newNotifications[notificationId] = setTimeout(() => {
                             sendSystemNotification(
                                 `Task Coming Up: ${task.title}`,
-                                `"${task.title}" will start in ${warningMin} minute${warningMin !== 1 ? 's' : ''} at ${task.time}`
+                                `${task.title} will start in ${warningMin} minute${warningMin !== 1 ? 's' : ''} at ${task.time}`
                             );
                         }, millisecondsUntilNotification);
                     }
@@ -184,11 +183,15 @@ const Realtime = () => {
             `This is a test notification sent at ${new Date().toLocaleTimeString()}`
         );
     };
-    
+
+    const handleClick = () => {
+        navigate('/');
+    };
+
     useEffect(() => {
         // Request notification permission when the component mounts
         requestNotificationPermission();
-        
+
         // Fetch tasks from Firebase when the component mounts
         const tasksRef = ref(db, 'tasks');
         const unsubscribe = onValue(tasksRef, (snapshot) => {
@@ -229,7 +232,6 @@ const Realtime = () => {
                 }
             }
 
-            // If no task is found (before first task of the day), default to the first task
             if (currentTaskIndex === -1 && fetchedTasks.length > 0) {
                 currentTaskIndex = 0;
             }
@@ -288,11 +290,11 @@ const Realtime = () => {
             <div className="backdrop-blur-sm text-5xl md:text-9xl mb-8 border-b-2 w-3/4 rounded-3xl p-8 sm:p-12 border-blue-500 shadow-lg shadow-blue-600">
                 {formatTime(timeLeft)}
             </div>
-            
+
             {!notificationPermission && (
                 <div className="bg-yellow-500 text-black p-4 rounded-lg mb-4">
                     <p className="font-bold">Notifications are not enabled!</p>
-                    <button 
+                    <button
                         className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
                         onClick={requestNotificationPermission}
                     >
@@ -300,7 +302,7 @@ const Realtime = () => {
                     </button>
                 </div>
             )}
-            
+
             {/* Display loading spinner while fetching tasks */}
             {loading ? (
                 <div className="flex justify-center items-center w-full h-24">
@@ -308,8 +310,8 @@ const Realtime = () => {
                 </div>
             ) : (
                 <div className="flex flex-col md:flex-row justify-center items-center w-full md:w-4/5 space-y-4 md:space-y-0 md:space-x-4 m-4 mb-6">
-                <div className="backdrop-blur-sm flex-none w-3/4 md:w-1/4 text-center p-4 rounded-3xl text-xl border-2 opacity-50 shadow-lg shadow-gray-400">
-                    {/* Previous task */}
+                    <div className="backdrop-blur-sm flex-none w-3/4 md:w-1/4 text-center p-4 rounded-3xl text-xl border-2 opacity-50 shadow-lg shadow-gray-400">
+                        {/* Previous task */}
                         {previousTask ? (
                             <>
                                 <h2>{previousTask.title}</h2>
@@ -322,16 +324,18 @@ const Realtime = () => {
 
                     {/* Current task in the center */}
                     {currentTask && (
-                        <div className="backdrop-blur-sm flex-none w-3/4 md:w-1/4 text-center p-4 rounded-3xl text-xl md:text-3xl font-bold border-2 border-blue-500 shadow-lg shadow-blue-500 hover:scale-105 transition-all ease-in-out duration-300">                            <h2>{currentTask.title}</h2>
+                        <div className="backdrop-blur-sm flex-none w-3/4 md:w-1/4 text-center p-4 rounded-3xl text-xl md:text-3xl font-bold border-2 border-blue-500 shadow-lg shadow-blue-500 hover:scale-105 transition-all ease-in-out duration-300">
+                            <h2>{currentTask.title}</h2>
                             <p>{currentTask.time}</p>
                             <div className="mt-4 text-sm bg-green-600 px-3 py-1 rounded-full w-1/2 mx-auto animate-pulse">
                                 Now active
                             </div>
                         </div>
                     )}
-                    
+
                     {/* Next task */}
-                    <div className="backdrop-blur-sm flex-none w-3/4 md:w-1/4 text-center p-4 rounded-3xl text-xl border-2 border-blue-700 shadow-lg shadow-blue-700 hover:scale-105 transition-all ease-in-out duration-300">                        {nextTask ? (
+                    <div className="backdrop-blur-sm flex-none w-3/4 md:w-1/4 text-center p-4 rounded-3xl text-xl border-2 border-blue-700 shadow-lg shadow-blue-700 hover:scale-105 transition-all ease-in-out duration-300">
+                        {nextTask ? (
                             <>
                                 <h2>{nextTask.title}</h2>
                                 <p>{nextTask.time}</p>
@@ -345,16 +349,19 @@ const Realtime = () => {
                     </div>
                 </div>
             )}
-            
+
             <div className="flex flex-row flex-wrap justify-center space-y-2 sm:space-y-0 sm:space-x-4 mt-4">
-                <button 
+                {/* <button
                     className="border-2 p-3 rounded-3xl border-green-500 hover:scale-105 transition-all ease-in-out duration-0.3"
                     onClick={testNotification}
                 >
                     Test Notification
-                </button>
+                </button> */}
 
-                <button className="border-2 p-3 m-2 rounded-3xl border-blue-500 hover:scale-105 transition-all ease-in-out duration-300">
+                <button
+                    onClick={handleClick}
+                    className="border-2 p-3 m-2 rounded-3xl border-blue-500 hover:scale-105 transition-all ease-in-out duration-300"
+                >
                     Show Timeline
                 </button>
             </div>
