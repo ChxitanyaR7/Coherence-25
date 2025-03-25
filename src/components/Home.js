@@ -6,7 +6,7 @@ import { faAngleUp, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { faInstagram, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import Background from "./Background";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 const Home = () => {
   const targetDate = new Date("March 28, 2025 00:00:00 GMT+0530").getTime();
@@ -250,7 +250,7 @@ const Home = () => {
           // Disable the button if registration is closed
           className="bg-blue-900 shadow-blue-300 shadow-lg border-white font-normal py-2 px-4 rounded-xl mt-6 hover:scale-105 transition-all duration-0.3 ease-in-out hover:bg-transparent hover:border-4"
         >
-          <p className="text-[30px]">Checkout the shortlisted teams!</p>
+          <p className="text-lg md:text-xl">Checkout the shortlisted teams!</p>
           {/* <i className="fa-solid fa-arrow-right"></i> */}
         </button>
 
@@ -258,7 +258,7 @@ const Home = () => {
         {showScrollButton && (
           <button
             onClick={scrollToTop}
-            className="fixed bottom-6 left-6 bg-white bg-opacity-70 text-white font-bold py-2 px-4 rounded-full z-50"
+            className="fixed bottom-4 left-4 bg-white bg-opacity-70 text-white font-bold py-3 px-4 md:px-5 rounded-full z-50 scale-75 md:scale-100"
           >
             <FontAwesomeIcon
               icon={faAngleUp}
