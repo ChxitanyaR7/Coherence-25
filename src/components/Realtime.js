@@ -228,55 +228,8 @@ const Realtime = () => {
         setUpcomingNotifications(newNotifications);
     };
     
-    // Test notification system without creating a task
-    const testNotification = () => {
-        sendNotification(
-            "Test Notification",
-            `This is a test notification sent at ${new Date().toLocaleTimeString()}. This will not affect the schedule.`
-        );
-    };
     
-    // Add a test task - preserved but marked clearly as test
-    const addTestTask = () => {
-        if (window.confirm("This will add a test task that will NOT appear in the schedule or send notifications. It is for testing purposes only. Continue?")) {
-            // Get current time
-            const now = new Date();
-            
-            // Create a time 6 minutes from now
-            now.setMinutes(now.getMinutes() + 6);
-            
-            // Format the time for display (like "4:30 PM")
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const period = hours >= 12 ? 'PM' : 'AM';
-            const displayHours = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
-            const timeString = `${displayHours}:${String(minutes).padStart(2, '0')} ${period}`;
-            
-            // Create a test task
-            const testTask = {
-                id: 'test-task-' + Date.now(),
-                title: 'Test Task',
-                time: timeString,
-                day: currentDay,
-                order: 999,
-                isTest: true  
-            };
-            
-            // Add to Firebase
-            const taskRef = ref(db, `tasks/${testTask.id}`);
-            set(taskRef, testTask)
-                .then(() => {
-                    sendNotification(
-                        "Test Task Added",
-                        `A test task has been added to the database for ${timeString} (6 minutes from now). It will NOT appear in the schedule or send notifications.`
-                    );
-                })
-                .catch(error => {
-                    console.error("Error adding test task:", error);
-                    alert("Error adding test task: " + error.message);
-                });
-        }
-    };
+    
     
     // Initialize the event schedule for day 1 and day 2
     const initializeSchedule = () => {
@@ -415,23 +368,6 @@ const Realtime = () => {
         }
     };
     
-    // Reset notifications 
-    const resetNotifications = () => {
-        // Clear all existing timeouts
-        Object.values(upcomingNotifications).forEach(timeout => clearTimeout(timeout));
-        setUpcomingNotifications({});
-        
-        // Reschedule notifications
-        scheduleNotifications(tasks);
-        
-        // Update current tasks
-        updateCurrentTask(tasks);
-        
-        sendNotification(
-            "Notifications Reset",
-            "All notifications have been rescheduled."
-        );
-    };
 
     // Toggle timeline view
     const toggleTimeline = () => {
@@ -644,45 +580,10 @@ const Realtime = () => {
             
             <div className="flex flex-row flex-wrap justify-center space-y-2 sm:space-y-0 sm:space-x-4 mt-4">
                 <button 
-                    className="border-2 p-3 rounded-3xl border-purple-500 hover:scale-105 transition-all ease-in-out duration-300"
-                    onClick={toggleDay}
-                >
-                    Switch to Day {currentDay === 1 ? "2" : "1"}
-                </button>
-                
-                <button 
-                    className="border-2 p-3 rounded-3xl border-green-500 hover:scale-105 transition-all ease-in-out duration-300"
-                    onClick={testNotification}
-                >
-                    Test Notification
-                </button>
-
-                <button 
                     className="border-2 p-3 m-2 rounded-3xl border-blue-500 hover:scale-105 transition-all ease-in-out duration-300"
                     onClick={toggleTimeline}
                 >
                     {showTimeline ? "Hide Timeline" : "Show Timeline"}
-                </button>
-                
-                <button 
-                    className="border-2 p-3 rounded-3xl border-yellow-500 hover:scale-105 transition-all ease-in-out duration-300"
-                    onClick={addTestTask}
-                >
-                    Add Test Task
-                </button>
-                
-                <button 
-                    className="border-2 p-3 rounded-3xl border-red-500 hover:scale-105 transition-all ease-in-out duration-300"
-                    onClick={resetNotifications}
-                >
-                    Reset Notifications
-                </button>
-                
-                <button 
-                    className="border-2 p-3 rounded-3xl border-teal-500 hover:scale-105 transition-all ease-in-out duration-300"
-                    onClick={initializeSchedule}
-                >
-                    Reset Schedule
                 </button>
             </div>
         </div>
