@@ -644,45 +644,10 @@ const Realtime = () => {
             
             <div className="flex flex-row flex-wrap justify-center space-y-2 sm:space-y-0 sm:space-x-4 mt-4">
                 <button 
-                    className="border-2 p-3 rounded-3xl border-purple-500 hover:scale-105 transition-all ease-in-out duration-300"
-                    onClick={toggleDay}
-                >
-                    Switch to Day {currentDay === 1 ? "2" : "1"}
-                </button>
-                
-                <button 
-                    className="border-2 p-3 rounded-3xl border-green-500 hover:scale-105 transition-all ease-in-out duration-300"
-                    onClick={testNotification}
-                >
-                    Test Notification
-                </button>
-
-                <button 
                     className="border-2 p-3 m-2 rounded-3xl border-blue-500 hover:scale-105 transition-all ease-in-out duration-300"
                     onClick={toggleTimeline}
                 >
                     {showTimeline ? "Hide Timeline" : "Show Timeline"}
-                </button>
-                
-                <button 
-                    className="border-2 p-3 rounded-3xl border-yellow-500 hover:scale-105 transition-all ease-in-out duration-300"
-                    onClick={addTestTask}
-                >
-                    Add Test Task
-                </button>
-                
-                <button 
-                    className="border-2 p-3 rounded-3xl border-red-500 hover:scale-105 transition-all ease-in-out duration-300"
-                    onClick={resetNotifications}
-                >
-                    Reset Notifications
-                </button>
-                
-                <button 
-                    className="border-2 p-3 rounded-3xl border-teal-500 hover:scale-105 transition-all ease-in-out duration-300"
-                    onClick={initializeSchedule}
-                >
-                    Reset Schedule
                 </button>
             </div>
         </div>
