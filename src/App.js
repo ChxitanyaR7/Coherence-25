@@ -98,14 +98,16 @@ function App() {
 }
 
 // Access the password from the environment variable
-const SSH_PASSWORD = process.env.REACT_APP_SSH_PASSWORD;
+const REACT_APP_REALTIME_PASSWORD = process.env.REACT_APP_REALTIME_PASSWORD;
+const REACT_APP_LEADERBOARD_PASSWORD = process.env.REACT_APP_LEADERBOARD_PASSWORD;
+
 
 function PasswordValidation() {
   const { password } = useParams();
   const [isValid, setIsValid] = useState(null);
 
   useEffect(() => {
-    if (password === SSH_PASSWORD) {
+    if (password === REACT_APP_REALTIME_PASSWORD) {
       setIsValid(true);
     } else {
       setIsValid(false);
@@ -134,7 +136,7 @@ function LeaderboardPasswordValidation() {
   const [isValid, setIsValid] = useState(null);
 
   useEffect(() => {
-    if (password === SSH_PASSWORD) {
+    if (password === REACT_APP_LEADERBOARD_PASSWORD) {
       setIsValid(true);
     } else {
       setIsValid(false);

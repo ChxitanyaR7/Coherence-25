@@ -4,23 +4,35 @@ import { useNavigate } from "react-router-dom";
 import coherencelogo from "../assets/coherence logo.png";
 import Background from "./Background";
 import { storage, uploadFile } from "../appwrite"; // Appwrite setup file
+import shortlistedTeams from "../assets/shortlisted.json";
 
 const db = getDatabase(); // Get the database instance
 
-const addTeamName = (teamName) => {
-  const teamNamesRef = ref(db, 'team_names');
-  const newTeamRef = push(teamNamesRef); 
+// Function to add shortlisted teams to Firebase
+const addShortlistedTeams = () => {
+  const teamNamesRef = ref(db, 'team_names'); 
 
-  set(newTeamRef, teamName)
-    .then(() => {
-      console.log(`${teamName} added successfully.`);
-    })
-    .catch((error) => {
-      console.error("Error adding team name: ", error);
+  shortlistedTeams.forEach((team) => {
+    const newTeamRef = push(teamNamesRef); // Create a new reference for each team
+    set(newTeamRef, {
+      name: team.name,
+      id: team.id,
+      leader: team.leader,
+      domain: team.domain,
+      member2: team.member_2,
+      member3: team.member_3,
+      member4: team.member_4
+    }).then(() => {
+      console.log(`Team ${team.name} added successfully with members and domain.`);
+    }).catch((error) => {
+      console.error("Error adding team: ", error);
     });
+    
+  });
 };
 
-// addTeamName("Team Gamma");
+// Call the function to add shortlisted teams to Firebase
+// addShortlistedTeams();
 
 function Form() {
   const [formData, setFormData] = useState({
@@ -31,8 +43,9 @@ function Form() {
     imageUrl: ""
   });
 
-  const [teamNames, setTeamNames] = useState([]); // State to store team names
+  const [teamNames, setTeamNames] = useState([]); 
   const [imageFile, setImageFile] = useState(null);
+  const [imageName, setImageName] = useState(""); // Add state for image file name
   const [alreadySubmitted, setAlreadySubmitted] = useState(false); 
 
   const navigate = useNavigate(); 
@@ -42,15 +55,16 @@ function Form() {
     if (localStorage.getItem("formSubmitted") === "true") {
       setAlreadySubmitted(true);
     }
-
+  
     // Fetch team names from the database when the component mounts
     const fetchTeamNames = async () => {
       try {
         const teamNamesRef = ref(db, "team_names"); 
         const snapshot = await get(teamNamesRef);
         if (snapshot.exists()) {
-          const names = Object.values(snapshot.val()); // Convert the object to an array of team names
-          setTeamNames(names); // Update state with team names
+          const teams = snapshot.val(); // Get all teams data
+          const teamNamesArray = Object.values(teams).map(team => team.name); // Extract team names
+          setTeamNames(teamNamesArray); // Update state with team names
         } else {
           console.log("No team names found in the database.");
         }
@@ -58,7 +72,7 @@ function Form() {
         console.error("Error fetching team names: ", error);
       }
     };
-
+  
     fetchTeamNames();
   }, []);
 
@@ -66,9 +80,11 @@ function Form() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle image file change
+  // Handle image file change and update image name
   const handleImageChange = (e) => {
-    setImageFile(e.target.files[0]);
+    const file = e.target.files[0];
+    setImageFile(file);
+    setImageName(file ? file.name : ""); // Update image name state
   };
 
   // url validation regex
@@ -97,56 +113,80 @@ function Form() {
     // Check if the user has already submitted by checking localStorage
     if (localStorage.getItem("formSubmitted") === "true") {
       alert("You have already submitted your details.");
-      return; 
+      return;
     }
   
     if (!validateUrls()) {
-      return; 
+      return;
     }
   
     try {
       let uploadedImageUrl = "";
       if (imageFile) {
-        uploadedImageUrl = await uploadFile(imageFile); 
+        uploadedImageUrl = await uploadFile(imageFile);
       }
   
-      // Reference to the selected team name in the database
-      const teamRef = ref(db, `team_members/${formData.teamName}`);
-  
-      // Get the current team members
+      const teamRef = ref(db, 'team_names'); 
       const snapshot = await get(teamRef);
       if (snapshot.exists()) {
-        const teamMembers = Object.values(snapshot.val());
-        
-        // Check if the team has less than 4 members
-        if (teamMembers.length >= 4) {
-          alert("Each team can only have a maximum of 4 members.");
-          return; // Prevent submission if the team already has 4 members
+        const teams = snapshot.val();
+        let selectedTeamId = "";
+        let selectedTeamName = formData.teamName;
+  
+        for (const teamId in teams) {
+          if (teams[teamId].name === selectedTeamName) {
+            selectedTeamId = teamId;  
+            break;
+          }
         }
+  
+        if (!selectedTeamId) {
+          alert("Selected team does not exist.");
+          return;
+        }
+  
+        const teamMembersRef = ref(db, `team_members/${selectedTeamName}`);
+  
+        // Get the current team members
+        const membersSnapshot = await get(teamMembersRef);
+        if (membersSnapshot.exists()) {
+          const teamMembers = Object.values(membersSnapshot.val());
+  
+          // Check if the team has less than 4 members
+          if (teamMembers.length >= 4) {
+            alert("Each team can only have a maximum of 4 members.");
+            return; // Prevent submission if the team already has 4 members
+          }
+        }
+  
+        // Push the form data under the selected team name
+        const newMemberRef = push(teamMembersRef); // Create a new child under the selected team name
+        await set(newMemberRef, {
+          name: formData.name,
+          github: formData.github,
+          linkedin: formData.linkedin,
+          imageUrl: uploadedImageUrl
+        });
+  
+        // Mark the form as submitted in localStorage
+        localStorage.setItem("formSubmitted", "true");
+  
+        alert("Details submitted successfully!");
+  
+        // Redirect to the /networking-list route after successful form submission
+        navigate("/networking-list");
+  
+        // Reset form data
+        setFormData({ name: "", teamName: "", github: "", linkedin: "", imageUrl: "" });
+      } else {
+        alert("No teams found in the database.");
       }
   
-      // Push the form data under the selected team
-      const newMemberRef = push(teamRef); // Create a new child under the selected team name
-      await set(newMemberRef, {
-        name: formData.name,
-        github: formData.github,
-        linkedin: formData.linkedin,
-        imageUrl: uploadedImageUrl
-      }); // Set member data under the generated ID
-  
-      // Mark the form as submitted in localStorage
-      localStorage.setItem("formSubmitted", "true");
-  
-      alert("Details submitted successfully!");
-  
-      // Redirect to the /networking-list route after successful form submission
-      navigate("/networking-list");
-  
-      setFormData({ name: "", teamName: "", github: "", linkedin: "", imageUrl: "" }); 
     } catch (error) {
       console.error("Error adding document: ", error);
     }
   };
+  
 
   const handleGoHome = () => {
     navigate("/"); 
@@ -201,7 +241,22 @@ function Form() {
             required
             className="w-full p-3 rounded-3xl bg-transparent border-2 border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-700"
           />
-          <input type="file" accept="image/*" onChange={handleImageChange} required className="w-full p-3 rounded-3xl bg-transparent border-2 border-blue-200" />
+          <div className="flex justify-center items-center w-full">
+            <input
+              id="fileInput"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              required
+              className="absolute opacity-0 cursor-pointer w-full"
+            />
+            <label
+              htmlFor="fileInput"
+              className="p-2 w-3/4 bg-blue-500 text-white text-lg rounded-full shadow-lg cursor-pointer hover:bg-blue-600 transition duration-200"
+            >
+              {imageName ? imageName : "Choose an Image"} {/* Display file name if uploaded */}
+            </label>
+          </div>
           <button
             type="submit"
             className="w-full rounded-3xl bg-blue-800 hover:bg-transparent hover:border-4 border-blue-500 hover:p-2 transition-all text-white p-3 font-semibold"
@@ -214,7 +269,7 @@ function Form() {
       {/* Small button on top left for "Back to Home" */}
       <button
         onClick={handleGoHome}
-        className="absolute top-4 left-4 text-blue-500 hover:text-blue-700 bg-transparent border border-blue-500 rounded-full p-2 font-semibold shadow-lg hover:bg-blue-100 hover:scale-110 transition-all ease-in-out duration-300"
+        className="absolute top-2 md:top-4 left-2 md:left-4 text-blue-500 hover:text-blue-700 bg-transparent border border-blue-500 rounded-full p-2 font-semibold shadow-lg hover:bg-blue-100 hover:scale-110 transition-all ease-in-out duration-300 scale-75 md:scale-100"
       >
         &#8592; Home
       </button>
