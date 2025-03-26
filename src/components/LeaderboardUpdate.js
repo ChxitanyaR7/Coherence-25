@@ -19,10 +19,10 @@ function LeaderboardUpdate() {
         const unsubscribeTeams = onValue(teamNamesRef, (snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.val();
-                const formattedTeamNames = Object.values(data);
+                const formattedTeamNames = Object.keys(data).map((key) => data[key].name); // Extracting the 'name' property
                 setTeamNames(formattedTeamNames);
             } else {
-                setTeamNames([]);
+                setTeamNames([]); // If no teams are found
             }
         });
 
@@ -55,7 +55,7 @@ function LeaderboardUpdate() {
             unsubscribeTeams();
             unsubscribePoints();
         };
-    }, [teamNames]);
+    }, [teamNames]); // The dependency on `teamNames` ensures the component updates when the teams change
 
     const filteredTeams = teamNames.filter((teamName) =>
         teamName.toLowerCase().includes(searchTerm.toLowerCase())
