@@ -13,34 +13,36 @@ function Leaderboard() {
 
     useEffect(() => {
         const db = getDatabase();
-        const teamNamesRef = ref(db, "team_names"); // Adjusted to match your Firebase structure
+        const teamNamesRef = ref(db, "team_names"); // No change here; we keep the same reference
+    
         const pointsRef = ref(db, "team_leaderboard");
-
+    
         const unsubscribeTeams = onValue(teamNamesRef, (snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.val();
-                const formattedTeamNames = Object.values(data); // Extract team names
-                setTeamNames(formattedTeamNames);
+                const formattedTeamNames = Object.keys(data).map((key) => data[key].name); // Extracting the 'name' property
+    
+                setTeamNames(formattedTeamNames); // Setting the team names in state
             } else {
-                setTeamNames([]);
+                setTeamNames([]); // If no teams are found
             }
         });
-
+    
         const unsubscribePoints = onValue(pointsRef, (snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.val();
                 const formattedTeamPoints = {};
-
+    
                 Object.keys(data).forEach((teamName) => {
                     formattedTeamPoints[teamName] = data[teamName]?.points || 0;
                 });
-
+    
                 teamNames.forEach((teamName) => {
                     if (!formattedTeamPoints[teamName]) {
                         formattedTeamPoints[teamName] = 0;
                     }
                 });
-
+    
                 setTeamPoints(formattedTeamPoints);
             } else {
                 const initialPoints = {};
@@ -49,16 +51,17 @@ function Leaderboard() {
                 });
                 setTeamPoints(initialPoints);
             }
-
+    
             // Set loading to false after the data is fetched
             setLoading(false);
         });
-
+    
         return () => {
             unsubscribeTeams();
             unsubscribePoints();
         };
-    }, [teamNames]);
+    }, [teamNames]); // The dependency on `teamNames` remains the same
+    
 
     const filteredTeams = teamNames.filter((teamName) =>
         teamName.toLowerCase().includes(searchTerm.toLowerCase())
@@ -122,20 +125,20 @@ function Leaderboard() {
                         sortedTeams.map((teamName, index) => (
                             <div
                                 key={teamName}
-                                className="grid grid-cols-3 gap-2 items-center py-3 border-b border-blue-500/30 relative group hover:bg-blue-900 rounded-3xl transition-all duration-300"
+                                className="grid grid-cols-3 gap-0 items-center py-3 border-b border-blue-500/30 relative group hover:bg-blue-900 rounded-3xl transition-all duration-300"
                             >
                                 {/* Rank */}
-                                <div className="flex items-center justify-center">
-                                    <div className="w-8 h-8 rounded-full bg-blue-700 flex items-center justify-center text-white font-bold shadow-md">
+                                <div className="flex items-center justify-center gap-2">
+                                    <div className="w-6 h-6 text-sm md:w-8 md:h-8 rounded-full bg-blue-700 flex items-center justify-center text-white font-bold shadow-md">
                                         {index + 1}
                                     </div>
                                 </div>
 
                                 {/* Team Name */}
-                                <div className="font-semibold text-white">{teamName}</div>
+                                <div className="text-sm md:text-xl md:font-semibold text-white">{teamName}</div>
 
                                 {/* Points */}
-                                <div className="text-center relative">
+                                <div className="text-center relative scale-75 md:scale-100 p-2">
                                     <div className="flex items-center h-8">
                                         <div
                                             className="absolute left-0 h-6 bg-gradient-to-r from-blue-600 to-blue-400 rounded-sm z-0 transition-all duration-500"

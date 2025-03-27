@@ -21,6 +21,7 @@ import Shortlisted from './components/Shortlisted';
 import LeaderboardUpdate from "./components/LeaderboardUpdate";
 import Leaderboard from "./components/Leaderboard"; // Assuming this is the Leaderboard component.
 import Chatbot from "./components/Chatbot";
+import Sponsors from "./components/Sponsors";
 
 function App() {
   const [showIntroduction, setShowIntroduction] = useState(false);
@@ -48,64 +49,67 @@ function App() {
   return (
     <div>
       <Router>
-      <div className="App bg-black">
-        {/* Display YetToRevealPage until reveal date */}
-        {showYetToRevealPage && <YetToRevealPage className="yet-to-reveal" />}
+        <div className="App bg-black">
+          {/* Display YetToRevealPage until reveal date */}
+          {showYetToRevealPage && <YetToRevealPage className="yet-to-reveal" />}
 
-        {/* Display Introduction after reveal date */}
-        {showIntroduction && <Introduction />}
+          {/* Display Introduction after reveal date */}
+          {showIntroduction && <Introduction />}
 
-        {/* Display other components after a delay */}
-        {showRemainingComponents && (
-          <div style={{ position: "relative", zIndex: 1 }}>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <div>
-                    <Home />
-                    <About />
-                    <Domains />
-                    <Schedule />
-                    <Timeline />
-                    <GeneralGuidelines />
-                    <PrizePodium />
-                    <FAQs />
-                    <ContactUs />
-                    <Footer />
-                  </div>
-                }
-              />
-              <Route path="/realtime" element={<Realtime />} />
-              <Route path="/networking-form" element={<Form />} />
-              <Route path="/networking-list" element={<TeamList />} />
-              <Route path="/realtime/:password" element={<PasswordValidation />} />
-              <Route path="/leaderboard/:password" element={<LeaderboardPasswordValidation />} />
-              <Route path="/shortlisted-teams" element={<Shortlisted />} />
+          {/* Display other components after a delay */}
+          {showRemainingComponents && (
+            <div style={{ position: "relative", zIndex: 1 }}>
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <div>
+                      <Home />
+                      <About />
+                      <Domains />
+                      <Schedule />
+                      <Timeline />
+                      <GeneralGuidelines />
+                      <PrizePodium />
+                      <Sponsors />
+                      <FAQs />
+                      <ContactUs />
+                      <Footer />
+                    </div>
+                  }
+                />
+                <Route path="/realtime" element={<Realtime />} />
+                <Route path="/networking-form" element={<Form />} />
+                <Route path="/networking-list" element={<TeamList />} />
+                <Route path="/realtime/:password" element={<PasswordValidation />} />
+                <Route path="/leaderboard/:password" element={<LeaderboardPasswordValidation />} />
+                <Route path="/shortlisted-teams" element={<Shortlisted />} />
 
-              {/* Add route for /leaderboard */}
-              <Route path="/leaderboard" element={<Leaderboard />} />
+                {/* Add route for /leaderboard */}
+                <Route path="/leaderboard" element={<Leaderboard />} />
 
-            </Routes>
-            <Chatbot/>
-          </div>
-        )}
-      </div>
-    </Router>
-   
+              </Routes>
+              <Chatbot />
+            </div>
+          )}
+        </div>
+      </Router>
+
     </div>
   );
 }
 
 // Access the password from the environment variable
-const SSH_PASSWORD = process.env.REACT_APP_SSH_PASSWORD;
+const REACT_APP_REALTIME_PASSWORD = process.env.REACT_APP_REALTIME_PASSWORD;
+const REACT_APP_LEADERBOARD_PASSWORD = process.env.REACT_APP_LEADERBOARD_PASSWORD;
+
 
 function PasswordValidation() {
   const { password } = useParams();
   const [isValid, setIsValid] = useState(null);
 
   useEffect(() => {
-    if (password === SSH_PASSWORD) {
+    if (password === REACT_APP_REALTIME_PASSWORD) {
       setIsValid(true);
     } else {
       setIsValid(false);
@@ -134,7 +138,7 @@ function LeaderboardPasswordValidation() {
   const [isValid, setIsValid] = useState(null);
 
   useEffect(() => {
-    if (password === SSH_PASSWORD) {
+    if (password === REACT_APP_LEADERBOARD_PASSWORD) {
       setIsValid(true);
     } else {
       setIsValid(false);

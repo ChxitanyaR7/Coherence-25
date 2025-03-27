@@ -158,7 +158,9 @@ const Home = () => {
           <a onClick={() => scrollToSection("about")} className="hover:text-blue-100 hover:bg-blue-900 p-2 rounded-3xl transition-all">About</a>
           <a onClick={() => scrollToSection("schedule")} className="hover:text-blue-100 hover:bg-blue-900 p-2 rounded-3xl transition-all">Schedule</a>
           <a href="/shortlisted-teams" className="hover:text-blue-100 hover:bg-blue-900 p-2 rounded-3xl transition-all">Shortlisted Teams</a>
-          {/* <a href="/networking-list" className="hover:text-gray-400 cursor-pointer">Networking</a> */}
+          {/* <a href="/networking-form" className="hover:text-blue-100 hover:bg-blue-900 p-2 rounded-3xl transition-all">Networking Form</a> */}
+          <a href="/networking-list" className="hover:text-blue-100 hover:bg-blue-900 p-2 rounded-3xl transition-all">Networking</a>
+          <a href="/leaderboard" className="hover:text-blue-100 hover:bg-blue-900 p-2 rounded-3xl transition-all">Leaderboard</a>
           <a onClick={() => scrollToSection("faq")} className="hover:text-blue-100 hover:bg-blue-900 p-2 rounded-3xl transition-all">FAQs</a>
           <a onClick={() => scrollToSection("contact")} className="hover:text-blue-100 hover:bg-blue-900 p-2 rounded-3xl transition-all">Contact</a>
         </nav>

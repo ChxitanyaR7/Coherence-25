@@ -1,9 +1,9 @@
 import React from "react";
 import Dummy from "../assets/sponsor_logo.png";
-import PSP1 from "../assets/scogo.png";
-import TechPartner1 from "../assets/wolfram.png";
-import TechPartner2 from "../assets/xyz.png";
-import PlatformPartner from "../assets/hacktoskill.png";
+import PSP1 from "../assets/unstop.jpg";
+import TechPartner1 from "../assets/khetlaji.png";
+import TechPartner2 from "../assets/forks_and_spoons.png";
+import PlatformPartner from "../assets/tech_crpytors.png";
 import "./style/sectionLine.css";
 import { motion } from "framer-motion";
 
@@ -48,7 +48,7 @@ const Sponsors = () => {
         {/* PS Partners */}
         <div className="mb-4 md:mb-8">
           <h3 className="text-lg md:text-xl font-semibold mb-2">
-            Problem Statement Partners
+            Platform Partners
           </h3>
           <div className="flex flex-col md:flex-row items-center justify-center md:justify-around">
             <div className="mb-4 md:mb-8">
@@ -60,7 +60,7 @@ const Sponsors = () => {
                   width={175} // Set the desired width in pixels
                   height={225} // Set the desired height in pixels
                 />
-                <p className="text-sm">Scogo Networks</p>
+                <p className="text-sm">Unstop</p>
               </div>
             </div>
 
@@ -93,9 +93,9 @@ const Sponsors = () => {
         </div>
 
         {/* Technology Partners */}
-        <div className="mb-4 md:mb-8">
+        <div className="mb-4 md:mb-8 w-1/3 mx-auto">
           <h3 className="text-lg md:text-xl font-semibold mb-2">
-            Technology Partners
+            Culinary Partners
           </h3>
           <div className="flex flex-col md:flex-row items-center justify-center md:justify-around">
             <div className="mb-4 md:mb-8">
@@ -107,7 +107,7 @@ const Sponsors = () => {
                   width={175} // Set the desired width in pixels
                   height={225} // Set the desired height in pixels
                 />
-                <p className="text-sm">Wolfram</p>
+                <p className="text-sm">Khetlaji</p>
               </div>
             </div>
 
@@ -120,7 +120,7 @@ const Sponsors = () => {
                   width={175} // Set the desired width in pixels
                   height={225} // Set the desired height in pixels
                 />
-                <p className="text-sm">.xyz Domains</p>
+                <p className="text-sm">Forks & Spoons 51</p>
               </div>
             </div>
 
@@ -142,7 +142,7 @@ const Sponsors = () => {
         {/* Platform Partner */}
         <div className="mb-4 md:mb-8">
           <h3 className="text-lg md:text-xl font-semibold mb-2">
-            Platform Partners
+            Tech Partners
           </h3>
           <div className="flex flex-col md:flex-row items-center justify-center md:justify-around">
             <div className="mb-4 md:mb-8">
@@ -154,7 +154,7 @@ const Sponsors = () => {
                   width={175} // Set the desired width in pixels
                   height={225} // Set the desired height in pixels
                 />
-                <p className="text-sm">Hack2Skill</p>
+                <p className="text-sm">Tech Cryptors</p>
               </div>
             </div>
           </div>

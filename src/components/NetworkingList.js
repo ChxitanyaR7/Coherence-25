@@ -65,7 +65,7 @@ function TeamList() {
       <h2 className="text-3xl font-bold mb-6">Happy Networking !</h2>
       <button
         onClick={handleGoHome}
-        className="absolute top-4 left-4 text-blue-500 hover:text-blue-700 bg-transparent border border-blue-500 rounded-full p-2 font-semibold shadow-lg hover:bg-blue-100 hover:scale-110 transition-all ease-in-out duration-300"
+        className="absolute top-0 md:top-4 left-0 md:left-4 scale-75 md:scale-100 text-blue-500 hover:text-blue-700 bg-transparent border border-blue-500 rounded-full p-2 font-semibold shadow-lg hover:bg-blue-100 hover:scale-110 transition-all ease-in-out duration-300"
       >
         &#8592; Home
       </button>

@@ -89,7 +89,7 @@ export default function Chatbot() {
             button.style.display = "none";
           }
         }}
-        className="fixed z-20 flex justify-center items-center bottom-4 right-4 rounded-full p-4 shadow-lg chat-button scale-75 md:scale-100"
+        className="fixed z-20 flex justify-center items-center bottom-0 md:bottom-4 right-0 md:right-4 rounded-full p-4 shadow-lg chat-button scale-75 md:scale-100"
       >
         <Bot className="w-8 h-8" />
       </Button>
@@ -191,7 +191,7 @@ export default function Chatbot() {
                   />
                   <Button
                     onClick={handleSend}
-                    className="bg-blue-600 p-4 hover:bg-green-700 text-white"
+                    className="bg-blue-600 p-4 hover:bg-blue-800 text-white"
                   >
                     <Send className="w-4 h-4" />
                   </Button>
