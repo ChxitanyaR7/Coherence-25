@@ -20,6 +20,7 @@ import TeamList from "./components/NetworkingList";
 import Shortlisted from './components/Shortlisted';
 import LeaderboardUpdate from "./components/LeaderboardUpdate";
 import Leaderboard from "./components/Leaderboard"; // Assuming this is the Leaderboard component.
+import Chatbot from "./components/Chatbot";
 
 function App() {
   const [showIntroduction, setShowIntroduction] = useState(false);
@@ -45,7 +46,8 @@ function App() {
   }, []);
 
   return (
-    <Router>
+    <div>
+      <Router>
       <div className="App bg-black">
         {/* Display YetToRevealPage until reveal date */}
         {showYetToRevealPage && <YetToRevealPage className="yet-to-reveal" />}
@@ -85,10 +87,13 @@ function App() {
               <Route path="/leaderboard" element={<Leaderboard />} />
 
             </Routes>
+            <Chatbot/>
           </div>
         )}
       </div>
     </Router>
+   
+    </div>
   );
 }
 
