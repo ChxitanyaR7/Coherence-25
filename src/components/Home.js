@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 // import { Link } from "react-router-dom";
 
 const Home = () => {
-  const targetDate = new Date("March 28, 2025 00:00:00 GMT+0530").getTime();
+  const targetDate = new Date("March 28, 2025 12:00:00 GMT+0530").getTime();
   const [timeRemaining, setTimeRemaining] = useState(calculateTimeRemaining());
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);

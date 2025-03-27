@@ -22,6 +22,7 @@ import LeaderboardUpdate from "./components/LeaderboardUpdate";
 import Leaderboard from "./components/Leaderboard"; // Assuming this is the Leaderboard component.
 import Chatbot from "./components/Chatbot";
 import Sponsors from "./components/Sponsors";
+import AdminCombinedRoutes from "./AdminCombinedRoutes";
 
 function App() {
   const [showIntroduction, setShowIntroduction] = useState(false);
@@ -79,14 +80,19 @@ function App() {
                   }
                 />
                 <Route path="/realtime" element={<Realtime />} />
+                <Route path={`/realtime/${process.env.REACT_APP_SSH_PASSWORD}`} element={<RealtimeUpdate />} />
+
                 <Route path="/networking-form" element={<Form />} />
                 <Route path="/networking-list" element={<TeamList />} />
-                <Route path="/realtime/:password" element={<PasswordValidation />} />
-                <Route path="/leaderboard/:password" element={<LeaderboardPasswordValidation />} />
+                <Route path={`/leaderboard/${process.env.REACT_APP_SSH_PASSWORD}`} element={<LeaderboardPasswordValidation />} />
                 <Route path="/shortlisted-teams" element={<Shortlisted />} />
 
                 {/* Add route for /leaderboard */}
                 <Route path="/leaderboard" element={<Leaderboard />} />
+
+
+                {/* Combined Routes */}
+                <Route path={`/admin/${process.env.REACT_APP_SSH_PASSWORD}`} element={<AdminCombinedRoutes />} />
 
               </Routes>
               <Chatbot />
